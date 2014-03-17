@@ -17,12 +17,9 @@ import javax.persistence.Id;
 @Entity
 public class Player implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    private String name;
     
+    private String email;
+    @Id
     private String login;
     
     private String password;
@@ -40,19 +37,11 @@ public class Player implements Serializable {
     public void addPoints(int points) {
         this.points += points;
     }
-    
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (login != null ? login.hashCode() : 0);
         return hash;
     }
 
@@ -63,7 +52,7 @@ public class Player implements Serializable {
             return false;
         }
         Player other = (Player) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.login == null && other.login != null) || (this.login != null && !this.login.equals(other.login))) {
             return false;
         }
         return true;
@@ -71,21 +60,21 @@ public class Player implements Serializable {
 
     @Override
     public String toString() {
-        return "org.maguz.cargamex.entities.User[ id=" + id + " ]";
+        return "org.maguz.cargamex.entities.User[ login=" + login + " ]";
     }
 
     /**
      * @return the name
      */
-    public String getName() {
-        return name;
+    public String getEmail() {
+        return email;
     }
 
     /**
      * @param name the name to set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     /**
