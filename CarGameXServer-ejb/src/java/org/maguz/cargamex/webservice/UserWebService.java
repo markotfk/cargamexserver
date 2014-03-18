@@ -4,13 +4,12 @@
  */
 package org.maguz.cargamex.webservice;
 
+import javax.ejb.EJB;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import org.maguz.cargamex.entities.Player;
+import org.maguz.cargamex.ejb.PlayerManagementBean;
 
 /**
  *
@@ -20,26 +19,17 @@ import org.maguz.cargamex.entities.Player;
 @Stateless()
 public class UserWebService {
 
-    @PersistenceContext
-    EntityManager em;
+    @EJB
+    PlayerManagementBean playerManager;
+    
     /**
-     * Add user
+     * Add/Register new player
      */
     @WebMethod(operationName = "addplayer")
     public String addplayer(@WebParam(name = "email") String email,
     @WebParam(name = "login") String login, @WebParam(name="password") String passwd) {
-        Player p = em.find(Player.class, login);
-        if (p != null) {
-            return "fail, duplicate login found";
-        }
-        else {
-            Player newPlayer = new Player();
-            newPlayer.setEmail(email);
-            newPlayer.setLogin(login);
-            newPlayer.setPassword(passwd);
-            em.persist(newPlayer);
-            return "ok";
-        }
-        
+        return playerManager.addPlayer(email, login, passwd);
     }
+    
+    
 }
