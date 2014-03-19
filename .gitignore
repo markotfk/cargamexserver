@@ -1,11 +1,14 @@
 # NetBeans specific #
-nbproject/private/
-build/
-nbbuild/
+**/nbproject/private
+**/build
+**/nbbuild
+**/genfiles.properties
 dist/
 nbdist/
 nbactions.xml
 nb-configuration.xml
+nbproject/ant-deploy.xml
+nbproject/build-impl.xml
 
 *.class
 
