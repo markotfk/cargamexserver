@@ -15,10 +15,11 @@ import org.maguz.cargamex.entities.Player;
 public interface PlayerManagementBeanLocal {
 
     /**
-     * Add player object
+     * Add player object.
      * @param player New player instance
      * @return StatusCode.OK if succeeded adding new player, 
      * StatusCode.DuplicateEntry if player with same login already present.
+     * StatusCode.Error in case of other errors.
      */
     StatusCode addPlayer(Player player);
     

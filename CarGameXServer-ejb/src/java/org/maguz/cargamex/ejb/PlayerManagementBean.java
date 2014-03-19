@@ -4,10 +4,9 @@
  */
 package org.maguz.cargamex.ejb;
 
-import java.util.logging.Level;
+import java.sql.Date;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.maguz.cargamex.entities.Player;
@@ -34,6 +33,7 @@ public class PlayerManagementBean implements PlayerManagementBeanLocal {
             return StatusCode.DuplicateEntry;
         }
         try {
+            player.setRegistered(new Date(System.currentTimeMillis()));
             em.persist(player);
         } catch (Exception ex) {
             logger.severe(ex.getMessage());

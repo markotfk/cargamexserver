@@ -5,6 +5,7 @@
 package org.maguz.cargamex.entities;
 
 import java.io.Serializable;
+import java.sql.Date;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
@@ -32,6 +33,17 @@ public class Player implements Serializable {
     @XmlElement(required = true)
     @NotNull
     private String password;
+    
+    @XmlElement
+    private Date registered;
+
+    public Date getRegistered() {
+        return registered;
+    }
+
+    public void setRegistered(Date registered) {
+        this.registered = registered;
+    }
     
     @XmlElement
     private int points;
