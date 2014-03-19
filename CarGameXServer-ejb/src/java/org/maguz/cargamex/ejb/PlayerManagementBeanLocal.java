@@ -5,6 +5,7 @@
 package org.maguz.cargamex.ejb;
 
 import javax.ejb.Local;
+import org.maguz.cargamex.entities.Player;
 
 /**
  *
@@ -13,6 +14,13 @@ import javax.ejb.Local;
 @Local
 public interface PlayerManagementBeanLocal {
 
-    String addPlayer(String email, String login, String password);
+    /**
+     * Add player object
+     * @param player New player instance
+     * @return StatusCode.OK if succeeded adding new player, 
+     * StatusCode.DuplicateEntry if player with same login already present.
+     */
+    StatusCode addPlayer(Player player);
+    
     
 }

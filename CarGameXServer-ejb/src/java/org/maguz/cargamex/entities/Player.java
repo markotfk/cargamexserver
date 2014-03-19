@@ -6,24 +6,34 @@ package org.maguz.cargamex.entities;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @Entity
+@XmlRootElement
 public class Player implements Serializable {
     private static final long serialVersionUID = 1L;
     
+    @XmlElement(required = true)
+    @NotNull
     private String email;
+    
     @Id
+    @XmlElement(required = true)
+    @NotNull
     private String login;
     
+    @XmlElement(required = true)
+    @NotNull
     private String password;
     
+    @XmlElement
     private int points;
 
     public int getPoints() {

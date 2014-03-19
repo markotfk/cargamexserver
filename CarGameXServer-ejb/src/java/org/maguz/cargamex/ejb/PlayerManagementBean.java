@@ -4,7 +4,10 @@
  */
 package org.maguz.cargamex.ejb;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.maguz.cargamex.entities.Player;
@@ -16,26 +19,27 @@ import org.maguz.cargamex.entities.Player;
 @Stateless
 public class PlayerManagementBean implements PlayerManagementBeanLocal {
 
-    @PersistenceContext
+    private static final Logger logger = Logger.getLogger(PlayerManagementBean.class.toString());
+    
+    @PersistenceContext( unitName = "CarGameXServer-ejbPU")
     EntityManager em;
     
-    @Override
-    public String addPlayer(String email, String login, String password) {
-        Player p = em.find(Player.class, login);
-        if (p != null) {
-            return "failed: duplicate login";
-        }
-        else {
-            Player newPlayer = new Player();
-            newPlayer.setEmail(email);
-            newPlayer.setLogin(login);
-            newPlayer.setPassword(password);
-            em.persist(newPlayer);
-            return "ok";
-        }
-    }
+    // Add player instance to database.
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+    @Override
+    public StatusCode addPlayer(Player player) {
+        
+        if (em.find(Player.class, player.getLogin()) != null) {
+            logger.warning(String.format("Rejecting duplicate player entry: '{0}'", player.getLogin()));
+            return StatusCode.DuplicateEntry;
+        }
+        try {
+            em.persist(player);
+        } catch (Exception ex) {
+            logger.severe(ex.getMessage());
+            return StatusCode.Error;
+        }
+        return StatusCode.OK;
+    }
 
 }
