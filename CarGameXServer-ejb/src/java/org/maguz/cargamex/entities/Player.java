@@ -37,6 +37,17 @@ public class Player implements Serializable {
     @XmlElement
     private Date registered;
 
+    @XmlElement
+    private boolean loggedIn;
+
+    public boolean isLoggedIn() {
+        return loggedIn;
+    }
+
+    public void setLoggedIn(boolean loggedIn) {
+        this.loggedIn = loggedIn;
+    }
+    
     public Date getRegistered() {
         return registered;
     }
@@ -69,7 +80,6 @@ public class Player implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Player)) {
             return false;
         }

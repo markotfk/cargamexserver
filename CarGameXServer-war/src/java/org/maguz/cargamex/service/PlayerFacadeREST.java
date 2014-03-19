@@ -46,17 +46,23 @@ public class PlayerFacadeREST extends AbstractFacade<Player> {
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(Player entity) {
-        StatusCode status = pm.addPlayer(entity);
-        if (status == StatusCode.DuplicateEntry) {
-            //  Player with similar login exists, return CONFLICT error code
-            throw new WebApplicationException(Response.Status.CONFLICT);
-        }
-        if (status == StatusCode.Error) {
-            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
-        }
-        
+        handleStatusCode(pm.addPlayer(entity));
     }
 
+    @POST
+    @Path("login")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void loginPlayer(Player entity) {
+        handleStatusCode(pm.loginPlayer(entity));
+    }
+    
+    @POST
+    @Path("logout")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void logoutPlayer(Player entity) {
+        handleStatusCode(pm.logoutPlayer(entity));
+    }
+    
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -103,4 +109,19 @@ public class PlayerFacadeREST extends AbstractFacade<Player> {
         return em;
     }
     
+    private void handleStatusCode(StatusCode status) {
+        if (status == StatusCode.DuplicateEntry) {
+            //  Player with similar login exists, return CONFLICT error code
+            throw new WebApplicationException(Response.Status.CONFLICT);
+        }
+        if (status == StatusCode.Error) {
+            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
+        }
+        if (status == StatusCode.NotFound) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        if (status == StatusCode.AuthenticationFailed) {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+    }
 }

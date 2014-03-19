@@ -23,5 +23,17 @@ public interface PlayerManagementBeanLocal {
      */
     StatusCode addPlayer(Player player);
     
+    /**
+     * Log in Player.
+     * @param player Player login
+     * @return Status code.
+     */
+    StatusCode loginPlayer(Player player);
     
+    /**
+     * Log out Player.
+     * @param player Player login.
+     * @return Status code.
+     */
+    StatusCode logoutPlayer(Player player);
 }

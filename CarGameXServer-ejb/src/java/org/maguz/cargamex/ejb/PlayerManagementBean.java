@@ -34,11 +34,34 @@ public class PlayerManagementBean implements PlayerManagementBeanLocal {
         }
         try {
             player.setRegistered(new Date(System.currentTimeMillis()));
+            player.setLoggedIn(true);
             em.persist(player);
         } catch (Exception ex) {
             logger.severe(ex.getMessage());
             return StatusCode.Error;
         }
+        return StatusCode.OK;
+    }
+
+    @Override
+    public StatusCode loginPlayer(Player player) {
+        return authenticatePlayer(player, true);
+    }
+
+    @Override
+    public StatusCode logoutPlayer(Player player) {
+        return authenticatePlayer(player, false);
+    }
+    
+    private StatusCode authenticatePlayer(Player player, boolean loggedIn) {
+        Player existing = em.find(Player.class, player.getLogin());
+        if (existing == null) {
+            return StatusCode.AuthenticationFailed;
+        }
+        if (!existing.getPassword().equals(player.getPassword())) {
+            return StatusCode.AuthenticationFailed;
+        }
+        existing.setLoggedIn(loggedIn);
         return StatusCode.OK;
     }
 
