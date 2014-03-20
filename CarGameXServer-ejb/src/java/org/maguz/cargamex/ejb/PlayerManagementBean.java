@@ -34,7 +34,6 @@ public class PlayerManagementBean implements PlayerManagementBeanLocal {
         }
         try {
             player.setRegistered(new Date(System.currentTimeMillis()));
-            player.setLoggedIn(true);
             em.persist(player);
         } catch (Exception ex) {
             logger.severe(ex.getMessage());
@@ -58,7 +57,7 @@ public class PlayerManagementBean implements PlayerManagementBeanLocal {
         if (existing == null) {
             return StatusCode.AuthenticationFailed;
         }
-        if (!existing.getPassword().equals(player.getPassword())) {
+        if (!existing.checkPassword(player.getPassword())) {
             return StatusCode.AuthenticationFailed;
         }
         existing.setLoggedIn(loggedIn);

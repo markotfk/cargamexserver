@@ -45,6 +45,7 @@ public class PlayerFacadeREST extends AbstractFacade<Player> {
 
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Override
     public void create(Player entity) {
         handleStatusCode(pm.addPlayer(entity));
     }

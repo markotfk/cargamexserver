@@ -8,6 +8,7 @@ package org.maguz.cargamex.service;
 
 import java.util.List;
 import javax.persistence.EntityManager;
+import org.maguz.cargamex.entities.Player;
 
 /**
  *
@@ -22,6 +23,8 @@ public abstract class AbstractFacade<T> {
 
     protected abstract EntityManager getEntityManager();
 
+    abstract void create(Player entity);
+    
     public void edit(T entity) {
         getEntityManager().merge(entity);
     }

@@ -9,7 +9,7 @@
     <property name="portNumber" value="5432"/>
     <property name="databaseName" value="cargamex"/>
     <property name="User" value="postgres"/>
-    <property name="Password" value="SalzBledon92"/>
+    <property name="Password" value="carpasswd1"/>
     <property name="URL" value="jdbc:postgresql://localhost:5432/cargamex"/>
     <property name="driverClass" value="org.postgresql.Driver"/>
   </jdbc-connection-pool>

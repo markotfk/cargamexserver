@@ -13,6 +13,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.maguz.cargamex.util.PasswordUtils;
 
 /**
  *
@@ -137,7 +138,16 @@ public class Player implements Serializable {
      * @param password the password to set
      */
     public void setPassword(String password) {
-        this.password = password;
+        this.password = PasswordUtils.getSaltedHash(password);
+    }
+    
+    public boolean checkPassword(String password) {
+        try {
+            return PasswordUtils.check(password, this.password);
+        } catch (Exception e) {
+            return false;
+        }
+        
     }
     
 }
