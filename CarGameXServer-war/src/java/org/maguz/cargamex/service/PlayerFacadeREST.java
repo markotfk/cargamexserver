@@ -8,7 +8,6 @@ package org.maguz.cargamex.service;
 
 import java.util.List;
 import javax.ejb.EJB;
-import javax.json.Json;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
@@ -53,8 +52,8 @@ public class PlayerFacadeREST extends AbstractFacade<Player> {
     @POST
     @Path("login")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void loginPlayer(Player entity) {
-        handleStatusCode(pm.loginPlayer(entity));
+    public void loginPlayer(Player player) {
+        handleStatusCode(pm.loginPlayer(player));
     }
     
     @POST

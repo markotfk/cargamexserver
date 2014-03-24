@@ -1,0 +1,65 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Mar 24, 2014, 5:42:48 PM
+    Author     : Marko Karjalainen <markotfk@gmail.com>
+*/
+
+/* CSS Document */
+
+body {
+    background-color: aliceblue
+}
+a {
+    color: red
+}
+.player_form {
+font-family: Arial;
+font-size: 12px;
+width: 280px;
+}
+
+fieldset {
+border: 1px solid #CCC;
+margin-bottom: 10px;
+}
+
+fieldset.login input {
+width: 125px;
+}
+
+legend {
+font-weight: bold;
+font-size: 1.1em;
+}
+
+label {
+display: block;
+width: 60px;
+text-align: right;
+float: left;
+padding-right: 10px;
+margin: 5px 0;
+}
+
+input {
+margin: 5px 0;
+}
+
+input.text {
+padding: 0 0 0 3px;
+width: 172px;
+}
+
+input.submit {
+margin: 15px 0 0 70px;
+}
+
+.errormsg{
+color:#FF0000;
+font-size:9px;
+font-weight:bold;
+}
