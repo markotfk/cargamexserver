@@ -34,6 +34,7 @@ public class PlayerManagementBean implements PlayerManagementBeanLocal {
         }
         try {
             player.setRegistered(new Date(System.currentTimeMillis()));
+            player.setPassword(player.getPassword()); // hashes plain-text password
             em.persist(player);
         } catch (Exception ex) {
             logger.severe(ex.getMessage());
