@@ -37,7 +37,7 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(org.maguz.cargamex.service.PlayerFacadeREST.class);
+        resources.add(org.maguz.cargamex.service.PlayerServiceRest.class);
     }
     
 }

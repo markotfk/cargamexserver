@@ -5,6 +5,7 @@
 package org.maguz.cargamex.ejb;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -27,8 +28,10 @@ public class PlayerManagementBean implements PlayerManagementBeanLocal {
 
     @Override
     public StatusCode addPlayer(Player player) {
-        
-        if (em.find(Player.class, player.getLogin()) != null) {
+        if (player == null) {
+            return StatusCode.NotFound;
+        }
+        if (findPlayer(player.getLogin()) != null) {
             logger.warning(String.format("Rejecting duplicate player entry: '{0}'", player.getLogin()));
             return StatusCode.DuplicateEntry;
         }
@@ -54,7 +57,10 @@ public class PlayerManagementBean implements PlayerManagementBeanLocal {
     }
     
     private StatusCode authenticatePlayer(Player player, boolean loggedIn) {
-        Player existing = em.find(Player.class, player.getLogin());
+        if (player == null) {
+            return StatusCode.NotFound;
+        }
+        Player existing = findPlayer(player.getLogin());
         if (existing == null) {
             return StatusCode.AuthenticationFailed;
         }
@@ -63,6 +69,47 @@ public class PlayerManagementBean implements PlayerManagementBeanLocal {
         }
         existing.setLoggedIn(loggedIn);
         return StatusCode.OK;
+    }
+
+    @Override
+    public StatusCode editPlayer(Player player) {
+        if (player == null) {
+            return StatusCode.NotFound;
+        }
+        Player existing = findPlayer(player.getLogin());
+        if (existing != null) {
+            em.merge(player);
+            return StatusCode.OK;
+        }
+        return StatusCode.NotFound;
+    }
+
+    @Override
+    public StatusCode deletePlayer(Player player) {
+        if (player == null) {
+            return StatusCode.NotFound;
+        }
+        Player existing = findPlayer(player.getLogin());
+        if (existing != null) {
+            em.remove(em.merge(existing));
+            return StatusCode.OK;
+        }
+        return StatusCode.NotFound;
+    }
+    
+    @Override
+    public Player findPlayer(String id) {
+        if (id == null) {
+            return null;
+        }
+        return em.find(Player.class, id);
+    }
+
+    @Override
+    public List<Player> findAllPlayers() {
+        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(Player.class));
+        return em.createQuery(cq).getResultList();
     }
 
 }

@@ -30,21 +30,16 @@ import org.maguz.cargamex.entities.Player;
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @Path("v1/players")
-public class PlayerFacadeREST extends AbstractFacade<Player> {
-    @PersistenceContext(unitName = "CarGameXServer-warPU")
-    private EntityManager em;
-
+public class PlayerServiceRest  {
     
     @EJB 
     private PlayerManagementBeanLocal pm;
     
-    public PlayerFacadeREST() {
-        super(Player.class);
+    public PlayerServiceRest() {
     }
 
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Override
     public void create(Player entity) {
         handleStatusCode(pm.addPlayer(entity));
     }
@@ -67,48 +62,28 @@ public class PlayerFacadeREST extends AbstractFacade<Player> {
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void edit(@PathParam("id") String id, Player entity) {
-        super.edit(entity);
+        handleStatusCode(pm.editPlayer(entity));
     }
 
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") String id) {
-        super.remove(super.find(id));
+        handleStatusCode(pm.deletePlayer(find(id)));
     }
 
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Player find(@PathParam("id") String id) {
-        return super.find(id);
+        return pm.findPlayer(id);
     }
 
     @GET
-    @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Player> findAll() {
-        return super.findAll();
+        return pm.findAllPlayers();
     }
 
-    @GET
-    @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Player> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
-    }
-
-    @GET
-    @Path("count")
-    @Produces("text/plain")
-    public String countREST() {
-        return String.valueOf(super.count());
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
-    
     private void handleStatusCode(StatusCode status) {
         if (status == StatusCode.DuplicateEntry) {
             //  Player with similar login exists, return CONFLICT error code

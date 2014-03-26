@@ -4,6 +4,7 @@
  */
 package org.maguz.cargamex.ejb;
 
+import java.util.List;
 import javax.ejb.Local;
 import org.maguz.cargamex.entities.Player;
 
@@ -36,4 +37,33 @@ public interface PlayerManagementBeanLocal {
      * @return Status code.
      */
     StatusCode logoutPlayer(Player player);
+    
+    /**
+     * Edit player details.
+     * @param player
+     * @return 
+     */
+    StatusCode editPlayer(Player player);
+    
+    /**
+     * Remove player from database.
+     * @param player
+     * @return 
+     */
+    StatusCode deletePlayer(Player player);
+    
+    /**
+     * Finds single player by id.
+     * @param id
+     * @return
+     */
+    Player findPlayer(String id);
+    
+    /**
+     * Returns list of players
+     * @return 
+     */
+    List<Player> findAllPlayers();
+    
+    
 }

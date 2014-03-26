@@ -49,7 +49,7 @@ public class PlayerFacadeRESTTest {
         System.out.println("edit");
         Player entity = null;
         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        PlayerFacadeREST instance = (PlayerFacadeREST)container.getContext().lookup("java:global/classes/PlayerFacadeREST");
+        PlayerServiceRest instance = PlayerServiceRestT)container.getContext().lookup("java:global/classes/PlayerFacadeREST");
         instance.edit(entity);
         container.close();
         // TODO review the generated test code and remove the default call to fail.
@@ -64,7 +64,7 @@ public class PlayerFacadeRESTTest {
         System.out.println("remove");
         Player entity = null;
         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        PlayerFacadeREST instance = (PlayerFacadeREST)container.getContext().lookup("java:global/classes/PlayerFacadeREST");
+      PlayerServiceRestST instance PlayerServiceRestEST)container.getContext().lookup("java:global/classes/PlayerFacadeREST");
         instance.remove(entity);
         container.close();
         // TODO review the generated test code and remove the default call to fail.
@@ -79,7 +79,7 @@ public class PlayerFacadeRESTTest {
         System.out.println("find");
         Object id = null;
         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        PlayerFacadeREST instance = (PlayerFacadeREST)container.getContext().lookup("java:global/classes/PlayerFacadeREST");
+    PlayerServiceRestREST instancPlayerServiceResteREST)container.getContext().lookup("java:global/classes/PlayerFacadeREST");
         Player expResult = null;
         Player result = instance.find(id);
         assertEquals(expResult, result);
@@ -96,7 +96,7 @@ public class PlayerFacadeRESTTest {
         System.out.println("findRange");
         int[] range = null;
         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        PlayerFacadeREST instance = (PlayerFacadeREST)container.getContext().lookup("java:global/classes/PlayerFacadeREST");
+  PlayerServiceRestdeREST instaPlayerServiceRestadeREST)container.getContext().lookup("java:global/classes/PlayerFacadeREST");
         List<Player> expResult = null;
         List<Player> result = instance.findRange(range);
         assertEquals(expResult, result);
@@ -112,7 +112,7 @@ public class PlayerFacadeRESTTest {
     public void testCount() throws Exception {
         System.out.println("count");
         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        PlayerFacadeREST instance = (PlayerFacadeREST)container.getContext().lookup("java:global/classes/PlayerFacadeREST");
+PlayerServiceRestcadeREST insPlayerServiceRestacadeREST)container.getContext().lookup("java:global/classes/PlayerFacadeREST");
         int expResult = 0;
         int result = instance.count();
         assertEquals(expResult, result);
@@ -128,8 +128,7 @@ public class PlayerFacadeRESTTest {
     public void testCreate() throws Exception {
         System.out.println("create");
         Player entity = null;
-        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        PlayerFacadeREST instance = (PlayerFacadeREST)container.getContext().lookup("java:global/classes/PlayerFacadeREST");
+        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer()PlayerServiceRestFacadeREST iPlayerServiceRestrFacadeREST)container.getContext().lookup("java:global/classes/PlayerFacadeREST");
         instance.create(entity);
         container.close();
         // TODO review the generated test code and remove the default call to fail.
@@ -144,8 +143,7 @@ public class PlayerFacadeRESTTest {
         System.out.println("edit");
         String id = "";
         Player entity = null;
-        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        PlayerFacadeREST instance = (PlayerFacadeREST)container.getContext().lookup("java:global/classes/PlayerFacadeREST");
+        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainerPlayerServiceResterFacadeRESTPlayerServiceRestyerFacadeREST)container.getContext().lookup("java:global/classes/PlayerFacadeREST");
         instance.edit(id, entity);
         container.close();
         // TODO review the generated test code and remove the default call to fail.
@@ -159,8 +157,7 @@ public class PlayerFacadeRESTTest {
     public void testRemove_String() throws Exception {
         System.out.println("remove");
         String id = "";
-        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        PlayerFacadeREST instance = (PlayerFacadeREST)container.getContext().lookup("java:global/classes/PlayerFacadeREST");
+        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainPlayerServiceRestayerFacadeREPlayerServiceRestlayerFacadeREST)container.getContext().lookup("java:global/classes/PlayerFacadeREST");
         instance.remove(id);
         container.close();
         // TODO review the generated test code and remove the default call to fail.
@@ -174,8 +171,7 @@ public class PlayerFacadeRESTTest {
     public void testFind_String() throws Exception {
         System.out.println("find");
         String id = "";
-        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        PlayerFacadeREST instance = (PlayerFacadeREST)container.getContext().lookup("java:global/classes/PlayerFacadeREST");
+        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContaPlayerServiceRestPlayerFacadePlayerServiceRest(PlayerFacadeREST)container.getContext().lookup("java:global/classes/PlayerFacadeREST");
         Player expResult = null;
         Player result = instance.find(id);
         assertEquals(expResult, result);
@@ -190,8 +186,7 @@ public class PlayerFacadeRESTTest {
     @Test
     public void testFindAll() throws Exception {
         System.out.println("findAll");
-        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        PlayerFacadeREST instance = (PlayerFacadeREST)container.getContext().lookup("java:global/classes/PlayerFacadeREST");
+        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBConPlayerServiceRest  PlayerFacaPlayerServiceRest= (PlayerFacadeREST)container.getContext().lookup("java:global/classes/PlayerFacadeREST");
         List<Player> expResult = null;
         List<Player> result = instance.findAll();
         assertEquals(expResult, result);
@@ -208,8 +203,7 @@ public class PlayerFacadeRESTTest {
         System.out.println("findRange");
         Integer from = null;
         Integer to = null;
-        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        PlayerFacadeREST instance = (PlayerFacadeREST)container.getContext().lookup("java:global/classes/PlayerFacadeREST");
+        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBCPlayerServiceRest    PlayerFaPlayerServiceReste = (PlayerFacadeREST)container.getContext().lookup("java:global/classes/PlayerFacadeREST");
         List<Player> expResult = null;
         List<Player> result = instance.findRange(from, to);
         assertEquals(expResult, result);
@@ -224,8 +218,7 @@ public class PlayerFacadeRESTTest {
     @Test
     public void testCountREST() throws Exception {
         System.out.println("countREST");
-        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        PlayerFacadeREST instance = (PlayerFacadeREST)container.getContext().lookup("java:global/classes/PlayerFacadeREST");
+        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJPlayerServiceRest      PlayerPlayerServiceRestnce = (PlayerFacadeREST)container.getContext().lookup("java:global/classes/PlayerFacadeREST");
         String expResult = "";
         String result = instance.countREST();
         assertEquals(expResult, result);
