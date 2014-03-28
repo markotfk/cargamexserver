@@ -38,6 +38,7 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(org.maguz.cargamex.service.PlayerServiceRest.class);
+        resources.add(org.maguz.cargamex.service.TeamServiceRest.class);
     }
     
 }

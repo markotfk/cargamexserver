@@ -30,7 +30,7 @@ import org.maguz.cargamex.entities.Player;
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @Path("v1/players")
-public class PlayerServiceRest  {
+public class PlayerServiceRest extends ServiceRest {
     
     @EJB 
     private PlayerManagementBeanLocal pm;
@@ -41,62 +41,46 @@ public class PlayerServiceRest  {
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(Player entity) {
-        handleStatusCode(pm.addPlayer(entity));
+        handleStatusCode(pm.add(entity));
     }
 
     @POST
     @Path("login")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void loginPlayer(Player player) {
-        handleStatusCode(pm.loginPlayer(player));
+        handleStatusCode(pm.login(player));
     }
     
     @POST
     @Path("logout")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void logoutPlayer(Player entity) {
-        handleStatusCode(pm.logoutPlayer(entity));
+        handleStatusCode(pm.logout(entity));
     }
     
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void edit(@PathParam("id") String id, Player entity) {
-        handleStatusCode(pm.editPlayer(entity));
+        handleStatusCode(pm.edit(entity));
     }
 
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") String id) {
-        handleStatusCode(pm.deletePlayer(find(id)));
+        handleStatusCode(pm.remove(find(id)));
     }
 
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Player find(@PathParam("id") String id) {
-        return pm.findPlayer(id);
+        return pm.find(id);
     }
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Player> findAll() {
-        return pm.findAllPlayers();
-    }
-
-    private void handleStatusCode(StatusCode status) {
-        if (status == StatusCode.DuplicateEntry) {
-            //  Player with similar login exists, return CONFLICT error code
-            throw new WebApplicationException(Response.Status.CONFLICT);
-        }
-        if (status == StatusCode.Error) {
-            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
-        }
-        if (status == StatusCode.NotFound) {
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
-        }
-        if (status == StatusCode.AuthenticationFailed) {
-            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-        }
+        return pm.findAll();
     }
 }

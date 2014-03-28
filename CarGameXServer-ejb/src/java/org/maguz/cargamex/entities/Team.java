@@ -11,19 +11,29 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.xml.bind.annotation.XmlElement;
 
 /**
  *
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @Entity
+@Table(name="team", uniqueConstraints=@UniqueConstraint(columnNames={"name"}))
 public class Team implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    
+    @XmlElement(required = true)
     private String name;
+    
+    @XmlElement
     private String logoPath;
+    
+    @XmlElement
     private int points;
     @OneToMany
     private List<Player> players;
@@ -58,6 +68,10 @@ public class Team implements Serializable {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+    
+    public void addPlayer(Player entity) {
+        players.add(entity);
     }
     
     @Override
