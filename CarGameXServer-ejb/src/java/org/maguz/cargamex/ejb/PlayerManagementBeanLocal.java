@@ -55,15 +55,25 @@ public interface PlayerManagementBeanLocal {
     /**
      * Finds single player by id.
      * @param id
+     * @param player
      * @return
      */
-    Player find(String id);
+    Player find(String id, Player player);
+    
+    /**
+     * Finds single player by session id and player id.
+     * @param sessionId
+     * @param id
+     * @return
+     */
+    Player find(String sessionId, String id);
     
     /**
      * Returns list of players
+     * @param player
      * @return 
      */
-    List<Player> findAll();
+    List<Player> findAll(Player player);
     
     
 }

@@ -23,7 +23,7 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         if (player == null) {
             return StatusCode.NotFound;
         }
-        if (find(player.getLogin()) != null) {
+        if (em.find(Player.class, player.getLogin()) != null) {
             logger.warning(String.format("Rejecting duplicate player entry: '{0}'", player.getLogin()));
             return StatusCode.DuplicateEntry;
         }
@@ -52,7 +52,7 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         if (player == null) {
             return StatusCode.NotFound;
         }
-        Player existing = find(player.getLogin());
+        Player existing = em.find(Player.class, player.getLogin());
         if (existing == null) {
             return StatusCode.AuthenticationFailed;
         }
@@ -84,7 +84,7 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         if (player == null) {
             return StatusCode.NotFound;
         }
-        Player existing = find(player.getLogin());
+        Player existing = find(player.getLogin(), player);
         if (existing != null && existing.checkSessionId(player.getSessionId())) {
             em.merge(player);
             return StatusCode.OK;
@@ -97,7 +97,7 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         if (player == null) {
             return StatusCode.NotFound;
         }
-        Player existing = find(player.getLogin());
+        Player existing = find(player.getLogin(), player);
         if (existing != null && existing.checkSessionId(player.getSessionId())) {
             em.remove(em.merge(existing));
             return StatusCode.OK;
@@ -106,18 +106,48 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
     }
     
     @Override
-    public Player find(String id) {
+    public Player find(String id, Player player) {
         if (id == null) {
             return null;
         }
-        return em.find(Player.class, id);
+        if (player == null) {
+            return null;
+        }
+        Player existing = em.find(Player.class, id);
+        if (existing != null && existing.checkSessionId(player.getSessionId())) {
+            return existing;
+        }
+        return null;
     }
 
     @Override
-    public List<Player> findAll() {
-        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(Player.class));
-        return em.createQuery(cq).getResultList();
+    public Player find(String sessionId, String id) {
+        if (sessionId == null) {
+            return null;
+        }
+        if (id == null) {
+            return null;
+        }
+        Player existing = em.find(Player.class, id);
+        if (existing != null && existing.checkSessionId(sessionId)) {
+            return existing;
+        }
+        return null;
+    }
+    
+    @Override
+    public List<Player> findAll(Player player) {
+        if (player == null) {
+            return null;
+        }
+        Player existing = find(player.getLogin(), player);
+        if (existing != null && existing.checkSessionId(player.getSessionId())) {
+            javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Player.class));
+            return em.createQuery(cq).getResultList();
+        }
+        return null;
+        
     }
 
 }

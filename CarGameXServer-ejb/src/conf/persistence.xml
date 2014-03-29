@@ -8,6 +8,7 @@
     <class>org.maguz.cargamex.entities.Track</class>
     <class>org.maguz.cargamex.entities.TrackRecord</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <shared-cache-mode>DISABLE_SELECTIVE</shared-cache-mode>
     <properties>
       <property name="eclipselink.ddl-generation" value="create-tables"/>
       <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>

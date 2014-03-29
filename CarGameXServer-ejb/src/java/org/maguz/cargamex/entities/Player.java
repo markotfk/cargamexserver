@@ -6,6 +6,7 @@ package org.maguz.cargamex.entities;
 
 import java.io.Serializable;
 import java.sql.Date;
+import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -23,6 +24,7 @@ import org.maguz.cargamex.util.PasswordUtils;
 @Entity
 @XmlRootElement
 @Table(name="player", uniqueConstraints=@UniqueConstraint(columnNames={"email"}))
+@Cacheable(false)
 public class Player implements Serializable {
     private static final long serialVersionUID = 1L;
     
@@ -160,7 +162,7 @@ public class Player implements Serializable {
     
     public boolean checkSessionId(String sessionId) {
         if (this.sessionId == null) {
-            return sessionId == null;
+            return false;
         }
         if (sessionId != null) {
             return this.sessionId.equals(sessionId);
