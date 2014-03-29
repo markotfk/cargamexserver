@@ -4,7 +4,6 @@
     Author     : Marko Karjalainen <markotfk@gmail.com>
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,15 +17,27 @@
     
     <body>
         <div class="content">
-            Welcome to Car Game X - the Internet car game. Please login:
-            <form method="post" id="login_form" class="player_form">
-                Login: <input type="text" name="login" id="login"><br>
-                Password: <input type="password" name="password" id="password"><br>
-                <input type="submit" value="Login user">
-            </form> 
+            Welcome to Car Game X - the Internet car game.
+            <p>
+            <div id="login_name" class="login_name_class"></div>
+            </p>
+            <p>
+                <form method="post" id="login_form" class="player_form">
+                    Login: <input type="text" name="login" id="login"><br>
+                    Password: <input type="password" name="password" id="password"><br>
+                    <input type="submit" value="Login user">
+                </form> 
 
-            <div class="errormsg" id="login_status"></div>
-            <a href="register.html">Register New Player</a>
+                <form method="post" id="logout_form" class="player_form">
+                    <input type="submit" value="Logout user">
+                </form> 
+            </p>
+            <p>
+                <div class="errormsg" id="login_status"></div>
+            </p>
+            <p>
+                <a href="register.html">Register New Player</a>
+            </p>
         </div>
     </body>
     

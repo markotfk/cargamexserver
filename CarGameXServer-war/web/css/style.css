@@ -20,6 +20,7 @@ a {
 font-family: Arial;
 font-size: 12px;
 width: 280px;
+display: block
 }
 
 fieldset {
@@ -60,6 +61,12 @@ margin: 15px 0 0 70px;
 
 .errormsg{
 color:#FF0000;
-font-size:9px;
+font-size:10px;
+font-weight:bold;
+}
+
+.login_name_class {
+color:#0000FF;
+font-size:10px;
 font-weight:bold;
 }

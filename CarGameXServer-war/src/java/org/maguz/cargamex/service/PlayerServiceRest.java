@@ -8,8 +8,7 @@ package org.maguz.cargamex.service;
 
 import java.util.List;
 import javax.ejb.EJB;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -18,11 +17,9 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import org.maguz.cargamex.ejb.PlayerManagementBeanLocal;
-import org.maguz.cargamex.ejb.StatusCode;
 import org.maguz.cargamex.entities.Player;
 
 /**
@@ -47,8 +44,11 @@ public class PlayerServiceRest extends ServiceRest {
     @POST
     @Path("login")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void loginPlayer(Player player) {
+    @Produces ({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Player loginPlayer(Player player, @Context HttpServletRequest request) {
+        player.setSessionId(request.getSession().getId());
         handleStatusCode(pm.login(player));
+        return player;
     }
     
     @POST

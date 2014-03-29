@@ -6,6 +6,8 @@
 
 package org.maguz.cargamex.service;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import org.maguz.cargamex.ejb.StatusCode;
@@ -16,7 +18,13 @@ import org.maguz.cargamex.ejb.StatusCode;
  */
 public abstract class ServiceRest {
     
+    protected Logger logger;
+    
+    protected ServiceRest() {
+        logger = Logger.getLogger(getClass().getName());
+    }
     protected void handleStatusCode(StatusCode status) {
+        logger.log(Level.INFO, "handleStatusCode {0}", status);
         if (status == StatusCode.DuplicateEntry) {
             //  Player with similar login exists, return CONFLICT error code
             throw new WebApplicationException(Response.Status.CONFLICT);

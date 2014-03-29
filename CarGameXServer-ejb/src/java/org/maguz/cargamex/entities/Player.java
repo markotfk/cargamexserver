@@ -9,6 +9,7 @@ import java.sql.Date;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
@@ -42,14 +43,18 @@ public class Player implements Serializable {
     private Date registered;
 
     @XmlElement
-    private boolean loggedIn;
+    private String sessionId;
 
     public boolean isLoggedIn() {
-        return loggedIn;
+        return sessionId != null;
     }
 
-    public void setLoggedIn(boolean loggedIn) {
-        this.loggedIn = loggedIn;
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+    
+    public String getSessionId() {
+        return sessionId;
     }
     
     public Date getRegistered() {
@@ -107,7 +112,7 @@ public class Player implements Serializable {
     }
 
     /**
-     * @param name the name to set
+     * @param email email to set
      */
     public void setEmail(String email) {
         this.email = email;
@@ -141,13 +146,26 @@ public class Player implements Serializable {
         this.password = PasswordUtils.getSaltedHash(password);
     }
     
+    public void setPasswordNoHash(String password) {
+        this.password = password;
+    }
+    
     public boolean checkPassword(String password) {
         try {
             return PasswordUtils.check(password, this.password);
         } catch (Exception e) {
             return false;
         }
-        
+    }
+    
+    public boolean checkSessionId(String sessionId) {
+        if (this.sessionId == null) {
+            return sessionId == null;
+        }
+        if (sessionId != null) {
+            return this.sessionId.equals(sessionId);
+        }
+        return false;
     }
     
 }

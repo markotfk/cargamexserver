@@ -33,7 +33,7 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
             em.persist(player);
         } catch (Exception ex) {
             logger.severe(ex.getMessage());
-            return StatusCode.Error;
+            return StatusCode.DuplicateEntry;
         }
         return StatusCode.OK;
     }
@@ -56,10 +56,26 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         if (existing == null) {
             return StatusCode.AuthenticationFailed;
         }
-        if (!existing.checkPassword(player.getPassword())) {
+        if (!login && !existing.getPassword().equals(player.getPassword())) {
             return StatusCode.AuthenticationFailed;
         }
-        existing.setLoggedIn(login);
+        if (login && !existing.checkPassword(player.getPassword())) {
+            return StatusCode.AuthenticationFailed;
+        }
+        if (!login) {
+            if (existing.checkSessionId(player.getSessionId())) {
+                existing.setSessionId(null);
+                em.merge(existing);
+                player.setSessionId(null);
+            }
+            else {
+                return StatusCode.AuthenticationFailed;
+            }
+        } else {
+            existing.setSessionId(player.getSessionId());
+            em.merge(existing);
+            player.setPasswordNoHash(existing.getPassword());
+        }
         return StatusCode.OK;
     }
 
@@ -69,11 +85,11 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
             return StatusCode.NotFound;
         }
         Player existing = find(player.getLogin());
-        if (existing != null) {
+        if (existing != null && existing.checkSessionId(player.getSessionId())) {
             em.merge(player);
             return StatusCode.OK;
         }
-        return StatusCode.NotFound;
+        return StatusCode.AuthenticationFailed;
     }
 
     @Override
@@ -82,11 +98,11 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
             return StatusCode.NotFound;
         }
         Player existing = find(player.getLogin());
-        if (existing != null) {
+        if (existing != null && existing.checkSessionId(player.getSessionId())) {
             em.remove(em.merge(existing));
             return StatusCode.OK;
         }
-        return StatusCode.NotFound;
+        return StatusCode.AuthenticationFailed;
     }
     
     @Override
