@@ -7,7 +7,6 @@
 package org.maguz.cargamex.service;
 
 import java.util.List;
-import java.util.logging.Level;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;

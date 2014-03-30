@@ -7,8 +7,8 @@
 DEBUG = true;
 Version = 'v1';
 RestDir = '/carx/rest/' + Version + '/';
-PlayerRoot = RestDir + 'players'
-TeamRoot = RestDir + 'teams'
+PlayerRoot = RestDir + 'players';
+TeamRoot = RestDir + 'teams';
 
 function log(message) {
     if (DEBUG) {
