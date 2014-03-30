@@ -24,4 +24,24 @@ public abstract class ManagementBean {
     @PersistenceContext(unitName = "CarGameXServer-ejbPU")
     protected EntityManager em;
     
+    
+    protected StatusCode merge(Object entity) {
+        try {
+            em.merge(entity);
+        } catch (Exception e) {
+            logger.severe("Error merge: " + e.getMessage());
+            return StatusCode.AuthenticationFailed;
+        }
+        return StatusCode.OK;
+    }
+    
+    protected StatusCode remove(Object entity) {
+        try {
+            em.remove(em.merge(entity));
+        } catch (Exception e) {
+            logger.severe("Error remove: " + e.getMessage());
+            return StatusCode.AuthenticationFailed;
+        }
+        return StatusCode.OK;
+    }
 }

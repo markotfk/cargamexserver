@@ -5,12 +5,14 @@
 package org.maguz.cargamex.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlElement;
@@ -35,8 +37,104 @@ public class Team implements Serializable {
     
     @XmlElement
     private int points;
-    @OneToMany
+    
+    @XmlElement
+    @OneToOne
+    private Player owner;
+    
+    @OneToMany(mappedBy="team")
+    private List<Player> admins;
+
+    @OneToMany(mappedBy="team")
     private List<Player> players;
+    
+    @XmlElement
+    private Long created;
+    
+    @XmlElement
+    private int wins;
+
+    @XmlElement
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
+    private void checkAdmins() {
+        if (admins == null) {
+            admins = new ArrayList<>();
+        }
+    }
+    public List<Player> getAdmins() {
+        checkAdmins();
+        return admins;
+    }
+
+    public void addAdmin(Player player) {
+        if (player == null) {
+            throw new NullPointerException("Player is null");
+        }
+        checkAdmins();
+        if (!admins.contains(player)) {
+            admins.add(player);
+        }
+    }
+    
+    public boolean removeAdmin(Player player) {
+        if (player == null) {
+            throw new NullPointerException("Player is null");
+        }
+        checkAdmins();
+        return admins.remove(player);
+    }
+    
+    public boolean isAdmin(Player player) {
+        if (player == null) {
+            return false;
+        }
+        checkAdmins();
+        return admins.contains(player);
+    }
+    
+    public boolean isOwner(Player player) {
+        if (player == null) {
+            return false;
+        }
+        return owner.equals(player);
+    }
+    
+    
+    public int getWins() {
+        return wins;
+    }
+
+    public void setWins(int wins) {
+        this.wins = wins;
+    }
+
+    public int getLosses() {
+        return losses;
+    }
+
+    public void setLosses(int losses) {
+        this.losses = losses;
+    }
+    
+    @XmlElement
+    private int losses;
+
+    public Long getCreated() {
+        return created;
+    }
+
+    public void setCreated(Long created) {
+        this.created = created;
+    }
     
     public Long getId() {
         return id;
@@ -70,8 +168,35 @@ public class Team implements Serializable {
         this.points = points;
     }
     
-    public void addPlayer(Player entity) {
-        players.add(entity);
+    public void addPlayer(Player player) {
+        if (player == null) {
+            throw new NullPointerException("Player is null");
+        }
+        players.add(player);
+    }
+    
+    public boolean removePlayer(Player player) {
+        if (player == null) {
+            throw new NullPointerException("Player is null");
+        }
+        return players.remove(player);
+    }
+    
+    public List<Player> getPlayers() {
+        return players;
+    }
+    
+    
+    public void setOwner(Player owner) {
+        if (owner == null) {
+            return;
+        }
+        this.owner = owner;
+        addAdmin(owner);
+    }
+    
+    public Player getOwner() {
+        return owner;
     }
     
     @Override

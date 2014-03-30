@@ -40,10 +40,11 @@ public interface PlayerManagementBeanLocal {
     
     /**
      * Edit player details.
+     * @param id
      * @param player
      * @return 
      */
-    StatusCode edit(Player player);
+    StatusCode edit(Long id, Player player);
     
     /**
      * Remove player from database.
@@ -58,15 +59,15 @@ public interface PlayerManagementBeanLocal {
      * @param player
      * @return
      */
-    Player find(String id, Player player);
+    Player find(Long id, Player player);
     
     /**
-     * Finds single player by session id and player id.
-     * @param sessionId
+     * Finds single player by player id and session id.
      * @param id
+     * @param sessionId
      * @return
      */
-    Player find(String sessionId, String id);
+    Player find(Long id, String sessionId);
     
     /**
      * Returns list of players

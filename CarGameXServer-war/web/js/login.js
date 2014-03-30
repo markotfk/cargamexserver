@@ -75,7 +75,7 @@ function updateLoginForms(logged) {
          $('#logout_form').show();
          var player = JSON.parse(sessionStorage.getItem(playerKey));
          if (player) {
-             $('#login_name').html(player.login + ': ' + player.sessionId);
+             $('#login_name').html(player.login + ', sessionId: ' + player.sessionId + ', id:' + player.id);
          } else {
              $('#login_name').html('Logged in');
          }

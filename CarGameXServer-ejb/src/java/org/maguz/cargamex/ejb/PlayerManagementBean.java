@@ -4,7 +4,6 @@
  */
 package org.maguz.cargamex.ejb;
 
-import java.sql.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import org.maguz.cargamex.entities.Player;
@@ -23,12 +22,8 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         if (player == null) {
             return StatusCode.NotFound;
         }
-        if (em.find(Player.class, player.getLogin()) != null) {
-            logger.warning(String.format("Rejecting duplicate player entry: '{0}'", player.getLogin()));
-            return StatusCode.DuplicateEntry;
-        }
         try {
-            player.setRegistered(new Date(System.currentTimeMillis()));
+            player.setRegistered(System.currentTimeMillis());
             player.setPassword(player.getPassword()); // hashes plain-text password
             em.persist(player);
         } catch (Exception ex) {
@@ -52,7 +47,7 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         if (player == null) {
             return StatusCode.NotFound;
         }
-        Player existing = em.find(Player.class, player.getLogin());
+        Player existing = findByLogin(player.getLogin());
         if (existing == null) {
             return StatusCode.AuthenticationFailed;
         }
@@ -65,29 +60,45 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         if (!login) {
             if (existing.checkSessionId(player.getSessionId())) {
                 existing.setSessionId(null);
-                em.merge(existing);
+                StatusCode code = merge(existing);
                 player.setSessionId(null);
+                return code;
             }
             else {
                 return StatusCode.AuthenticationFailed;
             }
         } else {
             existing.setSessionId(player.getSessionId());
-            em.merge(existing);
+            StatusCode code = merge(existing);
             player.setPasswordNoHash(existing.getPassword());
+            player.setId(existing.getId());
+            return code;
         }
-        return StatusCode.OK;
+    }
+    
+    private Player findByLogin(String login) {
+        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(Player.class));
+        List<Player> players = em.createQuery(cq).getResultList();
+        for (Player p : players) {
+            if (p.getLogin().equals(login)) {
+                return p;
+            }
+        }
+        return null;
     }
 
     @Override
-    public StatusCode edit(Player player) {
+    public StatusCode edit(Long id, Player player) {
+        if (id == null) {
+            return StatusCode.NotFound;
+        }
         if (player == null) {
             return StatusCode.NotFound;
         }
-        Player existing = find(player.getLogin(), player);
-        if (existing != null && existing.checkSessionId(player.getSessionId())) {
-            em.merge(player);
-            return StatusCode.OK;
+        Player existing = find(id, player.getSessionId());
+        if (existing != null) {
+            return merge(player);
         }
         return StatusCode.AuthenticationFailed;
     }
@@ -97,16 +108,20 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         if (player == null) {
             return StatusCode.NotFound;
         }
-        Player existing = find(player.getLogin(), player);
-        if (existing != null && existing.checkSessionId(player.getSessionId())) {
-            em.remove(em.merge(existing));
+        Player existing = find(player.getId(), player);
+        if (existing != null) {
+            try {
+                em.remove(em.merge(existing));
+            } catch (Exception e) {
+                return StatusCode.AuthenticationFailed;
+            }
             return StatusCode.OK;
         }
         return StatusCode.AuthenticationFailed;
     }
     
     @Override
-    public Player find(String id, Player player) {
+    public Player find(Long id, Player player) {
         if (id == null) {
             return null;
         }
@@ -121,11 +136,11 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
     }
 
     @Override
-    public Player find(String sessionId, String id) {
-        if (sessionId == null) {
+    public Player find(Long id, String sessionId) {
+        if (id == null) {
             return null;
         }
-        if (id == null) {
+        if (sessionId == null) {
             return null;
         }
         Player existing = em.find(Player.class, id);
@@ -140,14 +155,12 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         if (player == null) {
             return null;
         }
-        Player existing = find(player.getLogin(), player);
-        if (existing != null && existing.checkSessionId(player.getSessionId())) {
+        Player existing = find(player.getId(), player);
+        if (existing != null) {
             javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Player.class));
             return em.createQuery(cq).getResultList();
         }
         return null;
-        
     }
-
 }

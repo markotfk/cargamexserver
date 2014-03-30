@@ -17,11 +17,11 @@ import org.maguz.cargamex.entities.Team;
 @Local
 public interface TeamManagementBeanLocal {
     
-    StatusCode add(Team entity);
+    StatusCode add(Team entity, Long playerId, String sessionId);
     
-    StatusCode remove(Team entity);
+    StatusCode remove(Team entity, Long playerId, String sessionId);
     
-    StatusCode edit(Team entity);
+    StatusCode edit(Team entity, Long playerId, String sessionId);
     
     Team find(Long id);
     

@@ -5,12 +5,14 @@
 package org.maguz.cargamex.entities;
 
 import java.io.Serializable;
-import java.sql.Date;
 import javax.persistence.Cacheable;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
@@ -23,16 +25,19 @@ import org.maguz.cargamex.util.PasswordUtils;
  */
 @Entity
 @XmlRootElement
-@Table(name="player", uniqueConstraints=@UniqueConstraint(columnNames={"email"}))
+@Table(name="player", uniqueConstraints=@UniqueConstraint(columnNames={"email", "login"}))
 @Cacheable(false)
 public class Player implements Serializable {
     private static final long serialVersionUID = 1L;
     
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
     @XmlElement(required = true)
     @NotNull
     private String email;
     
-    @Id
     @XmlElement(required = true)
     @NotNull
     private String login;
@@ -42,11 +47,31 @@ public class Player implements Serializable {
     private String password;
     
     @XmlElement
-    private Date registered;
+    private Long registered;
 
     @XmlElement
     private String sessionId;
+    
+    @ManyToOne
+    @JoinColumn(name="team_id")
+    private Team team;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+    
     public boolean isLoggedIn() {
         return sessionId != null;
     }
@@ -59,11 +84,11 @@ public class Player implements Serializable {
         return sessionId;
     }
     
-    public Date getRegistered() {
+    public Long getRegistered() {
         return registered;
     }
 
-    public void setRegistered(Date registered) {
+    public void setRegistered(Long registered) {
         this.registered = registered;
     }
     

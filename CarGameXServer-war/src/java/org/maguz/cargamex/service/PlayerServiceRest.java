@@ -7,6 +7,7 @@
 package org.maguz.cargamex.service;
 
 import java.util.List;
+import java.util.logging.Level;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -63,14 +64,15 @@ public class PlayerServiceRest extends ServiceRest {
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void edit(@PathParam("id") String id, Player entity) {
-        handleStatusCode(pm.edit(entity));
+        
+        handleStatusCode(pm.edit(parseId(id), entity));
     }
 
     @DELETE
     @Path("{session-id}/{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void remove(@PathParam("session-id") String session, @PathParam("id") String id) {
-        handleStatusCode(pm.remove(pm.find(session, id)));
+        handleStatusCode(pm.remove(pm.find(parseId(id), id)));
     }
 
     @POST
@@ -78,11 +80,12 @@ public class PlayerServiceRest extends ServiceRest {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Player find(@PathParam("id") String id, Player entity) {
-        Player player = pm.find(id, entity);
+        Player player = pm.find(parseId(id), entity);
         if (player != null) {
             return player;
+        } else {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
-        throw new WebApplicationException(Response.Status.UNAUTHORIZED);
     }
 
     @POST

@@ -11,7 +11,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import org.maguz.cargamex.ejb.StatusCode;
 import org.maguz.cargamex.ejb.TeamManagementBeanLocal;
 import org.maguz.cargamex.entities.Team;
 
@@ -29,35 +28,35 @@ public class TeamServiceRest extends ServiceRest {
     }
 
     @POST
+    @Path("add/{player_id}/{session_id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Team entity) {
-        handleStatusCode(tm.add(entity));
+    public void create(Team entity, @PathParam("player_id") String playerId,
+            @PathParam("session_id") String sessionId) {
+        handleStatusCode(tm.add(entity, parseId(playerId), sessionId));
     }
 
     @PUT
-    @Path("{id}")
+    @Path("edit/{player_id}/{session_id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") String id, Team entity) {
-        handleStatusCode(tm.edit(entity));
+    public void edit(@PathParam("player_id") String playerId, 
+            @PathParam("session_id") String sessionId, Team entity) {
+        handleStatusCode(tm.edit(entity, parseId(playerId), sessionId));
     }
 
     @DELETE
-    @Path("{id}")
-    public void remove(@PathParam("id") String id) {
-        handleStatusCode(tm.remove(find(id)));
+    @Path("remove/{player_id}/{session_id}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void remove(@PathParam("player_id") String playerId,
+            @PathParam("session_id") String sessionId,
+            Team entity) {
+        handleStatusCode(tm.remove(entity, parseId(playerId), sessionId));
     }
 
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Team find(@PathParam("id") String id) {
-        try {
-            Long val = Long.parseLong(id);
-            return tm.find(val);
-        } catch (NumberFormatException e) {
-            handleStatusCode(StatusCode.NotFound);
-        }
-        return null;
+        return tm.find(parseId(id));
     }
 
     @GET
