@@ -30,9 +30,11 @@ public class TeamServiceRest extends ServiceRest {
     @POST
     @Path("add/{player_id}/{session_id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Team entity, @PathParam("player_id") String playerId,
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Team create(Team team, @PathParam("player_id") String playerId,
             @PathParam("session_id") String sessionId) {
-        handleStatusCode(tm.add(entity, parseId(playerId), sessionId));
+        handleStatusCode(tm.add(team, parseId(playerId), sessionId));
+        return team;
     }
 
     @PUT
@@ -63,5 +65,59 @@ public class TeamServiceRest extends ServiceRest {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Team> findAll() {
         return tm.findAll();
+    }
+    
+    @POST
+    @Path("addPlayer/{player_id}/{session_id}/{new_player_id}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Team addPlayer(Team team, @PathParam("player_id") String playerId,
+            @PathParam("session_id") String sessionId,
+            @PathParam("new_player_id") String id) {
+        handleStatusCode(tm.addPlayer(team, parseId(playerId), sessionId, parseId(id)));
+        return team;
+    }
+    
+    @POST
+    @Path("removePlayer/{player_id}/{session_id}/{new_player_id}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Team removePlayer(Team team, @PathParam("player_id") String playerId,
+            @PathParam("session_id") String sessionId,
+            @PathParam("new_player_id") String id) {
+        handleStatusCode(tm.removePlayer(team, parseId(playerId), sessionId, parseId(id)));
+        return team;
+    }
+    
+    @POST
+    @Path("addAdmin/{player_id}/{session_id}/{admin_player_id}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Team addAdmin(Team team, @PathParam("player_id") String playerId,
+            @PathParam("session_id") String sessionId,
+            @PathParam("admin_player_id") String id) {
+        handleStatusCode(tm.addAdmin(team, parseId(playerId), sessionId, parseId(id)));
+        return team;
+    }
+    @POST
+    @Path("removeAdmin/{player_id}/{session_id}/{admin_player_id}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Team removeAdmin(Team team, @PathParam("player_id") String playerId,
+            @PathParam("session_id") String sessionId,
+            @PathParam("admin_player_id") String id) {
+        handleStatusCode(tm.removeAdmin(team, parseId(playerId), sessionId, parseId(id)));
+        return team;
+    }
+    
+    @POST
+    @Path("setOwner/{player_id}/{session_id}/{owner_player_id}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Team setOwner(Team team, @PathParam("player_id") String playerId,
+            @PathParam("session_id") String sessionId,
+            @PathParam("owner_player_id") String id) {
+        handleStatusCode(tm.setOwner(team, parseId(playerId), sessionId, parseId(id)));
+        return team;
     }
 }

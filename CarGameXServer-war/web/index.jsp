@@ -11,7 +11,7 @@
         <title>Car Game X - Internet car game</title>
         <script src="js/jquery-1.11.0.js"></script>
         <script src="js/main.js"></script>
-        <script src="js/login.js"></script>
+        <script src="js/mainforms.js"></script>
         <link rel="stylesheet" type="text/css" href="css/style.css">
     </head>
     
@@ -19,7 +19,7 @@
         <div class="content">
             Welcome to Car Game X - the Internet car game.
             <p>
-            <div id="login_name" class="login_name_class"></div>
+            <div id="login_name" class="player_info"></div>
             </p>
             <p>
                 <form method="post" id="login_form" class="player_form">
@@ -33,7 +33,19 @@
                 </form> 
             </p>
             <p>
-                <div class="errormsg" id="login_status"></div>
+                <form method="post" id="team_form" class="player_form">
+                    Create a Team:<br>
+                    Name: <input type="text" name="Team Name" id="team_name"><br>
+                    Description: <input type="text" name="Team Description" id="team_description"><br>
+                    <input type="submit" value="Create Team">
+                </form>
+            </p>
+            
+            <p>
+                <div class="errormsg" id="error_status"></div>
+            </p>
+            <p>
+                <div class="player_info" id="team_membership"></div>
             </p>
             <p>
                 <a href="register.html">Register New Player</a>

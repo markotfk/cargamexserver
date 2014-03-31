@@ -32,6 +32,7 @@ public class Player implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @XmlElement
     private Long id;
 
     @XmlElement(required = true)

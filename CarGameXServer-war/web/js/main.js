@@ -1,14 +1,13 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+//Author     : Marko Karjalainen <markotfk@gmail.com>
 
 DEBUG = true;
 Version = 'v1';
 RestDir = '/carx/rest/' + Version + '/';
-PlayerRoot = RestDir + 'players';
-TeamRoot = RestDir + 'teams';
+PlayerRoot = RestDir + 'players/';
+TeamRoot = RestDir + 'teams/';
+playerKey = "carGamePlayer";
+teamKey = "carGameTeam";
+loggedIn = false;
 
 function log(message) {
     if (DEBUG) {

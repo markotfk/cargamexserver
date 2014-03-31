@@ -172,14 +172,24 @@ public class Team implements Serializable {
         if (player == null) {
             throw new NullPointerException("Player is null");
         }
-        players.add(player);
+        checkPlayers();
+        if (!players.contains(player)) {
+            players.add(player);
+        }
     }
     
     public boolean removePlayer(Player player) {
         if (player == null) {
             throw new NullPointerException("Player is null");
         }
+        checkPlayers();
         return players.remove(player);
+    }
+    
+    private void checkPlayers() {
+        if (players == null) {
+            players = new ArrayList<>();
+        }
     }
     
     public List<Player> getPlayers() {
@@ -192,7 +202,6 @@ public class Team implements Serializable {
             return;
         }
         this.owner = owner;
-        addAdmin(owner);
     }
     
     public Player getOwner() {
