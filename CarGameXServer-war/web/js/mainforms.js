@@ -101,9 +101,7 @@ function initAddTeamForm() {
 }
 
 function showStatus(message) {
-    if (message) {
-        $('#error_status').html(message);
-    }
+    $('#error_status').html(message);
 }
 function updateForms(logged) {
     loggedIn = logged;

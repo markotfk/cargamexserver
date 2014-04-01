@@ -38,6 +38,9 @@ public abstract class ServiceRest {
         if (status == StatusCode.AuthenticationFailed) {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
+        if (status == StatusCode.Forbidden) {
+            throw new WebApplicationException(Response.Status.FORBIDDEN);
+        }
     }
     
     protected Long parseId(String id) {

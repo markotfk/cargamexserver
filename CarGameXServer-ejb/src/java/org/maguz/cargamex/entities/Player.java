@@ -53,6 +53,7 @@ public class Player implements Serializable {
     @XmlElement
     private String sessionId;
     
+    @XmlElement
     @ManyToOne
     @JoinColumn(name="team_id")
     private Team team;
@@ -73,6 +74,15 @@ public class Player implements Serializable {
         this.team = team;
     }
     
+    public boolean belongsTo(Team team) {
+        if (team == null) {
+            throw new NullPointerException("team");
+        }
+        if (this.team == null) {
+            return false;
+        }
+        return this.team.equals(team);
+    }
     public boolean isLoggedIn() {
         return sessionId != null;
     }

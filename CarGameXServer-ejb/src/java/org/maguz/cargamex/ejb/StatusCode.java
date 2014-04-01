@@ -15,5 +15,6 @@ public enum StatusCode {
     Error,
     NotFound,
     DuplicateEntry,
-    AuthenticationFailed
+    AuthenticationFailed,
+    Forbidden
 }

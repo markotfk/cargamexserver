@@ -79,12 +79,12 @@ public class TeamServiceRest extends ServiceRest {
     }
     
     @POST
-    @Path("removePlayer/{player_id}/{session_id}/{new_player_id}")
+    @Path("removePlayer/{player_id}/{session_id}/{remove_player_id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Team removePlayer(Team team, @PathParam("player_id") String playerId,
             @PathParam("session_id") String sessionId,
-            @PathParam("new_player_id") String id) {
+            @PathParam("remove_player_id") String id) {
         handleStatusCode(tm.removePlayer(team, parseId(playerId), sessionId, parseId(id)));
         return team;
     }

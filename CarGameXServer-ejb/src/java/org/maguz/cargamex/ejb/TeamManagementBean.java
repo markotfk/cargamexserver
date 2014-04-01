@@ -132,16 +132,25 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
         Team existingTeam = find(team.getId());
         if (existingTeam != null) {
             Player player = em.find(Player.class, playerId);
-            if (player != null && player.checkSessionId(sessionId)) {
+            // player must be admin of team to add player
+            if (player != null && player.checkSessionId(sessionId) &&
+                    existingTeam.isAdmin(player)) {
                 Player newPlayer = em.find(Player.class, newPlayerId);
                 if (newPlayer != null) {
+                    // First check if new player belongs to a team
+                    if (newPlayer.getTeam() != null ) {
+                        return StatusCode.DuplicateEntry;
+                    }
                     existingTeam.addPlayer(newPlayer);
+                    team.addPlayer(newPlayer);
                     newPlayer.setTeam(existingTeam);
                     StatusCode code = merge(newPlayer);
                     if (code == StatusCode.OK) {
-                        return merge(existingTeam);
+                        code = merge(existingTeam);
                     }
                     return code;
+                } else {
+                    return StatusCode.NotFound;
                 }
             }
         } else {
@@ -158,15 +167,27 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
             if (player != null && player.checkSessionId(sessionId)) {
                 Player removePlayer = em.find(Player.class, removePlayerId);
                 if (removePlayer != null) {
-                    if (!existingTeam.removePlayer(removePlayer)) {
-                        return StatusCode.NotFound;
-                    } else {
-                        removePlayer.setTeam(null);
-                        StatusCode code = merge(removePlayer);
-                        if (code == StatusCode.OK) {
-                            return merge(existingTeam);
+                    if (existingTeam.isOwner(removePlayer)) {
+                            // owner cannot be removed
+                            return StatusCode.Forbidden;
+                        }
+                    if (removePlayer.equals(player) || existingTeam.isAdmin(player)) {
+                        if (!existingTeam.removePlayer(removePlayer)) {
+                            return StatusCode.NotFound;
+                        } else {
+                            existingTeam.removeAdmin(removePlayer);
+                            team.removeAdmin(removePlayer);
+                            removePlayer.setTeam(null);
+                            StatusCode code = merge(removePlayer);
+                            if (code == StatusCode.OK) {
+                                code = merge(existingTeam);
+                            }
+                            return code;
                         }
                     }
+                    
+                } else {
+                    return StatusCode.NotFound;
                 }
             }
         } else {
@@ -177,19 +198,84 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
 
     @Override
     public StatusCode addAdmin(Team team, Long playerId, String sessionId, Long adminPlayerId) {
-        // Todo
-        return StatusCode.OK;
+        Team existingTeam = find(team.getId());
+        if (existingTeam != null) {
+            Player player = em.find(Player.class, playerId);
+            // Admin can add other admins
+            if (player != null && player.checkSessionId(sessionId) &&
+                    existingTeam.isAdmin(player)) {
+                Player adminPlayer = em.find(Player.class, adminPlayerId);
+                if (adminPlayer != null && adminPlayer.belongsTo(existingTeam)) {
+                    if (existingTeam.isOwner(adminPlayer)) {
+                            // owner is always admin
+                            return StatusCode.DuplicateEntry;
+                        }
+                    existingTeam.addAdmin(adminPlayer);
+                    team.addAdmin(adminPlayer);
+                    return merge(existingTeam);
+                } else {
+                    return StatusCode.NotFound;
+                }
+            }
+        } else {
+            return StatusCode.NotFound;
+        }
+        return StatusCode.AuthenticationFailed;
     }
 
     @Override
     public StatusCode removeAdmin(Team team, Long playerId, String sessionId, Long adminPlayerId) {
-        // Todo
-        return StatusCode.OK;
+        Team existingTeam = find(team.getId());
+        if (existingTeam != null) {
+            Player player = em.find(Player.class, playerId);
+            // Admin can remove other admins
+            if (player != null && player.checkSessionId(sessionId) &&
+                    existingTeam.isAdmin(player)) {
+                Player adminPlayer = em.find(Player.class, adminPlayerId);
+                if (adminPlayer != null && adminPlayer.belongsTo(existingTeam)) {
+                    if (existingTeam.isOwner(adminPlayer)) {
+                            // cannot de-admin owner
+                            return StatusCode.Forbidden;
+                        }
+                    existingTeam.removeAdmin(adminPlayer);
+                    team.removeAdmin(adminPlayer);
+                    return merge(existingTeam);
+                } else {
+                    return StatusCode.NotFound;
+                }
+            }
+        } else {
+            return StatusCode.NotFound;
+        }
+        return StatusCode.AuthenticationFailed;
     }
 
     @Override
     public StatusCode setOwner(Team team, Long playerId, String sessionId, Long ownerPlayerId) {
-        // Todo
-        return StatusCode.OK;
+        Team existingTeam = find(team.getId());
+        if (existingTeam != null) {
+            Player player = em.find(Player.class, playerId);
+            // Only current owner can change owner
+            if (player != null && player.checkSessionId(sessionId) &&
+                    existingTeam.isOwner(player)) {
+                Player ownerPlayer = em.find(Player.class, ownerPlayerId);
+                if (ownerPlayer != null && ownerPlayer.belongsTo(existingTeam)) {
+                    if (existingTeam.isOwner(ownerPlayer)) {
+                            // Already owner
+                            return StatusCode.DuplicateEntry;
+                        }
+                    existingTeam.setOwner(ownerPlayer);
+                    existingTeam.addAdmin(ownerPlayer);
+                    team.setOwner(ownerPlayer);
+                    team.addAdmin(ownerPlayer);
+                    return merge(existingTeam);
+                } else {
+                    return StatusCode.NotFound;
+                }
+            }
+        } else {
+            return StatusCode.NotFound;
+        }
+        return StatusCode.AuthenticationFailed;
     }
 }

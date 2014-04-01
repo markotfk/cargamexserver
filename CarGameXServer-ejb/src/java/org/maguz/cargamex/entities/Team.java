@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.XmlElement;
 @Table(name="team", uniqueConstraints=@UniqueConstraint(columnNames={"name"}))
 public class Team implements Serializable {
     private static final long serialVersionUID = 1L;
+    @XmlElement
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -42,9 +43,11 @@ public class Team implements Serializable {
     @OneToOne
     private Player owner;
     
+    @XmlElement
     @OneToMany(mappedBy="team")
     private List<Player> admins;
 
+    @XmlElement
     @OneToMany(mappedBy="team")
     private List<Player> players;
     
@@ -184,6 +187,14 @@ public class Team implements Serializable {
         }
         checkPlayers();
         return players.remove(player);
+    }
+    
+    public boolean isPlayer(Player player) {
+        if (player == null) {
+            throw new NullPointerException("Player is null");
+        }
+        checkPlayers();
+        return players.contains(player);
     }
     
     private void checkPlayers() {
