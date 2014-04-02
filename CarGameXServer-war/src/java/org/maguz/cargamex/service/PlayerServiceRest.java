@@ -68,10 +68,11 @@ public class PlayerServiceRest extends ServiceRest {
     }
 
     @DELETE
-    @Path("{session-id}/{id}")
+    @Path("{player_id}/{session-id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void remove(@PathParam("session-id") String session, @PathParam("id") String id) {
-        handleStatusCode(pm.remove(pm.find(parseId(id), id)));
+    public void remove(@PathParam("player_id") String playerId, 
+            @PathParam("session-id") String sessionId) {
+        handleStatusCode(pm.remove(pm.find(parseId(playerId), sessionId)));
     }
 
     @POST

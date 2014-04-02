@@ -45,13 +45,13 @@ public class TeamServiceRest extends ServiceRest {
         handleStatusCode(tm.edit(entity, parseId(playerId), sessionId));
     }
 
-    @DELETE
-    @Path("remove/{player_id}/{session_id}")
+    @POST
+    @Path("remove/{player_id}/{session_id}/{team_id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void remove(@PathParam("player_id") String playerId,
             @PathParam("session_id") String sessionId,
-            Team entity) {
-        handleStatusCode(tm.remove(entity, parseId(playerId), sessionId));
+            @PathParam("team_id") String teamId) {
+        handleStatusCode(tm.remove(parseId(teamId), parseId(playerId), sessionId));
     }
 
     @GET

@@ -10,18 +10,34 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @Entity
+@XmlRootElement
 public class TrackRecord implements Serializable {
     private static final long serialVersionUID = 1L;
+    
+    @XmlElement
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @XmlElement
+    @OneToOne
+    private Player player;
+    
+    @XmlElement
+    private long recordTime;
+    
+    @OneToOne
+    @XmlElement
+    private Track track;
+    
     public Long getId() {
         return id;
     }
@@ -30,9 +46,6 @@ public class TrackRecord implements Serializable {
         this.id = id;
     }
     
-    @OneToOne
-    private Player player;
-
     public Player getPlayer() {
         return player;
     }
@@ -44,8 +57,6 @@ public class TrackRecord implements Serializable {
     public Track getTrack() {
         return track;
     }
-    
-    private long recordTime;
 
     public long getRecordTime() {
         return recordTime;
@@ -60,10 +71,6 @@ public class TrackRecord implements Serializable {
         this.track = track;
     }
     
-    @OneToOne
-    private Track track;
-    
-
     @Override
     public int hashCode() {
         int hash = 0;

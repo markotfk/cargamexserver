@@ -19,7 +19,7 @@ public interface TeamManagementBeanLocal {
     
     StatusCode add(Team team, Long playerId, String sessionId);
     
-    StatusCode remove(Team team, Long playerId, String sessionId);
+    StatusCode remove(Long teamId, Long playerId, String sessionId);
     
     StatusCode edit(Team team, Long playerId, String sessionId);
     
