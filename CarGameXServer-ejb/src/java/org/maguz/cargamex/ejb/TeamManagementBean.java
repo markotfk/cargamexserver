@@ -76,7 +76,9 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
             if (existingPlayer != null && existingPlayer.checkSessionId(sessionId)) {
                 // Only allow owners to remove team
                 if (existingTeam.isOwner(existingPlayer)) {
-                    existingPlayer.setTeam(null);
+                    for (Player p : existingTeam.getPlayers()) {
+                        p.setTeam(null);
+                    }
                     em.remove(em.merge(existingTeam));
                     return merge(existingPlayer);
                 }
@@ -207,7 +209,7 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
                 Player adminPlayer = em.find(Player.class, adminPlayerId);
                 if (adminPlayer != null && adminPlayer.belongsTo(existingTeam)) {
                     if (existingTeam.isOwner(adminPlayer)) {
-                            // owner is always admin
+                            // owner is always also admin
                             return StatusCode.DuplicateEntry;
                         }
                     existingTeam.addAdmin(adminPlayer);
