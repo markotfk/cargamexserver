@@ -9,7 +9,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Car Game X - Internet car game</title>
-        <script src="js/jquery-1.11.0.js"></script>
+        <script src="js/jquery/jquery-1.11.0.js"></script>
         <script src="js/main.js"></script>
         <script src="js/mainforms.js"></script>
         <link rel="stylesheet" type="text/css" href="css/style.css">

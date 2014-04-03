@@ -83,9 +83,8 @@ public class PlayerServiceRest extends ServiceRest {
         Player player = pm.find(parseId(id), entity);
         if (player != null) {
             return player;
-        } else {
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
-        }
+        } 
+        throw new WebApplicationException(Response.Status.NOT_FOUND);
     }
 
     @POST

@@ -20,7 +20,7 @@ function initLoginForm() {
             dataType: 'json',
             type: 'POST',
             success: function(data, status, jqXHR) {
-                log('Success login');
+                log('login_form: Success login');
                 if (data && data.sessionId) {
                     sessionStorage.setItem(playerKey, JSON.stringify(data));
                     showStatus('');
@@ -33,7 +33,7 @@ function initLoginForm() {
                 updateTeamStatus();
             },
             error: function(jqXHR, textStatus, errorString) {
-                log('Error in login: ' + textStatus + ':' + errorString);
+                log('login_form: Error:', errorString);
                 showStatus('Error:' + errorString);
                 updateForms(false);
             },
@@ -51,14 +51,14 @@ function initLogoutForm() {
             dataType: 'json',
             type: 'POST',
             success: function(data, status, jqXHR) {
-                log('Success logout');
+                log('logout_form: Success logout');
                 sessionStorage.setItem(playerKey, null);
                 showStatus('');
                 updateForms(false);
                 updateTeamStatus();
             },
             error: function(jqXHR, textStatus, errorString) {
-                log('Error in logout: ' + textStatus + ':' + errorString);
+                log('logout_form: Error in logout: ' + textStatus + ':' + errorString);
                 showStatus('Error:' + errorString);
                 sessionStorage.setItem(playerKey, null);
                 updateForms(false);
@@ -84,13 +84,13 @@ function initAddTeamForm() {
             dataType: 'json',
             type: 'POST',
             success: function(data, status, jqXHR) {
-                log('Success create team');
+                log('team_form: Success create team');
                 sessionStorage.setItem(teamKey, JSON.stringify(data));
                 showStatus('');
                 updateTeamStatus();
             },
             error: function(jqXHR, textStatus, errorString) {
-                log('Error in creating team: ' + textStatus + ':' + errorString);
+                log('team_form: Error in creating team:', errorString);
                 showStatus('Error:' + errorString);
                 sessionStorage.setItem(teamKey, null);
                 updateTeamStatus();

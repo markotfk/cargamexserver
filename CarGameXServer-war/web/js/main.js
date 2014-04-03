@@ -9,8 +9,11 @@ playerKey = "carGamePlayer";
 teamKey = "carGameTeam";
 loggedIn = false;
 
-function log(message) {
-    if (DEBUG) {
-        console.log(message);
+function log() {
+    if (!DEBUG) {
+        return;
+    }
+    for (var i = 0; i < arguments.length; i++) {
+       console.log(arguments[i]);
     }
 }
