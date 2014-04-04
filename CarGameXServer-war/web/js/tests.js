@@ -6,67 +6,85 @@
 
 var passed = 0;
 var failed = 0;
+var errors = []
+var testName = "";
+var testPlayer = {};
+var receiveData = false;
 
 $(document).ready(function() {
     passed = 0;
     failed = 0;
     try {
         testPlayerRestApi();
-    } catch (Exception) {
+    } catch (err) {
         log('testPlayerRestApi threw exception');
+        errors.push(err);
     }
     
     showResults();
 });
 
 function testPlayerRestApi() {
-    // Add player
-    ajaxCall(PlayerRoot, 'POST',  
-    {
-        email : "test@test.com",
-        name : "PlayerTest",
-        password : "PlayerPassword"
-    });
+    // Add player, add some randomness to avoid conflicts
+    var rand = Math.floor((Math.random()*10000)+1); 
+    testPlayer = new Player('test' + rand + '@test.com', 'test' + rand, 'password' + rand);
+
+    ajaxCallPlayer('Add New Player', PlayerRoot, 'POST', testPlayer, false); 
     // Login player that was added
-    ajaxCall(PlayerRoot + 'login', 'POST',  
-    {
-        name : "PlayerTest",
-        password : "PlayerPassword"
-    });
+    ajaxCallPlayer('Login Player', PlayerRoot + 'login', 'POST', testPlayer, true);
+    // Logout player that was added
+    ajaxCallPlayer('Logout Player', PlayerRoot + 'logout', 'POST', testPlayer, false);
+    
+    // Delete player
+    // password must be reset for login
+    testPlayer.password = 'password' + rand;
+    ajaxCallPlayer('Delete Player 1st step (Login Player)', PlayerRoot + 'login', 'POST', testPlayer, true);
+    ajaxCallPlayer('Delete Player 2nd step', PlayerRoot + testPlayer.id + '/' + testPlayer.sessionId, 'DELETE', testPlayer, false);
 }
 
-function ajaxCall(url, type, data, expected) {
+function ajaxCallPlayer(name, url, type, testPlayer, dataReceived) {
+    testName = name;
+    receiveData = dataReceived;
     $.ajax(url, {
         contentType: 'application/json',
         type: type,
-        success: ajaxPass(url, data, expected),
-        error: ajaxFail(url),
-        data: JSON.stringify(data)
+        async: false,
+        success: ajaxPassPlayer,
+        error: ajaxFailPlayer,
+        data: JSON.stringify(testPlayer)
     });
 }
 
-function ajaxPass(url, data, expected) {
-    if (expected) {
-        if (data.expected === expected ) {
-            log('test passed (data was expected):' + url);
-            passed++;
-        } else {
-            log('test failed (data was NOT expected):' + url);
+function ajaxPassPlayer(data, status, jqXHR) {
+    if (receiveData) {
+        try {
+            testPlayer.id = data.id;
+            testPlayer.sessionId = data.sessionId;
+            testPlayer.password = data.password;
+        } catch (err) {
+            log(testName + ":" + err);
+            errors.push(testName + ":" + err);
             failed++;
+            return;
         }
-    } else {
-        log('test passed:' + url)
-        passed++;
     }
-    
+    passed++;
+    log(testName + ' Passed.');
 }
 
-function ajaxFail(url) {
-    log('test failed:' + url)
+function ajaxFailPlayer(jqXHR, textStatus, errorString) {
     failed++;
+    log(testName + ":" + errorString);
+    errors.push(testName + ":" + errorString);
 }
 
 function showResults() {
-    $('#test_results').html('<p>Tests passed: ' + passed + '</p><br>' + 
+    $('#tests_summary').html('<p>Tests passed: ' + passed + '</p><br>' + 
             '<p>Tests failed: ' + failed + '</p><br>');
+    var failedHtml = "<p>Failed:<br><ul>";
+    for (var i = 0; i < errors.length; i++) {
+        failedHtml += "<li>" + errors[i] + "</li><br>";
+    }
+    failedHtml += '</ul></p>';
+    $('#tests_failed').html(failedHtml);
 }
