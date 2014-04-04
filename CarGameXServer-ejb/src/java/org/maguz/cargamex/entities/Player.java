@@ -7,16 +7,12 @@ package org.maguz.cargamex.entities;
 import java.io.Serializable;
 import javax.persistence.Cacheable;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import org.maguz.cargamex.util.PasswordUtils;
 
 /**
@@ -24,17 +20,9 @@ import org.maguz.cargamex.util.PasswordUtils;
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @Entity
-@XmlRootElement
 @Table(name="player", uniqueConstraints=@UniqueConstraint(columnNames={"email", "login"}))
 @Cacheable(false)
-public class Player implements Serializable {
-    private static final long serialVersionUID = 1L;
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @XmlElement
-    private Long id;
-
+public class Player extends CarGameEntity implements Serializable {
     @XmlElement(required = true)
     @NotNull
     private String email;
@@ -48,9 +36,6 @@ public class Player implements Serializable {
     private String password;
     
     @XmlElement
-    private Long registered;
-
-    @XmlElement
     private String sessionId;
     
     @XmlElement
@@ -58,14 +43,6 @@ public class Player implements Serializable {
     @JoinColumn(name="team_id")
     private Team team;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
     public Team getTeam() {
         return team;
     }
@@ -93,14 +70,6 @@ public class Player implements Serializable {
     
     public String getSessionId() {
         return sessionId;
-    }
-    
-    public Long getRegistered() {
-        return registered;
-    }
-
-    public void setRegistered(Long registered) {
-        this.registered = registered;
     }
     
     @XmlElement

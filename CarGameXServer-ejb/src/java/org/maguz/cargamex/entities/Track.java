@@ -6,9 +6,6 @@ package org.maguz.cargamex.entities;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -18,13 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @XmlRootElement
-public class Track implements Serializable {
-    private static final long serialVersionUID = 1L;
-    
-    @XmlElement
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Track extends CarGameEntity implements Serializable {
 
     @XmlElement
     private String name;
@@ -60,16 +51,6 @@ public class Track implements Serializable {
         this.trackPath = trackPath;
     }
     
-    
-    
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;

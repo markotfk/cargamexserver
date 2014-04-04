@@ -23,7 +23,7 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
             return StatusCode.NotFound;
         }
         try {
-            player.setRegistered(System.currentTimeMillis());
+            player.setCreated(System.currentTimeMillis());
             player.setPassword(player.getPassword()); // hashes plain-text password
             em.persist(player);
         } catch (Exception ex) {

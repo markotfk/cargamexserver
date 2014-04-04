@@ -8,9 +8,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -23,12 +20,7 @@ import javax.xml.bind.annotation.XmlElement;
  */
 @Entity
 @Table(name="team", uniqueConstraints=@UniqueConstraint(columnNames={"name"}))
-public class Team implements Serializable {
-    private static final long serialVersionUID = 1L;
-    @XmlElement
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Team extends CarGameEntity implements Serializable {
     
     @XmlElement(required = true)
     private String name;
@@ -50,9 +42,6 @@ public class Team implements Serializable {
     @XmlElement
     @OneToMany(mappedBy="team")
     private List<Player> players;
-    
-    @XmlElement
-    private Long created;
     
     @XmlElement
     private int wins;
@@ -130,22 +119,6 @@ public class Team implements Serializable {
     
     @XmlElement
     private int losses;
-
-    public Long getCreated() {
-        return created;
-    }
-
-    public void setCreated(Long created) {
-        this.created = created;
-    }
-    
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
