@@ -22,6 +22,10 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         if (player == null) {
             return StatusCode.NotFound;
         }
+        Player existing = findByLogin(player.getLogin());
+        if (existing != null) {
+            return StatusCode.DuplicateEntry;
+        }
         try {
             player.setCreated(System.currentTimeMillis());
             player.setPassword(player.getPassword()); // hashes plain-text password
