@@ -105,19 +105,7 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
 
     @Override
     public StatusCode remove(Player player) {
-        if (player == null) {
-            return StatusCode.NotFound;
-        }
-        Player existing = find(player.getId(), player);
-        if (existing != null) {
-            try {
-                em.remove(em.merge(existing));
-            } catch (Exception e) {
-                return StatusCode.AuthenticationFailed;
-            }
-            return StatusCode.OK;
-        }
-        return StatusCode.AuthenticationFailed;
+        return super.remove(player);
     }
     
     @Override

@@ -12,7 +12,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import org.maguz.cargamex.util.PasswordUtils;
 
 /**
@@ -22,6 +26,8 @@ import org.maguz.cargamex.util.PasswordUtils;
 @Entity
 @Table(name="player", uniqueConstraints=@UniqueConstraint(columnNames={"email", "login"}))
 @Cacheable(false)
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement
 public class Player extends CarGameEntity implements Serializable {
     @XmlElement(required = true)
     @NotNull
@@ -35,10 +41,9 @@ public class Player extends CarGameEntity implements Serializable {
     @NotNull
     private String password;
     
-    @XmlElement
     private String sessionId;
     
-    @XmlElement
+    @XmlTransient
     @ManyToOne
     @JoinColumn(name="team_id")
     private Team team;

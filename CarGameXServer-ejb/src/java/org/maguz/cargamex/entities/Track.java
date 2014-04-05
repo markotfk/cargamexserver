@@ -6,6 +6,8 @@ package org.maguz.cargamex.entities;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -14,16 +16,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @Entity
+@XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 public class Track extends CarGameEntity implements Serializable {
 
-    @XmlElement
     private String name;
     
-    @XmlElement
     private String trackPath;
     
-    @XmlElement
     private String description;
 
     public String getDescription() {

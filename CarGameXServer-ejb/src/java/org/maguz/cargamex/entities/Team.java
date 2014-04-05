@@ -12,7 +12,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -20,33 +24,31 @@ import javax.xml.bind.annotation.XmlElement;
  */
 @Entity
 @Table(name="team", uniqueConstraints=@UniqueConstraint(columnNames={"name"}))
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Team extends CarGameEntity implements Serializable {
     
     @XmlElement(required = true)
     private String name;
     
-    @XmlElement
     private String logoPath;
     
-    @XmlElement
     private int points;
     
-    @XmlElement
+    @XmlTransient
     @OneToOne
     private Player owner;
     
-    @XmlElement
+    @XmlTransient
     @OneToMany(mappedBy="team")
     private List<Player> admins;
 
-    @XmlElement
+    @XmlTransient
     @OneToMany(mappedBy="team")
     private List<Player> players;
     
-    @XmlElement
     private int wins;
 
-    @XmlElement
     private String description;
 
     public String getDescription() {
