@@ -37,36 +37,36 @@ public class TrackServiceRest extends ServiceRest {
     @POST
     @Path("{player_id}/{session_id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(@PathParam("player_id") String playerId, 
+    public void create(@PathParam("player_id") Long playerId, 
                     @PathParam("session_id") String sessionId,
                     Track entity) {
-        handleStatusCode(tm.add(parseId(playerId), sessionId, entity));
+        handleStatusCode(tm.add(playerId, sessionId, entity));
     }
 
     @PUT
     @Path("{player_id}/{session_id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("player_id") String playerId, 
+    public void edit(@PathParam("player_id") Long playerId, 
             @PathParam("session_id") String sessionId, 
             Track entity) {
-        handleStatusCode(tm.edit(parseId(playerId), sessionId, entity));
+        handleStatusCode(tm.edit(playerId, sessionId, entity));
     }
 
     @DELETE
     @Path("{player_id}/{session_id}/{track_id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void remove(@PathParam("player_id") String playerId, 
+    public void remove(@PathParam("player_id") Long playerId, 
             @PathParam("session_id") String sessionId,
-            @PathParam("track_id") String trackId) {
-        handleStatusCode(tm.remove(parseId(playerId), sessionId, parseId(trackId)));
+            @PathParam("track_id") Long trackId) {
+        handleStatusCode(tm.remove(playerId, sessionId, trackId));
     }
 
     @POST
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Track find(@PathParam("id") String id, Track entity) {
-        Track track = tm.find(parseId(id), entity);
+    public Track find(@PathParam("id") Long id, Track entity) {
+        Track track = tm.find(id, entity);
         if (track != null) {
             return track;
         } 

@@ -24,12 +24,10 @@ public abstract class CarGameEntity {
     
     protected static final long serialVersionUID = 1L;
     
-    @XmlElement
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected Long id;
 
-    @XmlElement
     protected Long created;
 
     public Long getId() {

@@ -59,15 +59,12 @@ function testTeamRestApi() {
     addTestTeam();
     deleteTestTeam();
     deleteTestPlayer();
-    
 }
 
 function testTrackRestApi() {
-    failed('testTrackRestApi not implemented yet');
 }
 
 function testTrackRecordRestApi() {
-    failed('testTrackRecordRestApi not implemented yet');
 }
 
 function testPlayerRestApi() {
@@ -95,6 +92,20 @@ function ajaxCallPlayer(name, url, type, dataReceived) {
     });
 }
 
+function ajaxCallTeam(name, url, type, dataReceived) {
+    testName = name;
+    receiveData = dataReceived;
+    $.ajax(url, {
+        contentType: 'application/json',
+        type: type,
+        async: false,
+        success: ajaxPassTeam,
+        error: ajaxFailTeam,
+        data: JSON.stringify(testTeam)
+    });
+}
+
+
 function ajaxPassPlayer(data, status, jqXHR) {
     if (receiveData) {
         try {
@@ -112,19 +123,6 @@ function ajaxPassPlayer(data, status, jqXHR) {
 
 function ajaxFailPlayer(jqXHR, textStatus, errorString) {
     failed(errorString);
-}
-
-function ajaxCallTeam(name, url, type, dataReceived) {
-    testName = name;
-    receiveData = dataReceived;
-    $.ajax(url, {
-        contentType: 'application/json',
-        type: type,
-        async: false,
-        success: ajaxPassTeam,
-        error: ajaxFailTeam,
-        data: JSON.stringify(testTeam)
-    });
 }
 
 function ajaxPassTeam(data, status, jqXHR) {

@@ -62,25 +62,25 @@ public class PlayerServiceRest extends ServiceRest {
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") String id, Player entity) {
+    public void edit(@PathParam("id") Long id, Player entity) {
         
-        handleStatusCode(pm.edit(parseId(id), entity));
+        handleStatusCode(pm.edit(id, entity));
     }
 
     @DELETE
     @Path("{player_id}/{session_id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void remove(@PathParam("player_id") String playerId, 
+    public void remove(@PathParam("player_id") Long playerId, 
             @PathParam("session_id") String sessionId) {
-        handleStatusCode(pm.remove(pm.find(parseId(playerId), sessionId)));
+        handleStatusCode(pm.remove(pm.find(playerId, sessionId)));
     }
 
     @POST
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Player find(@PathParam("id") String id, Player entity) {
-        Player player = pm.find(parseId(id), entity);
+    public Player find(@PathParam("id") Long id, Player entity) {
+        Player player = pm.find(id, entity);
         if (player != null) {
             return player;
         } 

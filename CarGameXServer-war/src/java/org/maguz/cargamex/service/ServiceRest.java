@@ -42,14 +42,4 @@ public abstract class ServiceRest {
             throw new WebApplicationException(Response.Status.FORBIDDEN);
         }
     }
-    
-    protected Long parseId(String id) {
-        try {
-            Long playerId = Long.parseLong(id);
-            return playerId;
-        } catch (NumberFormatException e) {
-            logger.log(Level.SEVERE, "Error parsing id: {0}", e.getMessage());
-        }
-        throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-    }
 }

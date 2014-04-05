@@ -128,7 +128,7 @@ function updateTeamStatus() {
         $('#team_membership').show();
         var team = getSessionData(teamKey);
         if (team) {
-            $('#team_membership').html('<p>Team:<br> ' + team.name + '</p><p>Description:<br>' + team.description);
+            $('#team_membership').html('<br>Team id:' + team.id + '<br> name:' + team.name + '<br>Description:<br>' + team.description);
         }
     } else {
         $('#team_membership').hide();
