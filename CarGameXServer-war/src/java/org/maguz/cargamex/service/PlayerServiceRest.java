@@ -6,6 +6,7 @@
 
 package org.maguz.cargamex.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
@@ -89,13 +90,12 @@ public class PlayerServiceRest extends ServiceRest {
 
     @POST
     @Path("{id}/all")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Player> findAll(Player entity) {
-        List<Player> players = pm.findAll(entity);
+        List<Player> players = pm.findAll();
         if (players != null) {
             return players;
         }
-        throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        return new ArrayList<>();
     }
 }

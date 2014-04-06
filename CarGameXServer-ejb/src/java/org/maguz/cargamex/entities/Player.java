@@ -43,11 +43,21 @@ public class Player extends CarGameEntity implements Serializable {
     
     private String sessionId;
     
+    private Long lastActivity;
+
     @XmlTransient
     @ManyToOne
     @JoinColumn(name="team_id")
     private Team team;
 
+    public Long getLastActivity() {
+        return lastActivity;
+    }
+
+    public void setLastActivity(Long lastActivity) {
+        this.lastActivity = lastActivity;
+    }
+    
     public Team getTeam() {
         return team;
     }

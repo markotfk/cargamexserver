@@ -28,6 +28,7 @@ function loginPlayer() {
             if (data && data.sessionId) {
                 sessionStorage.setItem(playerKey, JSON.stringify(data));
                 showStatus('');
+                startSessionTimer();
             } else {
                 sessionStorage.setItem(playerKey, null);
                 showStatus('Error in received data');
@@ -64,6 +65,7 @@ function logoutPlayer() {
             showStatus('');
             updateForms(false);
             updateTeamStatus();
+            stopSessionTimer();
         },
         error: function(jqXHR, textStatus, errorString) {
             log('logout_form: Error in logout: ' + textStatus + ':' + errorString);
@@ -71,6 +73,7 @@ function logoutPlayer() {
             sessionStorage.setItem(playerKey, null);
             updateForms(false);
             updateTeamStatus();
+            stopSessionTimer();
         },
         data: sessionStorage.getItem(playerKey)
     });

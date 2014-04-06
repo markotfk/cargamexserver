@@ -9,7 +9,7 @@ $(document).ready(function() {
             alert("Please check login")
             return false;
         }
-        var passwd = $('#register_password').val();
+        var passwd = $('#register_password').val().trim();
         if (passwd !== $('#register_password2').val()) {
             alert("Please check password");
             return false;

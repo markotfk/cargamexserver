@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * @author Marko Karjalainen <markotfk@gmail.com>
  */
 package org.maguz.cargamex.ejb;
 
@@ -9,10 +8,6 @@ import java.util.logging.Level;
 import javax.ejb.Stateless;
 import org.maguz.cargamex.entities.Player;
 
-/**
- *
- * @author Marko Karjalainen <markotfk@gmail.com>
- */
 @Stateless
 public class PlayerManagementBean extends ManagementBean implements PlayerManagementBeanLocal {
 
@@ -27,6 +22,7 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         try {
             player.setCreated(System.currentTimeMillis());
             player.setPassword(player.getPassword()); // hashes plain-text password
+            player.setLastActivity(System.currentTimeMillis());
             em.persist(player);
         } catch (Exception ex) {
             logger.severe(ex.getMessage());
@@ -39,7 +35,7 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         if (player == null) {
             return StatusCode.NotFound;
         }
-        if (player.getLogin() == null || player.getLogin().length() == 0) {
+        if (player.getLogin() == null || player.getLogin().trim().length() == 0) {
             logger.log(Level.WARNING, "Cannot add player: login string empty!");
             return StatusCode.Forbidden;
         }
@@ -89,6 +85,7 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
             }
         } else {
             existing.setSessionId(player.getSessionId());
+            existing.setLastActivity(System.currentTimeMillis());
             StatusCode code = merge(existing);
             player.setPasswordNoHash(existing.getPassword());
             player.setId(existing.getId());
@@ -159,16 +156,9 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
     }
     
     @Override
-    public List<Player> findAll(Player player) {
-        if (player == null) {
-            return null;
-        }
-        Player existing = find(player.getId(), player);
-        if (existing != null) {
-            javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Player.class));
-            return em.createQuery(cq).getResultList();
-        }
-        return null;
+    public List<Player> findAll() {
+        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(Player.class));
+        return em.createQuery(cq).getResultList();
     }
 }

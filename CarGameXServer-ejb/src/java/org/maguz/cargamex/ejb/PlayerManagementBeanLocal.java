@@ -1,17 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * @author Marko Karjalainen <markotfk@gmail.com>
  */
+
 package org.maguz.cargamex.ejb;
 
 import java.util.List;
 import javax.ejb.Local;
 import org.maguz.cargamex.entities.Player;
 
-/**
- *
- * @author Marko Karjalainen <markotfk@gmail.com>
- */
 @Local
 public interface PlayerManagementBeanLocal {
 
@@ -74,7 +70,5 @@ public interface PlayerManagementBeanLocal {
      * @param player
      * @return 
      */
-    List<Player> findAll(Player player);
-    
-    
+    List<Player> findAll();
 }

@@ -4,10 +4,13 @@ DEBUG = true;
 Version = 'v1';
 RestDir = '/carx/rest/' + Version + '/';
 PlayerRoot = RestDir + 'players/';
+SessionRoot = RestDir + 'session/';
 TeamRoot = RestDir + 'teams/';
 playerKey = "carGamePlayer";
 teamKey = "carGameTeam";
 loggedIn = false;
+SessionTimer = 0;
+SessionTimerRunning = false;
 
 function log() {
     if (!DEBUG) {
@@ -16,4 +19,29 @@ function log() {
     for (var i = 0; i < arguments.length; i++) {
        console.log(arguments[i]);
     }
+}
+
+function startSessionTimer() {
+    log('startSessionTimer');
+    SessionTimer = window.setInterval(function() { updateSession(); }, 15000);
+}
+
+function stopSessionTimer() {
+    window.clearInterval(SessionTimer);
+}
+
+function updateSession() {
+    log('updateSession');
+    $.ajax(SessionRoot, {
+        contentType: 'application/json',
+        dataType: 'json',
+        type: 'POST',
+        success: function(data, status, jqXHR) {
+            
+        },
+        error: function(jqXHR, textStatus, errorString) {
+            logoutPlayer();
+        },
+        data: sessionStorage.getItem(playerKey)
+    });
 }
