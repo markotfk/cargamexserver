@@ -5,6 +5,7 @@
 package org.maguz.cargamex.ejb;
 
 import java.util.List;
+import java.util.logging.Level;
 import javax.ejb.Stateless;
 import org.maguz.cargamex.entities.Player;
 
@@ -19,12 +20,9 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
 
     @Override
     public StatusCode add(Player player) {
-        if (player == null) {
-            return StatusCode.NotFound;
-        }
-        Player existing = findByLogin(player.getLogin());
-        if (existing != null) {
-            return StatusCode.DuplicateEntry;
+        StatusCode code = checkNewPlayer(player);
+        if (code != StatusCode.OK) {
+            return code;
         }
         try {
             player.setCreated(System.currentTimeMillis());
@@ -37,6 +35,24 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         return StatusCode.OK;
     }
 
+    private StatusCode checkNewPlayer(Player player) {
+        if (player == null) {
+            return StatusCode.NotFound;
+        }
+        if (player.getLogin() == null || player.getLogin().length() == 0) {
+            logger.log(Level.WARNING, "Cannot add player: login string empty!");
+            return StatusCode.Forbidden;
+        }
+        if (player.getPassword() == null || player.getPassword().length() < 6) {
+            logger.log(Level.WARNING, "Cannot add player {0}: too short password!", player.getLogin());
+            return StatusCode.Forbidden;
+        }
+        Player existing = findByLogin(player.getLogin());
+        if (existing != null) {
+            return StatusCode.DuplicateEntry;
+        }
+        return StatusCode.OK;
+    }
     @Override
     public StatusCode login(Player player) {
         return authenticatePlayer(player, true);

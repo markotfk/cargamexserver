@@ -3,17 +3,27 @@
 $(document).ready(function() {
     $('#register_form').submit(function(event) {
         event.preventDefault();
-        
-        if ($('#register_password').val() !== $('#register_password2').val()) {
+        // Validate fields, email is validated by browser
+        var login = $('#register_login').val();
+        if (login.length === 0) {
+            alert("Please check login")
+            return false;
+        }
+        var passwd = $('#register_password').val();
+        if (passwd !== $('#register_password2').val()) {
             alert("Please check password");
+            return false;
+        }
+        if (passwd.length < 6) {
+            alert("Password must be at least 6 characters.");
             return false;
         }
         $('#register_status').html('Processing...');
         
         var player = { 
             email: $('#register_email').val(), 
-            login: $('#register_login').val(), 
-            password: $('#register_password').val()
+            login: login, 
+            password: passwd
         };
         
         $.ajax(PlayerRoot, {

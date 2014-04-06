@@ -12,60 +12,67 @@ $(document).ready(function() {
 function initLoginForm() {
     $('#login_form').submit(function(event) {
         event.preventDefault();
-        
-        showStatus('Processing...');
-        var player = { login: $('#login').val(), password: $('#password').val() };
-        $.ajax(PlayerRoot + 'login', {
-            contentType: 'application/json',
-            dataType: 'json',
-            type: 'POST',
-            success: function(data, status, jqXHR) {
-                log('login_form: Success login');
-                if (data && data.sessionId) {
-                    sessionStorage.setItem(playerKey, JSON.stringify(data));
-                    showStatus('');
-                } else {
-                    sessionStorage.setItem(playerKey, null);
-                    showStatus('Error in received data');
-                }
-                
-                updateForms(true);
-                updateTeamStatus();
-            },
-            error: function(jqXHR, textStatus, errorString) {
-                log('login_form: Error:', errorString);
-                showStatus('Error:' + errorString);
-                updateForms(false);
-            },
-            data: JSON.stringify(player)
-        });
+        loginPlayer();
+    });
+}
+
+function loginPlayer() {
+    showStatus('Processing...');
+    var player = { login: $('#login').val(), password: $('#password').val() };
+    $.ajax(PlayerRoot + 'login', {
+        contentType: 'application/json',
+        dataType: 'json',
+        type: 'POST',
+        success: function(data, status, jqXHR) {
+            log('login_form: Success login');
+            if (data && data.sessionId) {
+                sessionStorage.setItem(playerKey, JSON.stringify(data));
+                showStatus('');
+            } else {
+                sessionStorage.setItem(playerKey, null);
+                showStatus('Error in received data');
+            }
+
+            updateForms(true);
+            updateTeamStatus();
+        },
+        error: function(jqXHR, textStatus, errorString) {
+            log('login_form: Error:', errorString);
+            showStatus('Error:' + errorString);
+            updateForms(false);
+        },
+        data: JSON.stringify(player)
     });
 }
 
 function initLogoutForm() {
     $('#logout_form').submit(function(event) {
         event.preventDefault();
-        showStatus('Processing...');
-        $.ajax(PlayerRoot + 'logout', {
-            contentType: 'application/json',
-            dataType: 'json',
-            type: 'POST',
-            success: function(data, status, jqXHR) {
-                log('logout_form: Success logout');
-                sessionStorage.setItem(playerKey, null);
-                showStatus('');
-                updateForms(false);
-                updateTeamStatus();
-            },
-            error: function(jqXHR, textStatus, errorString) {
-                log('logout_form: Error in logout: ' + textStatus + ':' + errorString);
-                showStatus('Error:' + errorString);
-                sessionStorage.setItem(playerKey, null);
-                updateForms(false);
-                updateTeamStatus();
-            },
-            data: sessionStorage.getItem(playerKey)
-        });
+        logoutPlayer();
+    });
+}
+
+function logoutPlayer() {
+    showStatus('Processing...');
+    $.ajax(PlayerRoot + 'logout', {
+        contentType: 'application/json',
+        dataType: 'json',
+        type: 'POST',
+        success: function(data, status, jqXHR) {
+            log('logout_form: Success logout');
+            sessionStorage.setItem(playerKey, null);
+            showStatus('');
+            updateForms(false);
+            updateTeamStatus();
+        },
+        error: function(jqXHR, textStatus, errorString) {
+            log('logout_form: Error in logout: ' + textStatus + ':' + errorString);
+            showStatus('Error:' + errorString);
+            sessionStorage.setItem(playerKey, null);
+            updateForms(false);
+            updateTeamStatus();
+        },
+        data: sessionStorage.getItem(playerKey)
     });
 }
 
