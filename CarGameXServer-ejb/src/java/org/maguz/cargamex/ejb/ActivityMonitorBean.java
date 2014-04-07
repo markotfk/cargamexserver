@@ -59,9 +59,6 @@ public class ActivityMonitorBean extends ManagementBean {
         
         differenceMs = differenceMs % hoursInMilli;
         long elapsedMinutes = differenceMs / minutesInMilli;
-        if (elapsedMinutes >= PLAYER_TIMEOUT_MINS) {
-            return true;
-        }
-        return false;
+        return elapsedMinutes >= PLAYER_TIMEOUT_MINS;
     }
 }

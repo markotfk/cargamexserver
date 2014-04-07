@@ -67,7 +67,6 @@ public interface PlayerManagementBeanLocal {
     
     /**
      * Returns list of players
-     * @param player
      * @return 
      */
     List<Player> findAll();

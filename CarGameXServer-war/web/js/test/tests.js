@@ -6,6 +6,7 @@ var errors = [];
 var testName = "";
 var testPlayer = {};
 var testTeam = {};
+var testTrack = {};
 var receiveData = false;
 var randomId = 0;
 
@@ -23,12 +24,12 @@ function runTests() {
         failed(err);
     }
     try {
-        testTeamRestApi();
+        testTrackRestApi();
     } catch (err) {
         failed(err);
     }
     try {
-        testTrackRestApi();
+        testTeamRestApi();
     } catch (err) {
         failed(err);
     }
@@ -51,17 +52,42 @@ function createTestTeam() {
     testTeam = new Team('name' + rand, 'description' + rand);
 }
 
+function createTestTrack() {
+    var rand = getRandomNumber();
+    testTrack = new Track('TestTrack' + rand, 'TestTrackDescription' + rand);
+}
+
+
 function testTeamRestApi() {
     createTestPlayer();
     createTestTeam();
 
-    addAndLoginTestPlayer();
+    addTestPlayer();
+    loginTestPlayer();
     addTestTeam();
     deleteTestTeam();
     deleteTestPlayer();
 }
 
 function testTrackRestApi() {
+    createTestPlayer();
+    addTestPlayer();
+    loginTestPlayer();
+    createTestTrack();
+    // test add new track
+    addTestTrack();
+    
+    // test remove track
+    removeTestTrack();
+    deleteTestPlayer();
+}
+
+function addTestTrack() {
+    ajaxCallTrack('Add Test Track', TrackRoot + testPlayer.id + '/' + testPlayer.sessionId, 'POST', true);
+}
+
+function removeTestTrack() {
+    ajaxCallTrack('Remove Test Track', TrackRoot + testPlayer.id + '/' + testPlayer.sessionId + '/' + testTrack.id, 'DELETE', false);
 }
 
 function testTrackRecordRestApi() {
@@ -69,7 +95,8 @@ function testTrackRecordRestApi() {
 
 function testPlayerRestApi() {
     createTestPlayer();
-    addAndLoginTestPlayer();
+    addTestPlayer();
+    loginTestPlayer();
     logoutTestPlayer();
     
     // Delete player
@@ -77,6 +104,35 @@ function testPlayerRestApi() {
     testPlayer.password = 'password' + randomId;
     ajaxCallPlayer('Delete Player 1st step (Login Player)', PlayerRoot + 'login', 'POST', true);
     deleteTestPlayer();
+}
+
+function ajaxCallTrack(name, url, type, dataReceived) {
+    testName = name;
+    receiveData = dataReceived;
+    $.ajax(url, {
+        contentType: 'application/json',
+        type: type,
+        async: false,
+        success: ajaxPassTrack,
+        error: ajaxFailTrack,
+        data: JSON.stringify(testTrack)
+    });
+}
+
+function ajaxPassTrack(data, status, jqXHR) {
+    if (receiveData) {
+        try {
+            testTrack.id = data.id;
+        } catch (err) {
+            failed(err);
+            return;
+        }
+    }
+    pass();
+}
+
+function ajaxFailTrack(jqXHR, textStatus, errorString) {
+    failed(errorString);
 }
 
 function ajaxCallPlayer(name, url, type, dataReceived) {
@@ -165,9 +221,12 @@ function deleteTestTeam() {
     + '/' + testTeam.id, 'POST', false);
 }
 
-function addAndLoginTestPlayer() {
+function addTestPlayer() {
     // First login test player to allow creating new team
     ajaxCallPlayer('Add New Player ' + testPlayer.login, PlayerRoot, 'POST', false); 
+}
+
+function loginTestPlayer() {
     // Login player that was added
     ajaxCallPlayer('Login Player ' + testPlayer.login, PlayerRoot + 'login', 'POST', true);
 }

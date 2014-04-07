@@ -6,6 +6,7 @@ RestDir = '/carx/rest/' + Version + '/';
 PlayerRoot = RestDir + 'players/';
 SessionRoot = RestDir + 'session/';
 TeamRoot = RestDir + 'teams/';
+TrackRoot = RestDir + 'tracks/';
 playerKey = "carGamePlayer";
 teamKey = "carGameTeam";
 loggedIn = false;

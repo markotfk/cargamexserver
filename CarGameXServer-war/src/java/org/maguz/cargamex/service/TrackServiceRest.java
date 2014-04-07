@@ -37,10 +37,12 @@ public class TrackServiceRest extends ServiceRest {
     @POST
     @Path("{player_id}/{session_id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(@PathParam("player_id") Long playerId, 
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Track create(@PathParam("player_id") Long playerId, 
                     @PathParam("session_id") String sessionId,
                     Track entity) {
         handleStatusCode(tm.add(playerId, sessionId, entity));
+        return entity;
     }
 
     @PUT
