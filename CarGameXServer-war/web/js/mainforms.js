@@ -1,24 +1,30 @@
 // Author     : Marko Karjalainen <markotfk@gmail.com>
 
 $(document).ready(function() {
-    
-    updateForms(loggedIn);
     initLoginForm();
     initLogoutForm();
     initAddTeamForm();
+    var player = getSessionData(playerKey);
+    if (player) {
+        loggedIn = true;
+        updateForms(true);
+    } else {
+        updateForms(loggedIn);
+    }
     updateTeamStatus();
 });
 
 function initLoginForm() {
     $('#login_form').submit(function(event) {
         event.preventDefault();
-        loginPlayer();
+        var player = { login: $('#login').val(), password: $('#password').val() };
+        loginPlayer(player);
     });
 }
 
-function loginPlayer() {
+function loginPlayer(player) {
     showStatus('Processing...');
-    var player = { login: $('#login').val(), password: $('#password').val() };
+    
     $.ajax(PlayerRoot + 'login', {
         contentType: 'application/json',
         dataType: 'json',
@@ -26,11 +32,11 @@ function loginPlayer() {
         success: function(data, status, jqXHR) {
             log('login_form: Success login');
             if (data && data.sessionId) {
-                sessionStorage.setItem(playerKey, JSON.stringify(data));
+                localStorage.setItem(playerKey, JSON.stringify(data));
                 showStatus('');
                 startSessionTimer();
             } else {
-                sessionStorage.setItem(playerKey, null);
+                localStorage.setItem(playerKey, null);
                 showStatus('Error in received data');
             }
 
@@ -61,7 +67,7 @@ function logoutPlayer() {
         type: 'POST',
         success: function(data, status, jqXHR) {
             log('logout_form: Success logout');
-            sessionStorage.setItem(playerKey, null);
+            localStorage.setItem(playerKey, null);
             showStatus('');
             updateForms(false);
             updateTeamStatus();
@@ -70,12 +76,12 @@ function logoutPlayer() {
         error: function(jqXHR, textStatus, errorString) {
             log('logout_form: Error in logout: ' + textStatus + ':' + errorString);
             showStatus('Error:' + errorString);
-            sessionStorage.setItem(playerKey, null);
+            localStorage.setItem(playerKey, null);
             updateForms(false);
             updateTeamStatus();
             stopSessionTimer();
         },
-        data: sessionStorage.getItem(playerKey)
+        data: localStorage.getItem(playerKey)
     });
 }
 
@@ -95,14 +101,14 @@ function initAddTeamForm() {
             type: 'POST',
             success: function(data, status, jqXHR) {
                 log('team_form: Success create team');
-                sessionStorage.setItem(teamKey, JSON.stringify(data));
+                localStorage.setItem(teamKey, JSON.stringify(data));
                 showStatus('');
                 updateTeamStatus();
             },
             error: function(jqXHR, textStatus, errorString) {
                 log('team_form: Error in creating team:', errorString);
                 showStatus('Error:' + errorString);
-                sessionStorage.setItem(teamKey, null);
+                localStorage.setItem(teamKey, null);
                 updateTeamStatus();
             },
             data: JSON.stringify(team)
@@ -146,5 +152,5 @@ function updateTeamStatus() {
 }
 
 function getSessionData(key) {
-    return JSON.parse(sessionStorage.getItem(key));
+    return JSON.parse(localStorage.getItem(key));
 }

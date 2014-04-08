@@ -43,6 +43,6 @@ function updateSession() {
         error: function(jqXHR, textStatus, errorString) {
             logoutPlayer();
         },
-        data: sessionStorage.getItem(playerKey)
+        data: localStorage.getItem(playerKey)
     });
 }
