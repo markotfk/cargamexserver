@@ -7,6 +7,7 @@ PlayerRoot = RestDir + 'players/';
 SessionRoot = RestDir + 'session/';
 TeamRoot = RestDir + 'teams/';
 TrackRoot = RestDir + 'tracks/';
+TrackRecordRoot = RestDir + 'trackrecords/';
 playerKey = "carGamePlayer";
 teamKey = "carGameTeam";
 loggedIn = false;

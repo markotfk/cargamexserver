@@ -34,6 +34,7 @@ public class ApplicationConfig extends Application {
         resources.add(org.maguz.cargamex.service.PlayerServiceRest.class);
         resources.add(org.maguz.cargamex.service.SessionServiceRest.class);
         resources.add(org.maguz.cargamex.service.TeamServiceRest.class);
+        resources.add(org.maguz.cargamex.service.TrackRecordServiceRest.class);
         resources.add(org.maguz.cargamex.service.TrackServiceRest.class);
     }
     

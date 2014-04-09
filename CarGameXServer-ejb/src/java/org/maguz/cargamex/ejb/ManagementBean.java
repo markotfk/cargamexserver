@@ -4,6 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.maguz.cargamex.entities.Player;
 
 /**
  *
@@ -44,5 +45,19 @@ public abstract class ManagementBean {
             return StatusCode.AuthenticationFailed;
         }
         return StatusCode.OK;
+    }
+    
+    protected StatusCode checkPlayer(Long id, String sessionId) {
+        if (id == null) {
+            return StatusCode.AuthenticationFailed;
+        }
+        if (sessionId == null) {
+            return StatusCode.AuthenticationFailed;
+        }
+        Player p = em.find(Player.class, id);
+        if (p != null && p.checkSessionId(sessionId)) {
+            return StatusCode.OK;
+        }
+        return StatusCode.AuthenticationFailed;
     }
 }

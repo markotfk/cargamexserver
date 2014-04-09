@@ -4,6 +4,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -57,24 +58,22 @@ public class TrackServiceRest extends ServiceRest {
         handleStatusCode(tm.remove(playerId, sessionId, trackId));
     }
 
-    @POST
+    @GET
     @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Track find(@PathParam("id") Long id, Track entity) {
-        Track track = tm.find(id, entity);
+    public Track find(@PathParam("id") Long id) {
+        Track track = tm.find(id);
         if (track != null) {
             return track;
         } 
         throw new WebApplicationException(Response.Status.NOT_FOUND);
     }
 
-    @POST
-    @Path("{id}/all")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @GET
+    @Path("all")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Track> findAll(Track entity) {
-        List<Track> tracks = tm.findAll(entity);
+    public List<Track> findAll() {
+        List<Track> tracks = tm.findAll();
         if (tracks != null) {
             return tracks;
         }

@@ -6,6 +6,7 @@ import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -67,25 +68,24 @@ public class PlayerServiceRest extends ServiceRest {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void remove(@PathParam("player_id") Long playerId, 
             @PathParam("session_id") String sessionId) {
-        handleStatusCode(pm.remove(pm.find(playerId, sessionId)));
+        handleStatusCode(pm.remove(playerId, sessionId));
     }
 
-    @POST
+    @GET
     @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Player find(@PathParam("id") Long id, Player entity) {
-        Player player = pm.find(id, entity);
+    public Player find(@PathParam("id") Long id) {
+        Player player = pm.find(id);
         if (player != null) {
             return player;
         } 
         throw new WebApplicationException(Response.Status.NOT_FOUND);
     }
 
-    @POST
-    @Path("{id}/all")
+    @GET
+    @Path("all")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Player> findAll(Player entity) {
+    public List<Player> findAll() {
         List<Player> players = pm.findAll();
         if (players != null) {
             return players;

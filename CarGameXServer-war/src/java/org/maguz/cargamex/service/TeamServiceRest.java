@@ -46,7 +46,6 @@ public class TeamServiceRest extends ServiceRest {
 
     @POST
     @Path("remove/{player_id}/{session_id}/{team_id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void remove(@PathParam("player_id") Long playerId,
             @PathParam("session_id") String sessionId,
             @PathParam("team_id") Long teamId) {

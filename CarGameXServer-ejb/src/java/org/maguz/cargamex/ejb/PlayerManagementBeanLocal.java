@@ -44,26 +44,18 @@ public interface PlayerManagementBeanLocal {
     
     /**
      * Remove player from database.
-     * @param player
+     * @param id
+     * @param sessionId
      * @return 
      */
-    StatusCode remove(Player player);
+    StatusCode remove(Long id, String sessionId);
     
     /**
      * Finds single player by id.
      * @param id
-     * @param player
      * @return
      */
-    Player find(Long id, Player player);
-    
-    /**
-     * Finds single player by player id and session id.
-     * @param id
-     * @param sessionId
-     * @return
-     */
-    Player find(Long id, String sessionId);
+    Player find(Long id);
     
     /**
      * Returns list of players

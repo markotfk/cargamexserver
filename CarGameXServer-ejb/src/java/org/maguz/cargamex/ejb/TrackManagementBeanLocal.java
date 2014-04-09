@@ -42,23 +42,13 @@ public interface TrackManagementBeanLocal {
     /**
      * Finds single track by id.
      * @param id
-     * @param track
      * @return
      */
-    Track find(Long id, Track track);
+    Track find(Long id);
     
     /**
-     * Finds single player by player id and session id.
-     * @param id
-     * @param sessionId
-     * @return
-     */
-    Track find(Long id, String sessionId);
-    
-    /**
-     * Returns list of players
-     * @param track
+     * Returns list of all tracks.
      * @return 
      */
-    List<Track> findAll(Track track);
+    List<Track> findAll();
 }

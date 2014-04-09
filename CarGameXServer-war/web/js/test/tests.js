@@ -7,6 +7,7 @@ var testName = "";
 var testPlayer = {};
 var testTeam = {};
 var testTrack = {};
+var testTrackRecord = {};
 var receiveData = false;
 var randomId = 0;
 
@@ -19,6 +20,11 @@ function runTests() {
     failedCount = 0;
     testName = "runTests";
     try {
+        testTrackRecordRestApi();
+    } catch (err) {
+        failed(err);
+    }
+    try {
         testPlayerRestApi();
     } catch (err) {
         failed(err);
@@ -30,11 +36,6 @@ function runTests() {
     }
     try {
         testTeamRestApi();
-    } catch (err) {
-        failed(err);
-    }
-    try {
-        testTrackRecordRestApi();
     } catch (err) {
         failed(err);
     }
@@ -55,6 +56,11 @@ function createTestTeam() {
 function createTestTrack() {
     var rand = getRandomNumber();
     testTrack = new Track('TestTrack' + rand, 'TestTrackDescription' + rand);
+}
+
+function createTestTrackRecord() {
+    var rand = getRandomNumber();
+    testTrackRecord = new TrackRecord('TestTrackRecord' + rand, 'TestTrackRecordDescription' + rand);
 }
 
 
@@ -81,6 +87,18 @@ function testTrackRestApi() {
     removeTestTrack();
     deleteTestPlayer();
 }
+function testTrackRecordRestApi() {
+    // initialization
+    createTestTrackRecord();
+    createTestPlayer();
+    addTestPlayer();
+    loginTestPlayer();
+    // tests
+    addTestTrackRecord();
+    removeTestTrackRecord();
+    // cleanup
+    deleteTestPlayer();
+}
 
 function addTestTrack() {
     ajaxCallTrack('Add Test Track', TrackRoot + testPlayer.id + '/' + testPlayer.sessionId, 'POST', true);
@@ -90,7 +108,15 @@ function removeTestTrack() {
     ajaxCallTrack('Remove Test Track', TrackRoot + testPlayer.id + '/' + testPlayer.sessionId + '/' + testTrack.id, 'DELETE', false);
 }
 
-function testTrackRecordRestApi() {
+function addTestTrackRecord() {
+    ajaxCallTrackRecord('Add Test Track Record', TrackRecordRoot + testPlayer.id + '/' + 
+            testPlayer.sessionId, 'POST', true);
+}
+
+function removeTestTrackRecord() {
+    ajaxCallTrackRecord('Remove Test Track Record', TrackRecordRoot + 'remove/' + 
+            testTrackRecord.id + '/' + testPlayer.id + '/' + 
+            testPlayer.sessionId, 'POST', false);
 }
 
 function testPlayerRestApi() {
@@ -106,6 +132,19 @@ function testPlayerRestApi() {
     deleteTestPlayer();
 }
 
+function ajaxCallTrackRecord(name, url, type, dataReceived) {
+    testName = name;
+    receiveData = dataReceived;
+    $.ajax(url, {
+        contentType: 'application/json',
+        type: type,
+        async: false,
+        success: ajaxPassTrackRecord,
+        error: ajaxFailTrackRecord,
+        data: JSON.stringify(testTrackRecord)
+    });
+}
+
 function ajaxCallTrack(name, url, type, dataReceived) {
     testName = name;
     receiveData = dataReceived;
@@ -118,6 +157,23 @@ function ajaxCallTrack(name, url, type, dataReceived) {
         data: JSON.stringify(testTrack)
     });
 }
+
+function ajaxPassTrackRecord(data, status, jqXHR) {
+    if (receiveData) {
+        try {
+            testTrackRecord.id = data.id;
+        } catch (err) {
+            failed(err);
+            return;
+        }
+    }
+    pass();
+}
+
+function ajaxFailTrackRecord(jqXHR, textStatus, errorString) {
+    failed(errorString);
+}
+
 
 function ajaxPassTrack(data, status, jqXHR) {
     if (receiveData) {

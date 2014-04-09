@@ -113,48 +113,33 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         if (player == null) {
             return StatusCode.NotFound;
         }
-        Player existing = find(id, player.getSessionId());
-        if (existing != null) {
+        if (checkPlayer(id, player.getSessionId()) == StatusCode.OK) {
             return merge(player);
         }
         return StatusCode.AuthenticationFailed;
     }
 
     @Override
-    public StatusCode remove(Player player) {
-        return super.remove(player);
+    public StatusCode remove(Long id, String sessionId) {
+        if (checkPlayer(id, sessionId) == StatusCode.OK) {
+            Player existing = find(id);
+            if (existing != null) {
+                return super.remove(existing);
+            } else {
+                return StatusCode.NotFound;
+            }
+        }
+        return StatusCode.AuthenticationFailed;
     }
     
     @Override
-    public Player find(Long id, Player player) {
+    public Player find(Long id) {
         if (id == null) {
             return null;
         }
-        if (player == null) {
-            return null;
-        }
-        Player existing = em.find(Player.class, id);
-        if (existing != null && existing.checkSessionId(player.getSessionId())) {
-            return existing;
-        }
-        return null;
+        return em.find(Player.class, id);
     }
 
-    @Override
-    public Player find(Long id, String sessionId) {
-        if (id == null) {
-            return null;
-        }
-        if (sessionId == null) {
-            return null;
-        }
-        Player existing = em.find(Player.class, id);
-        if (existing != null && existing.checkSessionId(sessionId)) {
-            return existing;
-        }
-        return null;
-    }
-    
     @Override
     public List<Player> findAll() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();

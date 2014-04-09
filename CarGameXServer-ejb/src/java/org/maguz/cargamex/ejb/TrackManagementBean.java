@@ -16,13 +16,13 @@ public class TrackManagementBean extends ManagementBean implements TrackManageme
     @Override
     public StatusCode add(Long playerId, String sessionId, Track track) {
         if (playerId == null) {
-            throw new NullPointerException("playerId is null");
+            return StatusCode.AuthenticationFailed;
         }
         if (sessionId == null) {
-            throw new NullPointerException("sessionId is null");
+            return StatusCode.AuthenticationFailed;
         }
         if (track == null) {
-            throw new NullPointerException("track is null");
+            return StatusCode.NotFound;
         }
         Player p = em.find(Player.class, playerId);
         if (p == null) {
@@ -43,27 +43,52 @@ public class TrackManagementBean extends ManagementBean implements TrackManageme
 
     @Override
     public StatusCode edit(Long playerId, String sessionId, Track track) {
-        return StatusCode.OK;
+        if (playerId == null) {
+            return StatusCode.AuthenticationFailed;
+        }
+        if (sessionId == null) {
+            return StatusCode.AuthenticationFailed;
+        }
+        if (track == null) {
+            return StatusCode.NotFound;
+        }
+        Player player = em.find(Player.class, playerId);
+        if (player != null && player.checkSessionId(sessionId)) {
+            return merge(track);
+        }
+        return StatusCode.AuthenticationFailed;
     }
 
     @Override
-    public StatusCode remove(Long playerId, String sessionId, Long trackId) {
-        return StatusCode.OK;
+    public StatusCode remove(Long playerId, String sessionId, Long track) {
+        if (playerId == null) {
+            return StatusCode.AuthenticationFailed;
+        }
+        if (sessionId == null) {
+            return StatusCode.AuthenticationFailed;
+        }
+        if (track == null) {
+            return StatusCode.NotFound;
+        }
+        Player player = em.find(Player.class, playerId);
+        if (player != null && player.checkSessionId(sessionId)) {
+            return remove(find(track));
+        }
+        return StatusCode.AuthenticationFailed;
     }
 
     @Override
-    public Track find(Long id, Track track) {
-        return null;
+    public Track find(Long id) {
+        if (id == null) {
+            return null;
+        }
+        return em.find(Track.class, id);
     }
 
     @Override
-    public Track find(Long id, String sessionId) {
-        return null;
-    }
-
-    @Override
-    public List<Track> findAll(Track track) {
-        List<Track> allTracks = new ArrayList<>();
-        return allTracks;
+    public List<Track> findAll() {
+        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(Track.class));
+        return em.createQuery(cq).getResultList();
     }
 }

@@ -157,6 +157,16 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
 
     @Override
     public StatusCode removePlayer(Team team, Long playerId, String sessionId, Long removePlayerId) {
+        if (team == null) {
+            return StatusCode.NotFound;
+        }
+        if (playerId == null) {
+            return StatusCode.AuthenticationFailed;
+        }
+        if (sessionId == null) {
+            return StatusCode.AuthenticationFailed;
+        }
+        
         Team existingTeam = find(team.getId());
         if (existingTeam != null) {
             Player player = em.find(Player.class, playerId);
@@ -194,6 +204,18 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
 
     @Override
     public StatusCode addAdmin(Team team, Long playerId, String sessionId, Long adminPlayerId) {
+        if (team == null) {
+            return StatusCode.NotFound;
+        }
+        if (playerId == null) {
+            return StatusCode.AuthenticationFailed;
+        }
+        if (sessionId == null) {
+            return StatusCode.AuthenticationFailed;
+        }
+        if (adminPlayerId == null) {
+            return StatusCode.NotFound;
+        }
         Team existingTeam = find(team.getId());
         if (existingTeam != null) {
             Player player = em.find(Player.class, playerId);
@@ -221,6 +243,18 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
 
     @Override
     public StatusCode removeAdmin(Team team, Long playerId, String sessionId, Long adminPlayerId) {
+        if (team == null) {
+            return StatusCode.NotFound;
+        }
+        if (playerId == null) {
+            return StatusCode.AuthenticationFailed;
+        }
+        if (sessionId == null) {
+            return StatusCode.AuthenticationFailed;
+        }
+        if (adminPlayerId == null) {
+            return StatusCode.NotFound;
+        }
         Team existingTeam = find(team.getId());
         if (existingTeam != null) {
             Player player = em.find(Player.class, playerId);
@@ -248,6 +282,18 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
 
     @Override
     public StatusCode setOwner(Team team, Long playerId, String sessionId, Long ownerPlayerId) {
+        if (team == null) {
+            return StatusCode.NotFound;
+        }
+        if (playerId == null) {
+            return StatusCode.AuthenticationFailed;
+        }
+        if (sessionId == null) {
+            return StatusCode.AuthenticationFailed;
+        }
+        if (ownerPlayerId == null) {
+            return StatusCode.NotFound;
+        }
         Team existingTeam = find(team.getId());
         if (existingTeam != null) {
             Player player = em.find(Player.class, playerId);
