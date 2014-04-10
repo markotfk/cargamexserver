@@ -20,7 +20,7 @@ public class PasswordUtils {
     private static final int iterations = 10*1024;
     private static final int saltLen = 32;
     private static final int desiredKeyLen = 256;
-
+    private static final Logger logger = Logger.getLogger("PasswordUtils");
     /** Computes a salted PBKDF2 hash of given plaintext password
         suitable for storing in a database. 
         Empty passwords are not supported.
@@ -28,6 +28,7 @@ public class PasswordUtils {
      * @return salted has of password.
      */
     public static String getSaltedHash(String password) {
+        logger.log(Level.INFO, "getSaltedHash enter");
         byte[] salt;
         try {
             salt = SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLen);
@@ -37,10 +38,13 @@ public class PasswordUtils {
         }
         try {
             // store the salt with the password
-            return DatatypeConverter.printBase64Binary(salt) + "$" + hash(password, salt);
+            String result = DatatypeConverter.printBase64Binary(salt) + "$" + hash(password, salt);
+            logger.log(Level.INFO, "getSaltedHash: Return {0}", result);
+            return result;
         } catch (Exception ex) {
-            Logger.getLogger(PasswordUtils.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage());
         }
+        logger.log(Level.INFO, "getSaltedHash: Return null!");
         return null;
     }
 

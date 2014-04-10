@@ -15,17 +15,19 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
 
     @Override
     public StatusCode add(Player player) {
+        log(Level.INFO, "Add player");
         StatusCode code = checkNewPlayer(player);
         if (code != StatusCode.OK) {
             return code;
         }
+        log(Level.INFO, "New player login " + player.getLogin());
         try {
             player.setCreated(System.currentTimeMillis());
             player.setPassword(player.getPassword()); // hashes plain-text password
             player.setLastActivity(System.currentTimeMillis());
             em.persist(player);
         } catch (Exception ex) {
-            logger.severe(ex.getMessage());
+            log(Level.SEVERE, ex.getMessage());
             return StatusCode.DuplicateEntry;
         }
         return StatusCode.OK;
@@ -36,15 +38,17 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
             return StatusCode.NotFound;
         }
         if (player.getLogin() == null || player.getLogin().trim().length() == 0) {
-            logger.log(Level.WARNING, "Cannot add player: login string empty!");
+            log(Level.WARNING, "Cannot add player: login string empty!");
             return StatusCode.Forbidden;
         }
         if (player.getPassword() == null || player.getPassword().length() < 6) {
-            logger.log(Level.WARNING, "Cannot add player {0}: too short password!", player.getLogin());
+            log(Level.WARNING, String.format("Cannot add player %s: too short password!", player.getLogin()));
             return StatusCode.Forbidden;
         }
+        log(Level.INFO, String.format("checkNewPlayer %s", player.getLogin()));
         Player existing = findByLogin(player.getLogin());
         if (existing != null) {
+            log(Level.INFO, "Login is in use, return StatusCode.DuplicateEntry");
             return StatusCode.DuplicateEntry;
         }
         return StatusCode.OK;
@@ -63,8 +67,10 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         if (player == null) {
             return StatusCode.NotFound;
         }
+        log(Level.INFO, String.format("authenticatePlayer %s", player.getLogin()));
         Player existing = findByLogin(player.getLogin());
         if (existing == null) {
+            log(Level.INFO, "Existing player not found, return AuthenticationFailed");
             return StatusCode.AuthenticationFailed;
         }
         if (!login && !existing.getPassword().equals(player.getPassword())) {
@@ -94,6 +100,10 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
     }
     
     private Player findByLogin(String login) {
+        if (login == null) {
+            return null;
+        }
+        log(Level.INFO, "findByLogin " + login);
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Player.class));
         List<Player> players = em.createQuery(cq).getResultList();
@@ -113,6 +123,7 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         if (player == null) {
             return StatusCode.NotFound;
         }
+        log(Level.INFO, "Edit player " + id);
         if (checkPlayer(id, player.getSessionId()) == StatusCode.OK) {
             return merge(player);
         }
@@ -122,6 +133,7 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
     @Override
     public StatusCode remove(Long id, String sessionId) {
         if (checkPlayer(id, sessionId) == StatusCode.OK) {
+            log(Level.INFO, "Remove player " + id);
             Player existing = find(id);
             if (existing != null) {
                 return super.remove(existing);

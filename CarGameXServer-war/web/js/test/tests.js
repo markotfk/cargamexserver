@@ -71,8 +71,8 @@ function testTeamRestApi() {
     addTestPlayer();
     loginTestPlayer();
     addTestTeam();
-    deleteTestTeam();
-    deleteTestPlayer();
+    //deleteTestTeam();
+    //deleteTestPlayer();
 }
 
 function testTrackRestApi() {
@@ -84,8 +84,8 @@ function testTrackRestApi() {
     addTestTrack();
     
     // test remove track
-    removeTestTrack();
-    deleteTestPlayer();
+    //removeTestTrack();
+    //deleteTestPlayer();
 }
 function testTrackRecordRestApi() {
     // initialization
@@ -95,9 +95,9 @@ function testTrackRecordRestApi() {
     loginTestPlayer();
     // tests
     addTestTrackRecord();
-    removeTestTrackRecord();
+    //removeTestTrackRecord();
     // cleanup
-    deleteTestPlayer();
+    //deleteTestPlayer();
 }
 
 function addTestTrack() {
@@ -127,9 +127,9 @@ function testPlayerRestApi() {
     
     // Delete player
     // password must be reset for login
-    testPlayer.password = 'password' + randomId;
-    ajaxCallPlayer('Delete Player 1st step (Login Player)', PlayerRoot + 'login', 'POST', true);
-    deleteTestPlayer();
+    //testPlayer.password = 'password' + randomId;
+    //ajaxCallPlayer('Delete Player 1st step (Login Player)', PlayerRoot + 'login', 'POST', true);
+    //deleteTestPlayer();
 }
 
 function ajaxCallTrackRecord(name, url, type, dataReceived) {

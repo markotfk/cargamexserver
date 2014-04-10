@@ -25,7 +25,7 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
         if (sessionId == null) {
             return StatusCode.AuthenticationFailed;
         }
-        
+        log(Level.INFO, String.format("Add team %s", team.getName()));
         team.setCreated(System.currentTimeMillis());
         Player owner = em.find(Player.class, playerId);
         // Add only if player does not have a team already
@@ -45,7 +45,7 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
             owner.setTeam(team);
             em.persist(owner);
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Adding Team failed:{0}", e.getMessage());
+            log(Level.SEVERE, String.format("Adding Team failed: %s", e.getMessage()));
             return StatusCode.DuplicateEntry;
         }
         
@@ -63,7 +63,7 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
         if (sessionId == null) {
             return StatusCode.AuthenticationFailed;
         }
-        
+        log(Level.INFO, String.format("Remove team: %d", teamId));
         Team existingTeam = find(teamId);
         if (existingTeam != null) {
             Player existingPlayer = em.find(Player.class, playerId);
@@ -92,6 +92,7 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
         if (sessionId == null) {
             return StatusCode.AuthenticationFailed;
         }
+        log(Level.INFO, String.format("Edit team: %d", team.getId()));
         Player existingPlayer = em.find(Player.class, playerId);
         if (existingPlayer != null && existingPlayer.checkSessionId(sessionId)) {
             Team existingTeam = find(team.getId());
@@ -125,6 +126,7 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
         if (sessionId == null) {
             return StatusCode.AuthenticationFailed;
         }
+        log(Level.INFO, String.format("Add player %d to team: %d", playerId, team.getId()));
         Team existingTeam = find(team.getId());
         if (existingTeam != null) {
             Player player = em.find(Player.class, playerId);
@@ -166,7 +168,7 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
         if (sessionId == null) {
             return StatusCode.AuthenticationFailed;
         }
-        
+        log(Level.INFO, String.format("Remove player %d from team: %d", playerId, team.getId()));
         Team existingTeam = find(team.getId());
         if (existingTeam != null) {
             Player player = em.find(Player.class, playerId);
@@ -216,6 +218,7 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
         if (adminPlayerId == null) {
             return StatusCode.NotFound;
         }
+        log(Level.INFO, String.format("Add admin player %d to team: %d", playerId, team.getId()));
         Team existingTeam = find(team.getId());
         if (existingTeam != null) {
             Player player = em.find(Player.class, playerId);
@@ -255,6 +258,7 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
         if (adminPlayerId == null) {
             return StatusCode.NotFound;
         }
+        log(Level.INFO, String.format("Remove admin player %d from team: %d", playerId, team.getId()));
         Team existingTeam = find(team.getId());
         if (existingTeam != null) {
             Player player = em.find(Player.class, playerId);
@@ -294,6 +298,7 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
         if (ownerPlayerId == null) {
             return StatusCode.NotFound;
         }
+        log(Level.INFO, String.format("Set owner player %d to team: %d", playerId, team.getId()));
         Team existingTeam = find(team.getId());
         if (existingTeam != null) {
             Player player = em.find(Player.class, playerId);

@@ -23,12 +23,13 @@ public class TrackRecordManagementBean extends ManagementBean implements TrackRe
         if (sessionId == null) {
             return StatusCode.AuthenticationFailed;
         }
+        log(Level.INFO, String.format("Add track record %d, by player %d.", record.getRecordTime(), playerId));
         if (checkPlayer(playerId, sessionId) == StatusCode.OK) {
             try {
                 em.persist(record);
                 return StatusCode.OK;
             } catch (Exception e) {
-                logger.log(Level.SEVERE, "Error while adding track record:{0}", e.getMessage());
+                logger.log(Level.SEVERE, "Error while adding track record: %s", e.getMessage());
                 return StatusCode.DuplicateEntry;
             }
         }
@@ -37,7 +38,11 @@ public class TrackRecordManagementBean extends ManagementBean implements TrackRe
 
     @Override
     public StatusCode remove(Long recordId, Long playerId, String sessionId) {
+        if (recordId == null) {
+            return StatusCode.NotFound;
+        }
         if (checkPlayer(playerId, sessionId) == StatusCode.OK) {
+            log(Level.INFO, String.format("Remove track record %d, by player %d.", recordId, playerId));
             try {
                 TrackRecord record = em.find(TrackRecord.class, recordId);
                 if (record != null) {
@@ -47,7 +52,7 @@ public class TrackRecordManagementBean extends ManagementBean implements TrackRe
                     return StatusCode.NotFound;
                 }
             } catch (Exception e) {
-                logger.log(Level.SEVERE, "Error while removing track record:{0}", e.getMessage());
+                logger.log(Level.SEVERE, "Error while removing track record: %s", e.getMessage());
                 return StatusCode.Forbidden;
             }
         }
@@ -59,13 +64,7 @@ public class TrackRecordManagementBean extends ManagementBean implements TrackRe
         if (record == null) {
             return StatusCode.NotFound;
         }
-        if (playerId == null) {
-            return StatusCode.AuthenticationFailed;
-        }
-        if (sessionId == null) {
-            return StatusCode.AuthenticationFailed;
-        }
-        
+        log(Level.INFO, String.format("Edit track record %d, by player %d.", record.getId(), playerId));
         if (checkPlayer(playerId, sessionId) == StatusCode.OK) {
             return merge(record);
         }
