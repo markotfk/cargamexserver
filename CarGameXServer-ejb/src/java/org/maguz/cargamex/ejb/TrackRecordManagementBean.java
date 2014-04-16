@@ -3,6 +3,7 @@ package org.maguz.cargamex.ejb;
 import java.util.List;
 import java.util.logging.Level;
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 import org.maguz.cargamex.entities.TrackRecord;
 
 /**
@@ -26,6 +27,7 @@ public class TrackRecordManagementBean extends ManagementBean implements TrackRe
         log(Level.INFO, String.format("Add track record %d, by player %d.", record.getRecordTime(), playerId));
         if (checkPlayer(playerId, sessionId) == StatusCode.OK) {
             try {
+                record.setCreated(System.currentTimeMillis());
                 em.persist(record);
                 return StatusCode.OK;
             } catch (Exception e) {
@@ -46,8 +48,7 @@ public class TrackRecordManagementBean extends ManagementBean implements TrackRe
             try {
                 TrackRecord record = em.find(TrackRecord.class, recordId);
                 if (record != null) {
-                    em.remove(record);
-                    return StatusCode.OK;
+                    return remove(record);
                 } else {
                     return StatusCode.NotFound;
                 }
@@ -88,11 +89,23 @@ public class TrackRecordManagementBean extends ManagementBean implements TrackRe
 
     @Override
     public List<TrackRecord> findAllByPlayerId(Long playerId) {
+        /*String queryString = "SELECT * FROM TrackRecord tr " +
+                         "WHERE tr.player = :playerId";
+        Query query = em.createQuery(queryString);
+
+        query.setParameter("playerId", playerId);
+        return query.getResultList();*/
         return null;
     }
 
     @Override
     public List<TrackRecord> findAllByTrackId(Long trackId) {
+        /*String queryString = "SELECT * FROM TrackRecord tr " +
+                         "WHERE tr.track = :trackId";
+        Query query = em.createQuery(queryString);
+
+        query.setParameter("trackId", trackId);
+        return query.getResultList();*/
         return null;
     }
 

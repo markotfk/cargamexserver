@@ -77,4 +77,26 @@ public class TrackRecordServiceRest extends ServiceRest {
         }
         return new ArrayList<>();
     }
+    
+    @GET
+    @Path("findByPlayer/{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<TrackRecord> findByPlayer(@PathParam("id") Long id) {
+        List<TrackRecord> records = tm.findAllByPlayerId(id);
+        if (records != null) {
+            return records;
+        } 
+        throw new WebApplicationException(Response.Status.NOT_FOUND);
+    }
+    
+    @GET
+    @Path("findByTeam/{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<TrackRecord> findByTeam(@PathParam("id") Long id) {
+        List<TrackRecord> records = tm.findAllByTrackId(id);
+        if (records != null) {
+            return records;
+        } 
+        throw new WebApplicationException(Response.Status.NOT_FOUND);
+    }
 }

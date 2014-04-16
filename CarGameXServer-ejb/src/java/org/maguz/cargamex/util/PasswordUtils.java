@@ -51,21 +51,26 @@ public class PasswordUtils {
     /** Checks whether given plaintext password corresponds 
         to a stored salted hash of the password. */
     public static boolean check(String password, String stored) throws Exception{
+        logger.log(Level.INFO, "check() enter");
         String[] saltAndPass = stored.split("\\$");
         if (saltAndPass.length != 2)
             return false;
         String hashOfInput = hash(password, DatatypeConverter.parseBase64Binary(saltAndPass[0]));
+        logger.log(Level.INFO, "check() exit");
         return hashOfInput.equals(saltAndPass[1]);
     }
 
     // using PBKDF2 from Sun
     private static String hash(String password, byte[] salt) throws Exception {
+        logger.log(Level.INFO, "Enter hash()");
         if (password == null || password.length() == 0)
             throw new IllegalArgumentException("Empty passwords are not supported.");
         SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
         SecretKey key = f.generateSecret(new PBEKeySpec(
             password.toCharArray(), salt, iterations, desiredKeyLen)
         );
-        return DatatypeConverter.printBase64Binary(key.getEncoded());
+        String ret = DatatypeConverter.printBase64Binary(key.getEncoded());
+        logger.log(Level.INFO, "Exit hash(): {0}", ret);
+        return ret;
     }
 }

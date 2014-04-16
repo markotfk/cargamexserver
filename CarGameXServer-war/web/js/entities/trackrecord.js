@@ -1,7 +1,7 @@
 
-function TrackRecord(time, player, track) {
+function TrackRecord(recordTime, player, track) {
     this.id = 0;
-    this.time = time;
+    this.recordTime = recordTime;
     this.player = player;
     this.track = track;
 }

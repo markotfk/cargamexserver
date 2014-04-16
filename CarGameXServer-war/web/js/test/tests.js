@@ -59,8 +59,9 @@ function createTestTrack() {
 }
 
 function createTestTrackRecord() {
-    var rand = getRandomNumber();
-    testTrackRecord = new TrackRecord('TestTrackRecord' + rand, 'TestTrackRecordDescription' + rand);
+    var testDate = new Date();
+    testTrackRecord = new TrackRecord(new Date(testDate-1).getMilliseconds(), 
+            testPlayer, testTrack);
 }
 
 
@@ -89,13 +90,19 @@ function testTrackRestApi() {
 }
 function testTrackRecordRestApi() {
     // initialization
-    createTestTrackRecord();
     createTestPlayer();
     addTestPlayer();
     loginTestPlayer();
+    addTestTrack();
+    // Track record object needs to be initialized last since it
+    //  needs player.id and track.id
+    createTestTrackRecord();
+    
     // tests
     addTestTrackRecord();
-    //removeTestTrackRecord();
+    
+    
+    removeTestTrackRecord();
     // cleanup
     //deleteTestPlayer();
 }
