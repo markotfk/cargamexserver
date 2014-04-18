@@ -20,7 +20,7 @@ function log() {
     }
     for (var i = 0; i < arguments.length; i++) {
         if (arguments[i]) {
-            console.log(arguments[i]);
+            console.log(new Date().toLocaleString() + ": " + arguments[i]);
         }
     }
 }

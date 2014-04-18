@@ -19,14 +19,14 @@ public abstract class ManagementBean {
     protected Calendar cal;
     protected Logger logger;
     
+    @PersistenceContext(unitName = "CarGameXServer-ejbPU")
+    protected EntityManager em;
+    
     protected ManagementBean() {
         dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         cal = Calendar.getInstance();
         logger = Logger.getLogger(this.getClass().toString());
     }
-    @PersistenceContext(unitName = "CarGameXServer-ejbPU")
-    protected EntityManager em;
-    
     
     protected void log(Level level, String message) {
         logger.log(level, "{0}:{1}", new Object[]{dateFormat.format(cal.getTime()), message});

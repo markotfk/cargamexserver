@@ -26,12 +26,12 @@ public class ActivityMonitorBean extends ManagementBean {
         List<Player> allPlayers = pm.findAll(); // todo: find only players with valid sessionId
         for (Player p : allPlayers) {
             if (p.getSessionId() != null) {
-                Long activity = p.getLastActivity();
-                if (activity == null) {
+                Long lastActivity = p.getLastActivity();
+                if (lastActivity == null) {
                     p.setSessionId(null);
                     merge(p);
                 } else {
-                    if (timeDifferenceTooBig(System.currentTimeMillis() - activity)) {
+                    if (timeDifferenceTooBig(lastActivity)) {
                         log(Level.INFO, String.format("Player %s session expired.", p.getLogin()));
                         p.setSessionId(null);
                         merge(p);
@@ -41,7 +41,8 @@ public class ActivityMonitorBean extends ManagementBean {
         }
     }
     
-    private boolean timeDifferenceTooBig(long differenceMs) {
+    private boolean timeDifferenceTooBig(long lastActivity) {
+        long differenceMs = System.currentTimeMillis() - lastActivity;
         long secondsInMilli = 1000;
         long minutesInMilli = secondsInMilli * 60;
         long hoursInMilli = minutesInMilli * 60;
