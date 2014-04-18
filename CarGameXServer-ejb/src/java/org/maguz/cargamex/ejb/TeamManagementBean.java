@@ -19,6 +19,10 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
         if (team == null) {
             return StatusCode.NotFound;
         }
+        if (team.getName() == null || team.getName().trim().length() == 0) {
+            // Must have name
+            return StatusCode.Forbidden;
+        }
         if (playerId == null) {
             return StatusCode.AuthenticationFailed;
         }
@@ -73,7 +77,7 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
                     for (Player p : existingTeam.getPlayers()) {
                         p.setTeam(null);
                     }
-                    em.remove(em.merge(existingTeam));
+                    remove(existingTeam);
                     return merge(existingPlayer);
                 }
             }
@@ -108,6 +112,20 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
         return em.find(Team.class, id);
     }
 
+    @Override
+    public Team findByOwnerId(Long playerId) {
+        if (playerId == null) {
+            return null;
+        }
+        List<Team> all = findAll();
+        for (Team t : all) {
+            if (t.isOwner(em.find(Player.class, playerId))) {
+                return t;
+            }
+        }
+        return null;
+    }
+    
     @Override
     public List<Team> findAll() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();

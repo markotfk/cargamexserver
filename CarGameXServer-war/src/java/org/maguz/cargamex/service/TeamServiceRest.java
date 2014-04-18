@@ -60,6 +60,13 @@ public class TeamServiceRest extends ServiceRest {
     }
 
     @GET
+    @Path("findByOwnerId/{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Team findByOwnerId(@PathParam("id") Long id) {
+        return tm.findByOwnerId(id);
+    }
+    
+    @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Team> findAll() {
         return tm.findAll();

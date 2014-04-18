@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -43,7 +44,7 @@ public class PlayerServiceRest extends ServiceRest {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces ({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Player loginPlayer(Player player, @Context HttpServletRequest request) {
-        player.setSessionId(request.getSession().getId());
+        player.setSessionId(request.getSession(true).getId());
         handleStatusCode(pm.login(player));
         return player;
     }
@@ -51,7 +52,10 @@ public class PlayerServiceRest extends ServiceRest {
     @POST
     @Path("logout")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void logoutPlayer(Player entity) {
+    public void logoutPlayer(Player entity, @Context HttpSession session) {
+        if (session != null) {
+            session.invalidate();
+        }
         handleStatusCode(pm.logout(entity));
     }
     

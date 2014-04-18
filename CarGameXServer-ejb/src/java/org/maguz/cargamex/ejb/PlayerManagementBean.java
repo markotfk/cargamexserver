@@ -73,27 +73,22 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
             log(Level.INFO, "Existing player not found, return AuthenticationFailed");
             return StatusCode.AuthenticationFailed;
         }
-        if (!login && !existing.getPassword().equals(player.getPassword())) {
+        if (!login && !existing.checkSessionId(player.getSessionId())) {
             return StatusCode.AuthenticationFailed;
         }
         if (login && !existing.checkPassword(player.getPassword())) {
+            player.setPasswordNoHash("");
             return StatusCode.AuthenticationFailed;
         }
         if (!login) {
-            if (existing.checkSessionId(player.getSessionId())) {
-                existing.setSessionId(null);
-                StatusCode code = merge(existing);
-                player.setSessionId(null);
-                return code;
-            }
-            else {
-                return StatusCode.AuthenticationFailed;
-            }
+            existing.setSessionId(null);
+            player.setSessionId(null);
+            return merge(existing);
         } else {
             existing.setSessionId(player.getSessionId());
             existing.setLastActivity(System.currentTimeMillis());
             StatusCode code = merge(existing);
-            player.setPasswordNoHash(existing.getPassword());
+            player.setPasswordNoHash("");
             player.setId(existing.getId());
             return code;
         }

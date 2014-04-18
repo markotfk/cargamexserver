@@ -77,6 +77,7 @@ function logoutPlayer() {
             log('logout_form: Error in logout: ' + textStatus + ':' + errorString);
             showStatus('Error:' + errorString);
             localStorage.setItem(playerKey, null);
+            localStorage.setItem(teamKey, null);
             updateForms(false);
             updateTeamStatus();
             stopSessionTimer();

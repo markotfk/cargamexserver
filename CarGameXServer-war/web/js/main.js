@@ -19,16 +19,19 @@ function log() {
         return;
     }
     for (var i = 0; i < arguments.length; i++) {
-       console.log(arguments[i]);
+        if (arguments[i]) {
+            console.log(arguments[i]);
+        }
     }
 }
 
 function startSessionTimer() {
     log('startSessionTimer');
-    SessionTimer = window.setInterval(function() { updateSession(); }, 15000);
+    SessionTimer = window.setInterval(function() { updateSession(); }, 60000);
 }
 
 function stopSessionTimer() {
+    log('stopSessionTimer');
     window.clearInterval(SessionTimer);
 }
 

@@ -20,7 +20,7 @@ import org.maguz.cargamex.util.PasswordUtils;
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @Entity
-@Table(name="player", uniqueConstraints=@UniqueConstraint(columnNames={"email", "login"}))
+@Table(name="player", schema="carx", uniqueConstraints=@UniqueConstraint(columnNames={"email", "login"}))
 @Cacheable(false)
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
@@ -41,6 +41,8 @@ public class Player extends CarGameEntity implements Serializable {
     
     private Long lastActivity;
 
+    private int points;
+    
     @XmlTransient
     @ManyToOne
     @JoinColumn(name="team_id")
@@ -83,9 +85,6 @@ public class Player extends CarGameEntity implements Serializable {
         return sessionId;
     }
     
-    @XmlElement
-    private int points;
-
     public int getPoints() {
         return points;
     }

@@ -2,6 +2,7 @@ package org.maguz.cargamex.entities;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -12,6 +13,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @Entity
+@Table(name="track", schema="carx")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 public class Track extends CarGameEntity implements Serializable {

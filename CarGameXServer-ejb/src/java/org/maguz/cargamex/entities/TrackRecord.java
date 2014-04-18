@@ -3,9 +3,9 @@ package org.maguz.cargamex.entities;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @Entity
+@Table(name="trackrecord", schema="carx")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 public class TrackRecord extends CarGameEntity implements Serializable {
@@ -22,11 +23,10 @@ public class TrackRecord extends CarGameEntity implements Serializable {
     @OneToOne
     private Player player;
     
-    @XmlElement
     private long recordTime;
     
-    @OneToOne
     @XmlTransient
+    @OneToOne
     private Track track;
     
     public Player getPlayer() {

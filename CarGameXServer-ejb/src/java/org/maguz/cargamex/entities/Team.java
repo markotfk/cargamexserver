@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -19,7 +20,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @Entity
-@Table(name="team", uniqueConstraints=@UniqueConstraint(columnNames={"name"}))
+@Table(name="team", schema="carx", uniqueConstraints=@UniqueConstraint(columnNames={"name"}))
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Team extends CarGameEntity implements Serializable {
@@ -115,7 +116,6 @@ public class Team extends CarGameEntity implements Serializable {
         this.losses = losses;
     }
     
-    @XmlElement
     private int losses;
 
     public String getName() {

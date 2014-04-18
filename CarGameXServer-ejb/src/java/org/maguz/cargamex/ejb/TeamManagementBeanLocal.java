@@ -19,6 +19,8 @@ public interface TeamManagementBeanLocal {
     
     Team find(Long id);
     
+    Team findByOwnerId(Long playerId);
+    
     List<Team> findAll();
     
     StatusCode addPlayer(Team team, Long playerId, String sessionId, Long newPlayerId);
