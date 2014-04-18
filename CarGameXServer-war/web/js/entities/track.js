@@ -2,6 +2,7 @@
 
 function Track(name, description) {
     this.id = 0;
+    this.created = 0;
     this.name = name;
     this.description = description;
 }

@@ -30,7 +30,6 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
             return StatusCode.AuthenticationFailed;
         }
         log(Level.INFO, String.format("Add team %s", team.getName()));
-        team.setCreated(System.currentTimeMillis());
         Player owner = em.find(Player.class, playerId);
         // Add only if player does not have a team already
         if (owner != null && owner.checkSessionId(sessionId)) {

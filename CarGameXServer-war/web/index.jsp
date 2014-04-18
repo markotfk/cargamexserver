@@ -20,6 +20,7 @@
             Welcome to Car Game X - the Internet car game.
             <p>
             <div id="login_name" class="player_info"></div>
+            <div id="login_created" class="player_info"></div>
             </p>
             <p>
                 <form method="post" id="login_form" class="player_form">
@@ -46,6 +47,7 @@
             </p>
             <p>
                 <div class="player_info" id="team_membership"></div>
+                <div class="player_info" id="team_created"></div>
             </p>
             <p>
                 <a href="register.html">Register New Player</a>

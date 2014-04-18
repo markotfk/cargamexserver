@@ -29,10 +29,9 @@ public class TrackManagementBean extends ManagementBean implements TrackManageme
         if (p == null) {
             return StatusCode.AuthenticationFailed;
         }
-        if (!p.getSessionId().equals(sessionId)) {
+        if (!p.checkSessionId(sessionId)) {
             return StatusCode.AuthenticationFailed;
         }
-        track.setCreated(System.currentTimeMillis());
         try {
             em.persist(track);
         } catch (Exception e) {

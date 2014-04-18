@@ -125,11 +125,14 @@ function updateForms(logged) {
     if (logged) {
          $('#login_form').hide();
          $('#logout_form').show();
+         $('#login_created').show();
          var player = getSessionData(playerKey);
          if (player) {
              $('#login_name').html(player.login + ', sessionId: ' + player.sessionId + ', id:' + player.id);
+             $('#login_created').html('Account created: ' + new Date(player.created).toLocaleString());
          } else {
              $('#login_name').html('Logged in');
+             $('#login_created').html('');
          }
          $('#team_form').show();
      } else {
@@ -137,18 +140,22 @@ function updateForms(logged) {
          $('#logout_form').hide();
          $('#team_form').hide();
          $('#login_name').html('Not Logged in');
+         $('#login_created').hide();
      }
 }
 
 function updateTeamStatus() {
     if (loggedIn) {
         $('#team_membership').show();
+        $('#team_created').show();
         var team = getSessionData(teamKey);
         if (team) {
             $('#team_membership').html('<br>Team id:' + team.id + '<br> name:' + team.name + '<br>Description:<br>' + team.description);
+            $('#team_created').html('Team created: ' + new Date(team.created).toLocaleString());
         }
     } else {
         $('#team_membership').hide();
+        $('#team_created').hide();
     }
 }
 

@@ -171,6 +171,7 @@ function ajaxPassTrackRecord(data, status, jqXHR) {
     if (receiveData) {
         try {
             testTrackRecord.id = data.id;
+            testTrackRecord.created = data.created;
         } catch (err) {
             failed(err);
             return;
@@ -188,6 +189,7 @@ function ajaxPassTrack(data, status, jqXHR) {
     if (receiveData) {
         try {
             testTrack.id = data.id;
+            testTrack.created = data.created;
         } catch (err) {
             failed(err);
             return;
@@ -232,6 +234,7 @@ function ajaxPassPlayer(data, status, jqXHR) {
         try {
             // Get id, sessionId and password generated in server side
             testPlayer.id = data.id;
+            testPlayer.created = data.created;
             testPlayer.sessionId = data.sessionId;
             testPlayer.password = data.password;
         } catch (err) {
@@ -259,6 +262,8 @@ function ajaxPassTeam(data, status, jqXHR) {
                     failed('findByOwnerId Team is not found');
                     return;
                 }
+            } else {
+                testTeam.created = data.created;
             }
             // Get id generated in server side
             testTeam.id = data.id;

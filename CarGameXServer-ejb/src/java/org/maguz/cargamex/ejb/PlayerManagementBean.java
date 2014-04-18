@@ -22,7 +22,6 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         }
         log(Level.INFO, "New player login " + player.getLogin());
         try {
-            player.setCreated(System.currentTimeMillis());
             player.setPassword(player.getPassword()); // hashes plain-text password
             player.setLastActivity(System.currentTimeMillis());
             em.persist(player);
@@ -80,6 +79,7 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
             player.setPasswordNoHash("");
             return StatusCode.AuthenticationFailed;
         }
+        player.setCreated(existing.getCreated());
         if (!login) {
             existing.setSessionId(null);
             player.setSessionId(null);

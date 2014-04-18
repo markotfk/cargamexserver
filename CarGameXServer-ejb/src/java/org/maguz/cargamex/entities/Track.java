@@ -25,6 +25,12 @@ public class Track extends CarGameEntity implements Serializable {
     
     private String description;
 
+    public Track() {
+        name = "";
+        trackPath = "";
+        description = "";
+    }
+    
     public String getDescription() {
         return description;
     }

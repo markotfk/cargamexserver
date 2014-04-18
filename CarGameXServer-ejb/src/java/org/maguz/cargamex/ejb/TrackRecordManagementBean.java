@@ -27,7 +27,6 @@ public class TrackRecordManagementBean extends ManagementBean implements TrackRe
         log(Level.INFO, String.format("Add track record %d, by player %d.", record.getRecordTime(), playerId));
         if (checkPlayer(playerId, sessionId) == StatusCode.OK) {
             try {
-                record.setCreated(System.currentTimeMillis());
                 em.persist(record);
                 return StatusCode.OK;
             } catch (Exception e) {

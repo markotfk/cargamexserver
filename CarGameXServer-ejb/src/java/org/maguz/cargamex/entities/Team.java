@@ -47,6 +47,14 @@ public class Team extends CarGameEntity implements Serializable {
 
     private String description;
 
+    public Team() {
+        name = "";
+        logoPath = "";
+        admins = new ArrayList<>();
+        players = new ArrayList<>();
+        description = "";
+    }
+    
     public String getDescription() {
         return description;
     }
@@ -55,13 +63,7 @@ public class Team extends CarGameEntity implements Serializable {
         this.description = description;
     }
     
-    private void checkAdmins() {
-        if (admins == null) {
-            admins = new ArrayList<>();
-        }
-    }
     public List<Player> getAdmins() {
-        checkAdmins();
         return admins;
     }
 
@@ -69,7 +71,6 @@ public class Team extends CarGameEntity implements Serializable {
         if (player == null) {
             throw new NullPointerException("Player is null");
         }
-        checkAdmins();
         if (!admins.contains(player)) {
             admins.add(player);
         }
@@ -79,7 +80,6 @@ public class Team extends CarGameEntity implements Serializable {
         if (player == null) {
             throw new NullPointerException("Player is null");
         }
-        checkAdmins();
         return admins.remove(player);
     }
     
@@ -87,7 +87,6 @@ public class Team extends CarGameEntity implements Serializable {
         if (player == null) {
             return false;
         }
-        checkAdmins();
         return admins.contains(player);
     }
     
@@ -145,7 +144,6 @@ public class Team extends CarGameEntity implements Serializable {
         if (player == null) {
             throw new NullPointerException("Player is null");
         }
-        checkPlayers();
         if (!players.contains(player)) {
             players.add(player);
         }
@@ -155,7 +153,6 @@ public class Team extends CarGameEntity implements Serializable {
         if (player == null) {
             throw new NullPointerException("Player is null");
         }
-        checkPlayers();
         return players.remove(player);
     }
     
@@ -163,14 +160,7 @@ public class Team extends CarGameEntity implements Serializable {
         if (player == null) {
             throw new NullPointerException("Player is null");
         }
-        checkPlayers();
         return players.contains(player);
-    }
-    
-    private void checkPlayers() {
-        if (players == null) {
-            players = new ArrayList<>();
-        }
     }
     
     public List<Player> getPlayers() {

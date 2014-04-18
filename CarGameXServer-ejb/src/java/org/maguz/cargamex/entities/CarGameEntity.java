@@ -23,6 +23,9 @@ public abstract class CarGameEntity {
 
     protected Long created;
 
+    protected CarGameEntity() {
+        created = System.currentTimeMillis();
+    }
     public Long getId() {
         return id;
     }

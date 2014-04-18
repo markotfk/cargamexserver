@@ -29,6 +29,9 @@ public class TrackRecord extends CarGameEntity implements Serializable {
     @OneToOne
     private Track track;
     
+    public TrackRecord() {
+    }
+    
     public Player getPlayer() {
         return player;
     }

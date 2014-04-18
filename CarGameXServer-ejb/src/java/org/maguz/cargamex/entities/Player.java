@@ -43,6 +43,9 @@ public class Player extends CarGameEntity implements Serializable {
 
     private int points;
     
+    public Player() {
+    }
+    
     @XmlTransient
     @ManyToOne
     @JoinColumn(name="team_id")
