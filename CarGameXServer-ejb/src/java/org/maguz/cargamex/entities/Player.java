@@ -101,27 +101,11 @@ public class Player extends CarGameEntity implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (login != null ? login.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
     public boolean equals(Object object) {
         if (!(object instanceof Player)) {
             return false;
         }
-        Player other = (Player) object;
-        if ((this.login == null && other.login != null) || (this.login != null && !this.login.equals(other.login))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "org.maguz.cargamex.entities.User[ login=" + login + " ]";
+        return super.equals(object);
     }
 
     /**
@@ -171,6 +155,10 @@ public class Player extends CarGameEntity implements Serializable {
     }
     
     public boolean checkPassword(String password) {
+        if (password == null) {
+            return false;
+        }
+        
         try {
             return PasswordUtils.check(password, this.password);
         } catch (Exception e) {

@@ -49,7 +49,11 @@ public class PasswordUtils {
     }
 
     /** Checks whether given plaintext password corresponds 
-        to a stored salted hash of the password. */
+        to a stored salted hash of the password.
+     * @param password
+     * @param stored
+     * @return 
+     * @throws java.lang.Exception */
     public static boolean check(String password, String stored) throws Exception{
         logger.log(Level.INFO, "check() enter");
         String[] saltAndPass = stored.split("\\$");

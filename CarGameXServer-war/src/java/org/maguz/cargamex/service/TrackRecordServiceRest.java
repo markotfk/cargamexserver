@@ -1,6 +1,5 @@
 package org.maguz.cargamex.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
