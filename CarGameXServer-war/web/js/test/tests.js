@@ -9,7 +9,7 @@ var testTeam = {};
 var testTrack = {};
 var testTrackRecord = {};
 var receiveData = false;
-var findByOwnerId = false;
+var findTeamByOwnerId = false;
 var randomId = 0;
 
 $(document).ready(function() {
@@ -62,7 +62,7 @@ function createTestTrack() {
 function createTestTrackRecord() {
     var testDate = new Date();
     testTrackRecord = new TrackRecord(new Date(testDate-1).getMilliseconds(), 
-            testPlayer, testTrack);
+            testPlayer.id, testTrack.id);
 }
 
 
@@ -95,6 +95,11 @@ function testTrackRecordRestApi() {
     createTestPlayer();
     addTestPlayer();
     loginTestPlayer();
+    
+    createTestTeam();
+    addTestTeam();
+    
+    createTestTrack();
     addTestTrack();
     // Track record object needs to be initialized last since it
     //  needs player.id and track.id
@@ -102,7 +107,8 @@ function testTrackRecordRestApi() {
     
     // tests
     addTestTrackRecord();
-    
+    findTrackRecordsByPlayer();
+    findTrackRecordsByTrack();
     
     removeTestTrackRecord();
     // cleanup
@@ -110,20 +116,20 @@ function testTrackRecordRestApi() {
 }
 
 function addTestTrack() {
-    ajaxCallTrack('Add Test Track', TrackRoot + testPlayer.id + '/' + testPlayer.sessionId, 'POST', true);
+    ajaxCallTrack('Add Test Track ' + testTrack.name, TrackRoot + testPlayer.id + '/' + testPlayer.sessionId, 'POST', true);
 }
 
 function removeTestTrack() {
-    ajaxCallTrack('Remove Test Track', TrackRoot + testPlayer.id + '/' + testPlayer.sessionId + '/' + testTrack.id, 'DELETE', false);
+    ajaxCallTrack('Remove Test Track ' + testTrack.name, TrackRoot + testPlayer.id + '/' + testPlayer.sessionId + '/' + testTrack.id, 'DELETE', false);
 }
 
 function addTestTrackRecord() {
     ajaxCallTrackRecord('Add Test Track Record', TrackRecordRoot + testPlayer.id + '/' + 
-            testPlayer.sessionId, 'POST', true);
+            testPlayer.sessionId + '/' + testTrack.id, 'POST', true);
 }
 
 function removeTestTrackRecord() {
-    ajaxCallTrackRecord('Remove Test Track Record', TrackRecordRoot + 'remove/' + 
+    ajaxCallTrackRecord('Remove Test Track Record ' + testTrackRecord.id, TrackRecordRoot + 'remove/' + 
             testTrackRecord.id + '/' + testPlayer.id + '/' + 
             testPlayer.sessionId, 'POST', false);
 }
@@ -252,8 +258,8 @@ function ajaxFailPlayer(jqXHR, textStatus, errorString) {
 function ajaxPassTeam(data, status, jqXHR) {
     if (receiveData) {
         try {
-            if (findByOwnerId) {
-                findByOwnerId = false;
+            if (findTeamByOwnerId) {
+                findTeamByOwnerId = false;
                 if (data.id === testTeam.id) {
                     log('findByOwnerId: succeed finding team:', testTeam.name);
                     pass();
@@ -264,9 +270,9 @@ function ajaxPassTeam(data, status, jqXHR) {
                 }
             } else {
                 testTeam.created = data.created;
+                // Get id generated in server side
+                testTeam.id = data.id;
             }
-            // Get id generated in server side
-            testTeam.id = data.id;
         } catch (err) {
             failed(err);
             return;
@@ -298,10 +304,20 @@ function addTestTeam() {
 
 function findTeamByOwner() {
     // Find team by owner id
-    findByOwnerId = true;
+    findTeamByOwnerId = true;
     ajaxCallTeam('Find Team by Owner id ' + testPlayer.id, TeamRoot + 'findByOwnerId/' +
             testPlayer.id, 'GET', true);
 }
+
+function findTrackRecordsByPlayer() {
+    ajaxCallTrackRecord('Find track records by player ' + testPlayer.id, TrackRecordRoot + 'findByPlayer/' +
+            testPlayer.id, 'GET', false);
+}
+function findTrackRecordsByTrack() {
+    ajaxCallTrackRecord('Find track records by track ' + testTrack.id, TrackRecordRoot + 'findByTrack/' +
+            testTrack.id, 'GET', false);
+}
+
 function deleteTestTeam() {
     // Add team
     ajaxCallTeam('Delete Team ' + testTeam.name, TeamRoot + 'remove/' + testPlayer.id + '/' + testPlayer.sessionId
@@ -336,7 +352,7 @@ function failed(err) {
     failedCount++;
     if (err) {
         log(testName + ":" + err);
-        errors.push(err);
+        errors.push(testName + ":" + err);
     }
 }
 

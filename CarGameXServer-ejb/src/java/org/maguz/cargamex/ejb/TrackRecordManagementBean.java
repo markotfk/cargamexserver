@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.logging.Level;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
+import org.maguz.cargamex.entities.Player;
+import org.maguz.cargamex.entities.Track;
 import org.maguz.cargamex.entities.TrackRecord;
 
 /**
@@ -14,7 +16,8 @@ import org.maguz.cargamex.entities.TrackRecord;
 public class TrackRecordManagementBean extends ManagementBean implements TrackRecordManagementBeanLocal {
 
     @Override
-    public StatusCode add(TrackRecord record, Long playerId, String sessionId) {
+    public StatusCode add(TrackRecord record, Long playerId, String sessionId,
+            Long trackId) {
         if (record == null) {
             return StatusCode.NotFound;
         }
@@ -26,6 +29,14 @@ public class TrackRecordManagementBean extends ManagementBean implements TrackRe
         }
         log(Level.INFO, String.format("Add track record %d, by player %d.", record.getRecordTime(), playerId));
         if (checkPlayer(playerId, sessionId) == StatusCode.OK) {
+            Track track = em.find(Track.class, trackId);
+            if (track != null) {
+                record.setTrack(track);
+            }
+            Player player = em.find(Player.class, playerId);
+            if (player != null) {
+                record.setPlayer(player);
+            }
             try {
                 em.persist(record);
                 return StatusCode.OK;
@@ -88,24 +99,24 @@ public class TrackRecordManagementBean extends ManagementBean implements TrackRe
 
     @Override
     public List<TrackRecord> findAllByPlayerId(Long playerId) {
-        /*String queryString = "SELECT * FROM TrackRecord tr " +
-                         "WHERE tr.player = :playerId";
-        Query query = em.createQuery(queryString);
-
-        query.setParameter("playerId", playerId);
-        return query.getResultList();*/
-        return null;
+        if (playerId == null) {
+            return null;
+        }
+        String queryString = "SELECT * FROM carx.trackrecord " +
+                         "WHERE player_id = " + playerId;
+        Query query = em.createNativeQuery(queryString, TrackRecord.class);
+        return query.getResultList();
     }
 
     @Override
     public List<TrackRecord> findAllByTrackId(Long trackId) {
-        /*String queryString = "SELECT * FROM TrackRecord tr " +
-                         "WHERE tr.track = :trackId";
-        Query query = em.createQuery(queryString);
-
-        query.setParameter("trackId", trackId);
-        return query.getResultList();*/
-        return null;
+        if (trackId == null) {
+            return null;
+        }
+        String queryString = "SELECT * FROM carx.trackrecord " +
+                         "WHERE track_id = " + trackId;
+        Query query = em.createNativeQuery(queryString, TrackRecord.class);
+        return query.getResultList();
     }
 
 }

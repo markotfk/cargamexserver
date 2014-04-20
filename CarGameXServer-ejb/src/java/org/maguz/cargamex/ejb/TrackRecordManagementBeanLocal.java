@@ -16,9 +16,11 @@ public interface TrackRecordManagementBeanLocal {
      * @param record
      * @param playerId
      * @param sessionId
+     * @param trackId
      * @return
      */
-    StatusCode add(TrackRecord record, Long playerId, String sessionId);
+    StatusCode add(TrackRecord record, Long playerId, String sessionId,
+            Long trackId);
     
     /**
      * Remove track record.

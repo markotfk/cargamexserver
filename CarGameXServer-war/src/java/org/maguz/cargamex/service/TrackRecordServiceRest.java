@@ -30,12 +30,13 @@ public class TrackRecordServiceRest extends ServiceRest {
     }
 
     @POST
-    @Path("{player_id}/{session_id}")
+    @Path("{player_id}/{session_id}/{track_id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public TrackRecord create(TrackRecord entity, @PathParam("player_id") Long playerId,
-            @PathParam("session_id") String sessionId) {
-        handleStatusCode(tm.add(entity, playerId, sessionId));
+            @PathParam("session_id") String sessionId,
+            @PathParam("track_id") Long trackId) {
+        handleStatusCode(tm.add(entity, playerId, sessionId, trackId));
         return entity;
     }
 
@@ -72,10 +73,10 @@ public class TrackRecordServiceRest extends ServiceRest {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<TrackRecord> findAll() {
         List<TrackRecord> all = tm.findAll();
-        if (all != null) {
+        if (all != null && !all.isEmpty()) {
             return all;
         }
-        return new ArrayList<>();
+        throw new WebApplicationException(Response.Status.NOT_FOUND);
     }
     
     @GET
@@ -83,18 +84,18 @@ public class TrackRecordServiceRest extends ServiceRest {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<TrackRecord> findByPlayer(@PathParam("id") Long id) {
         List<TrackRecord> records = tm.findAllByPlayerId(id);
-        if (records != null) {
+        if (records != null && !records.isEmpty()) {
             return records;
         } 
         throw new WebApplicationException(Response.Status.NOT_FOUND);
     }
     
     @GET
-    @Path("findByTeam/{id}")
+    @Path("findByTrack/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<TrackRecord> findByTeam(@PathParam("id") Long id) {
+    public List<TrackRecord> findByTrack(@PathParam("id") Long id) {
         List<TrackRecord> records = tm.findAllByTrackId(id);
-        if (records != null) {
+        if (records != null && !records.isEmpty()) {
             return records;
         } 
         throw new WebApplicationException(Response.Status.NOT_FOUND);
