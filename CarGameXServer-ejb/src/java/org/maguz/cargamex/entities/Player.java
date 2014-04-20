@@ -1,6 +1,9 @@
 package org.maguz.cargamex.entities;
 
 import java.io.Serializable;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.util.logging.Level;
 import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -147,10 +150,21 @@ public class Player extends CarGameEntity implements Serializable {
      * @param password the password to set
      */
     public void setPassword(String password) {
-        this.password = PasswordUtils.getSaltedHash(password);
+        if (password == null) {
+            throw new NullPointerException("password");
+        }
+        try {
+            this.password = PasswordUtils.getSaltedHash(password);
+        } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
+            logger.log(Level.SEVERE, "SetPassword error:{0}", e.getMessage());
+        }
+        
     }
     
     public void setPasswordNoHash(String password) {
+        if (password == null) {
+            throw new NullPointerException("password");
+        }
         this.password = password;
     }
     

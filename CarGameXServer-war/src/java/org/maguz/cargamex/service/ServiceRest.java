@@ -12,11 +12,11 @@ import org.maguz.cargamex.ejb.StatusCode;
  */
 public abstract class ServiceRest {
     
-    protected Logger logger;
+    protected static final Logger logger = Logger.getLogger(ServiceRest.class.getSimpleName());
     
     protected ServiceRest() {
-        logger = Logger.getLogger(getClass().getName());
     }
+    
     protected void handleStatusCode(StatusCode status) {
         logger.log(Level.INFO, "handleStatusCode {0}", status);
         if (status == StatusCode.DuplicateEntry) {

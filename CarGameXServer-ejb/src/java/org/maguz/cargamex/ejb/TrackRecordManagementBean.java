@@ -21,10 +21,7 @@ public class TrackRecordManagementBean extends ManagementBean implements TrackRe
         if (record == null) {
             return StatusCode.NotFound;
         }
-        if (playerId == null) {
-            return StatusCode.AuthenticationFailed;
-        }
-        if (sessionId == null) {
+        if (playerId == null || sessionId == null) {
             return StatusCode.AuthenticationFailed;
         }
         log(Level.INFO, String.format("Add track record %d, by player %d.", record.getRecordTime(), playerId));
@@ -41,7 +38,7 @@ public class TrackRecordManagementBean extends ManagementBean implements TrackRe
                 em.persist(record);
                 return StatusCode.OK;
             } catch (Exception e) {
-                logger.log(Level.SEVERE, "Error while adding track record: %s", e.getMessage());
+                log(Level.SEVERE, String.format("Error while adding track record: %s", e.getMessage()));
                 return StatusCode.DuplicateEntry;
             }
         }
@@ -63,7 +60,7 @@ public class TrackRecordManagementBean extends ManagementBean implements TrackRe
                     return StatusCode.NotFound;
                 }
             } catch (Exception e) {
-                logger.log(Level.SEVERE, "Error while removing track record: %s", e.getMessage());
+                log(Level.SEVERE, String.format("Error while removing track record: %s", e.getMessage()));
                 return StatusCode.Forbidden;
             }
         }

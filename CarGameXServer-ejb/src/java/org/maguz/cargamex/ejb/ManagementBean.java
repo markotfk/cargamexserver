@@ -17,7 +17,7 @@ public abstract class ManagementBean {
     
     DateFormat dateFormat;
     protected Calendar cal;
-    protected Logger logger;
+    protected static final Logger logger = Logger.getLogger(ManagementBean.class.getSimpleName());
     
     @PersistenceContext(unitName = "CarGameXServer-ejbPU")
     protected EntityManager em;
@@ -25,7 +25,6 @@ public abstract class ManagementBean {
     protected ManagementBean() {
         dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         cal = Calendar.getInstance();
-        logger = Logger.getLogger(this.getClass().toString());
     }
     
     protected void log(Level level, String message) {
@@ -38,7 +37,7 @@ public abstract class ManagementBean {
         try {
             em.merge(entity);
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error merge: {0}", e.getMessage());
+            log(Level.SEVERE, String.format("Error merge: %s", e.getMessage()));
             return StatusCode.AuthenticationFailed;
         }
         return StatusCode.OK;
@@ -51,7 +50,7 @@ public abstract class ManagementBean {
         try {
             em.remove(em.merge(entity));
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error remove: {0}", e.getMessage());
+            log(Level.SEVERE, String.format("Error remove: %s", e.getMessage()));
             return StatusCode.AuthenticationFailed;
         }
         return StatusCode.OK;
