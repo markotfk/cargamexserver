@@ -5,12 +5,17 @@ package org.maguz.cargamex.ejb;
 
 import java.util.List;
 import java.util.logging.Level;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import org.maguz.cargamex.entities.Player;
+import org.maguz.cargamex.entities.Team;
 
 @Stateless
 public class PlayerManagementBean extends ManagementBean implements PlayerManagementBeanLocal {
 
+    @EJB 
+    private TeamManagementBeanLocal tm;
+    
     // Add player instance to database.
 
     @Override
@@ -131,6 +136,27 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
             log(Level.INFO, "Remove player " + id);
             Player existing = find(id);
             if (existing != null) {
+                if (existing.getTeam() != null) {
+                    Team team = tm.find(existing.getTeam().getId());
+                    StatusCode code = StatusCode.OK;
+                    if (team.isOwner(existing)) {
+                        // Removed player is owner, remove whole team
+                        code = tm.remove(team.getId(), id, sessionId);
+                    } else if (team.isAdmin(existing)) {
+                        // Removed player is admin of team
+                        code = tm.removeAdmin(team, id, sessionId, existing.getId());
+                        if (code == StatusCode.OK) {
+                            // Remove also from player list
+                            code = tm.removePlayer(team, id, sessionId, existing.getId());
+                        }
+                    } else if (team.isPlayer(existing)) {
+                        // Removed player is player of team
+                        code = tm.removePlayer(team, id, sessionId, existing.getId());
+                    }
+                    if (code != StatusCode.OK) {
+                        return code;
+                    }
+                }
                 return super.remove(existing);
             } else {
                 return StatusCode.NotFound;

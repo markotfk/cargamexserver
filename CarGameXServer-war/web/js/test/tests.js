@@ -9,7 +9,7 @@ var testTeam = {};
 var testTrack = {};
 var testTrackRecord = {};
 var receiveData = false;
-var findTeamByOwnerId = false;
+var findTeamByPlayerId = false;
 var randomId = 0;
 
 $(document).ready(function() {
@@ -73,7 +73,7 @@ function testTeamRestApi() {
     addTestPlayer();
     loginTestPlayer();
     addTestTeam();
-    findTeamByOwner();
+    findTeamByPlayer();
     //deleteTestTeam();
     //deleteTestPlayer();
 }
@@ -258,8 +258,8 @@ function ajaxFailPlayer(jqXHR, textStatus, errorString) {
 function ajaxPassTeam(data, status, jqXHR) {
     if (receiveData) {
         try {
-            if (findTeamByOwnerId) {
-                findTeamByOwnerId = false;
+            if (findTeamByPlayerId) {
+                findTeamByPlayerId = false;
                 if (data.id === testTeam.id) {
                     log('findByOwnerId: succeed finding team:', testTeam.name);
                     pass();
@@ -302,10 +302,10 @@ function addTestTeam() {
     ajaxCallTeam('Add New Team ' + testTeam.name, TeamRoot + 'add/' + testPlayer.id + '/' + testPlayer.sessionId, 'POST', true);
 }
 
-function findTeamByOwner() {
+function findTeamByPlayer() {
     // Find team by owner id
-    findTeamByOwnerId = true;
-    ajaxCallTeam('Find Team by Owner id ' + testPlayer.id, TeamRoot + 'findByOwnerId/' +
+    findTeamByPlayerId = true;
+    ajaxCallTeam('Find Team by Player id ' + testPlayer.id, TeamRoot + 'findByPlayerId/' +
             testPlayer.id, 'GET', true);
 }
 

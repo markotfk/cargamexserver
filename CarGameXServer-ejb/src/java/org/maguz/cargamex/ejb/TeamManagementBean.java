@@ -112,15 +112,13 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
     }
 
     @Override
-    public Team findByOwnerId(Long playerId) {
+    public Team findByPlayerId(Long playerId) {
         if (playerId == null) {
             return null;
         }
-        List<Team> all = findAll();
-        for (Team t : all) {
-            if (t.isOwner(em.find(Player.class, playerId))) {
-                return t;
-            }
+        Player player = em.find(Player.class, playerId);
+        if (player != null) {
+            return player.getTeam();
         }
         return null;
     }

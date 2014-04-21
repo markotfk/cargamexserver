@@ -32,6 +32,11 @@
                 <form method="post" id="logout_form" class="player_form">
                     <input type="submit" value="Logout user">
                 </form> 
+            
+                <form method="post" id="player_form_remove" class="player_form">
+                    Remove Account<br>
+                    <input type="submit" value="Remove Account">
+                </form>
             </p>
             <p>
                 <form method="post" id="team_form_add" class="player_form">

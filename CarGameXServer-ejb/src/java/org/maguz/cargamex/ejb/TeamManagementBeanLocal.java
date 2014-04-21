@@ -19,7 +19,7 @@ public interface TeamManagementBeanLocal {
     
     Team find(Long id);
     
-    Team findByOwnerId(Long playerId);
+    Team findByPlayerId(Long playerId);
     
     List<Team> findAll();
     

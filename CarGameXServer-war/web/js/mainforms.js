@@ -5,9 +5,11 @@ $(document).ready(function() {
     initLogoutForm();
     initAddTeamForm();
     initRemoveTeamForm();
+    initPlayerFormRemove();
     var player = getSessionData(playerKey);
     if (player) {
         loggedIn = true;
+        getPlayerTeam();
         updateForms(true);
     } else {
         updateForms(loggedIn);
@@ -23,6 +25,70 @@ function initLoginForm() {
     });
 }
 
+function initPlayerFormRemove() {
+    $('#player_form_remove').submit(function(event) {
+        event.preventDefault();
+        return removePlayer();
+    });
+}
+
+function removePlayer() {
+    var player = getSessionData(playerKey);
+    if (!player) {
+        log('removePlayer(): No player data found.')
+        return false;
+    }
+    $.ajax(PlayerRoot + player.id + '/' + player.sessionId, {
+        contentType: 'application/json',
+        dataType: 'json',
+        type: 'DELETE',
+        success: function(data, status, jqXHR) {
+            localStorage.setItem(playerKey, null);
+            updateForms(false);
+            updateTeamStatus();
+            showStatus('Player account removed');
+        },
+        error: function(jqXHR, textStatus, errorString) {
+            localStorage.setItem(playerKey, null);
+            log('removePlayer() error:', errorString);
+            showStatus('removePlayer() Error:' + errorString);
+            updateForms(false);
+            updateTeamStatus();
+        }
+    });
+}
+
+function getPlayerTeam() {
+    var player = getSessionData(playerKey);
+    if (!player) {
+        log('getPlayerTeam(): No player data found.')
+        return;
+    }
+    
+    $.ajax(TeamRoot + 'findByPlayerId' + '/' + player.id, {
+        contentType: 'application/json',
+        dataType: 'json',
+        type: 'GET',
+        success: function(data, status, jqXHR) {
+            if (data) {
+                localStorage.setItem(teamKey, JSON.stringify(data));
+                showStatus('');
+            } else {
+                localStorage.setItem(teamKey, null);
+            }
+            updateForms(true);
+            updateTeamStatus();
+        },
+        error: function(jqXHR, textStatus, errorString) {
+            localStorage.setItem(teamKey, null);
+            log('getPlayerTeam() error:', errorString);
+            showStatus('getPlayerTeam() Error:' + errorString);
+            updateForms(false);
+            updateTeamStatus();
+        }
+    });
+}
+
 function loginPlayer(player) {
     showStatus('Processing...');
     
@@ -34,6 +100,7 @@ function loginPlayer(player) {
             log('login_form: Success login');
             if (data && data.sessionId) {
                 localStorage.setItem(playerKey, JSON.stringify(data));
+                getPlayerTeam();
                 showStatus('');
                 startSessionTimer();
             } else {
@@ -178,12 +245,14 @@ function updateForms(logged) {
              $('#login_name').html('Logged in');
              $('#login_created').html('');
          }
+         $('#player_form_remove').show();
          
      } else {
          $('#login_form').show();
          $('#logout_form').hide();
          $('#login_name').html('Not Logged in');
          $('#login_created').hide();
+         $('#player_form_remove').hide();
      }
 }
 
