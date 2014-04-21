@@ -34,11 +34,15 @@
                 </form> 
             </p>
             <p>
-                <form method="post" id="team_form" class="player_form">
+                <form method="post" id="team_form_add" class="player_form">
                     Create a Team:<br>
                     Name: <input type="text" name="Team Name" id="team_name"><br>
                     Description: <input type="text" name="Team Description" id="team_description"><br>
                     <input type="submit" value="Create Team">
+                </form>
+                <form method="post" id="team_form_remove" class="player_form">
+                    Remove Team<br>
+                    <input type="submit" value="Remove Team">
                 </form>
             </p>
             

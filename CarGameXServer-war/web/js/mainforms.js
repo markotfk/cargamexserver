@@ -4,6 +4,7 @@ $(document).ready(function() {
     initLoginForm();
     initLogoutForm();
     initAddTeamForm();
+    initRemoveTeamForm();
     var player = getSessionData(playerKey);
     if (player) {
         loggedIn = true;
@@ -87,11 +88,13 @@ function logoutPlayer() {
 }
 
 function initAddTeamForm() {
-    $('#team_form').submit(function(event) {
+    $('#team_form_add').submit(function(event) {
         event.preventDefault();
         showStatus('Processing...');
         var player = getSessionData(playerKey);
         if (!player) {
+            log('Error: must be logged in to add team');
+            showStatus('');
             return false;
         }
         var addTeamUrl = TeamRoot + 'add/' + player.id + '/' + player.sessionId;
@@ -101,13 +104,13 @@ function initAddTeamForm() {
             dataType: 'json',
             type: 'POST',
             success: function(data, status, jqXHR) {
-                log('team_form: Success create team');
+                log('team_form_add: Success create team');
                 localStorage.setItem(teamKey, JSON.stringify(data));
                 showStatus('');
                 updateTeamStatus();
             },
             error: function(jqXHR, textStatus, errorString) {
-                log('team_form: Error in creating team:', errorString);
+                log('team_form_add: Error in creating team:', errorString);
                 showStatus('Error:' + errorString);
                 localStorage.setItem(teamKey, null);
                 updateTeamStatus();
@@ -116,6 +119,47 @@ function initAddTeamForm() {
         });
     });
 }
+
+function initRemoveTeamForm() {
+    $('#team_form_remove').submit(function(event) {
+        event.preventDefault();
+        showStatus('Processing...');
+        var player = getSessionData(playerKey);
+        if (!player) {
+            log('Error: must be logged in to remove team');
+            showStatus('');
+            $('#team_form_remove').hide();
+            return false;
+        }
+        var team = getSessionData(teamKey);
+        if (!team) {
+            log('Error: must have team to remove team');
+            showStatus('');
+            $('#team_form_remove').hide();
+            return false;
+        }
+        var removeTeamUrl = TeamRoot + 'remove/' + player.id + '/' + player.sessionId +
+                '/' + team.id;
+        $.ajax(removeTeamUrl, {
+            contentType: 'application/json',
+            dataType: 'json',
+            type: 'POST',
+            success: function(data, status, jqXHR) {
+                log('team_form_remove: Success remove team');
+                localStorage.setItem(teamKey, null);
+                showStatus('');
+                updateTeamStatus();
+            },
+            error: function(jqXHR, textStatus, errorString) {
+                log('team_form_remove: Error in removing team:', errorString);
+                showStatus('Error:' + errorString);
+                localStorage.setItem(teamKey, null);
+                updateTeamStatus();
+            }
+        });
+    });
+}
+
 
 function showStatus(message) {
     $('#error_status').html(message);
@@ -134,11 +178,10 @@ function updateForms(logged) {
              $('#login_name').html('Logged in');
              $('#login_created').html('');
          }
-         $('#team_form').show();
+         
      } else {
          $('#login_form').show();
          $('#logout_form').hide();
-         $('#team_form').hide();
          $('#login_name').html('Not Logged in');
          $('#login_created').hide();
      }
@@ -150,12 +193,21 @@ function updateTeamStatus() {
         $('#team_created').show();
         var team = getSessionData(teamKey);
         if (team) {
+            $('#team_form_add').hide();
+            $('#team_form_remove').show();
             $('#team_membership').html('<br>Team id:' + team.id + '<br> name:' + team.name + '<br>Description:<br>' + team.description);
             $('#team_created').html('Team created: ' + new Date(team.created).toLocaleString());
+        } else {
+            $('#team_form_add').show();
+            $('#team_form_remove').hide();
+            $('#team_membership').hide();
+            $('#team_created').hide();
         }
     } else {
         $('#team_membership').hide();
         $('#team_created').hide();
+        $('#team_form_add').hide();
+        $('#team_form_remove').hide();
     }
 }
 
