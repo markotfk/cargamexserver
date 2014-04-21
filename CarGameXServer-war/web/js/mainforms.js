@@ -279,7 +279,3 @@ function updateTeamStatus() {
         $('#team_form_remove').hide();
     }
 }
-
-function getSessionData(key) {
-    return JSON.parse(localStorage.getItem(key));
-}

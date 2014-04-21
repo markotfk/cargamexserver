@@ -96,4 +96,14 @@ public class PlayerServiceRest extends ServiceRest {
         }
         return new ArrayList<>();
     }
+    
+    @GET
+    @Path("findByLogin/{login}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Player> findByLogin(@PathParam("login")String login) {
+        if (login == null) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        return pm.findAllByLogin(login);
+    }
 }

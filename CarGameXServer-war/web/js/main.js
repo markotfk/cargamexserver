@@ -25,6 +25,10 @@ function log() {
     }
 }
 
+function getSessionData(key) {
+    return JSON.parse(localStorage.getItem(key));
+}
+
 function startSessionTimer() {
     log('startSessionTimer');
     SessionTimer = window.setInterval(function() { updateSession(); }, 60000);

@@ -8,6 +8,7 @@ import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -27,6 +28,10 @@ import org.maguz.cargamex.util.PasswordUtils;
 @Cacheable(false)
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
+@NamedQuery(
+            name="findAllByLogin",
+            query="SELECT p FROM Player p WHERE p.login LIKE :playerLogin"
+    )
 public class Player extends CarGameEntity implements Serializable {
     @XmlElement(required = true)
     @NotNull

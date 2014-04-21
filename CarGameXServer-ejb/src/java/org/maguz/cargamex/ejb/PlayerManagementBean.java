@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 import org.maguz.cargamex.entities.Player;
 import org.maguz.cargamex.entities.Team;
 
@@ -50,7 +51,7 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
             return StatusCode.Forbidden;
         }
         log(Level.INFO, String.format("checkNewPlayer %s", player.getLogin()));
-        Player existing = findByLogin(player.getLogin());
+        Player existing = findSingleByLogin(player.getLogin());
         if (existing != null) {
             log(Level.INFO, "Login is in use, return StatusCode.DuplicateEntry");
             return StatusCode.DuplicateEntry;
@@ -72,7 +73,7 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
             return StatusCode.NotFound;
         }
         log(Level.INFO, String.format("authenticatePlayer %s", player.getLogin()));
-        Player existing = findByLogin(player.getLogin());
+        Player existing = findSingleByLogin(player.getLogin());
         if (existing == null) {
             log(Level.INFO, "Existing player not found, return AuthenticationFailed");
             return StatusCode.AuthenticationFailed;
@@ -99,11 +100,11 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         }
     }
     
-    private Player findByLogin(String login) {
+    private Player findSingleByLogin(String login) {
         if (login == null) {
             return null;
         }
-        log(Level.INFO, "findByLogin " + login);
+        log(Level.INFO, "findSingleByLogin " + login);
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Player.class));
         List<Player> players = em.createQuery(cq).getResultList();
@@ -178,5 +179,18 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Player.class));
         return em.createQuery(cq).getResultList();
+    }
+
+    @Override
+    public List<Player> findAllByLogin(String login) {
+        if (login == null) {
+            return null;
+        }
+        log(Level.INFO, "findAllByLogin " + login);
+        Query query = em.createNamedQuery("findAllByLogin");
+        query.setParameter("playerLogin", login + "%");
+        query.setMaxResults(100);
+        List<Player> results = query.getResultList();
+        return results;
     }
 }

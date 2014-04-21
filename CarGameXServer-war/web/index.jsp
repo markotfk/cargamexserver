@@ -50,7 +50,6 @@
                     <input type="submit" value="Remove Team">
                 </form>
             </p>
-            
             <p>
                 <div class="errormsg" id="error_status"></div>
             </p>
@@ -59,9 +58,14 @@
                 <div class="player_info" id="team_created"></div>
             </p>
             <p>
-                <a href="register.html">Register New Player</a>
+                <a href="register.html">Register New Player</a><br>
+                <a href="search.html">Search Players</a>
             </p>
         </div>
+        <p>
+            <a href="tests.html">Run Tests</a>
+        </p>
+        
     </body>
     
 </html>

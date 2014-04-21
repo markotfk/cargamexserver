@@ -22,6 +22,11 @@ font-size: 12px;
 width: 280px;
 display: block
 }
+.search_results {
+    font-family: Arial;
+    font-size: 14px;
+    border: 1px solid #CCC;
+}
 
 fieldset {
 border: 1px solid #CCC;

@@ -62,4 +62,11 @@ public interface PlayerManagementBeanLocal {
      * @return 
      */
     List<Player> findAll();
+    
+    /**
+     * Find list of players filtered by login text.
+     * @param login
+     * @return
+     */
+    List<Player> findAllByLogin(String login);
 }

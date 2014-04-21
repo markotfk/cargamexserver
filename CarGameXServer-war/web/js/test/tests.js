@@ -140,6 +140,7 @@ function testPlayerRestApi() {
     loginTestPlayer();
     logoutTestPlayer();
     
+    testFindByLogin();
     // Delete player
     // password must be reset for login
     //testPlayer.password = 'password' + randomId;
@@ -309,6 +310,7 @@ function findTeamByPlayer() {
             testPlayer.id, 'GET', true);
 }
 
+
 function findTrackRecordsByPlayer() {
     ajaxCallTrackRecord('Find track records by player ' + testPlayer.id, TrackRecordRoot + 'findByPlayer/' +
             testPlayer.id, 'GET', false);
@@ -341,6 +343,10 @@ function logoutTestPlayer() {
 
 function deleteTestPlayer() {
     ajaxCallPlayer('Delete Player ' + testPlayer.id, PlayerRoot + testPlayer.id + '/' + testPlayer.sessionId, 'DELETE', false);
+}
+
+function testFindByLogin() {
+    ajaxCallPlayer('Find by Login ' + testPlayer.login, PlayerRoot + 'findByLogin/' + testPlayer.login, 'GET', false);
 }
 
 function pass() {
