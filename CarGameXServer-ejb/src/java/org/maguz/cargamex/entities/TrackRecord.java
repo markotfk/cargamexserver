@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
+ * Track record entity.
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @Entity

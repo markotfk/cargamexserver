@@ -12,6 +12,10 @@ import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import org.maguz.cargamex.entities.Player;
 
+/**
+ * Periodically checks player activity and resets session id to null
+ * if player has been inactive for too long.
+ */
 @Singleton
 @LocalBean
 public class ActivityMonitorBean extends ManagementBean {
@@ -21,6 +25,9 @@ public class ActivityMonitorBean extends ManagementBean {
     @EJB 
     PlayerManagementBeanLocal pm;
     
+    /**
+     * Player session inactivity check.
+     */
     @Schedule(minute = "0-59", second = "0", dayOfMonth = "*", month = "*", year = "*", hour = "0-23", dayOfWeek = "*")
     public void playerSessionActivityCheck() {
         List<Player> allPlayers = pm.findAll(); // todo: find only players with valid sessionId

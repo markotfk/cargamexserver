@@ -5,7 +5,7 @@ import javax.ejb.Local;
 import org.maguz.cargamex.entities.Team;
 
 /**
- *
+ * Local interface for Team manager bean.
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @Local
@@ -14,8 +14,6 @@ public interface TeamManagementBeanLocal {
     StatusCode add(Team team, Long playerId, String sessionId);
     
     StatusCode remove(Long teamId, Long playerId, String sessionId);
-    
-    StatusCode edit(Team team, Long playerId, String sessionId);
     
     Team find(Long id);
     

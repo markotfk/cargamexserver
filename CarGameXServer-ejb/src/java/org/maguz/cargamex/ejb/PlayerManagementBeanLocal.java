@@ -8,6 +8,9 @@ import java.util.List;
 import javax.ejb.Local;
 import org.maguz.cargamex.entities.Player;
 
+/**
+ * Local interface for Player entity handling EJB.
+ */
 @Local
 public interface PlayerManagementBeanLocal {
 
@@ -33,14 +36,6 @@ public interface PlayerManagementBeanLocal {
      * @return Status code.
      */
     StatusCode logout(Player player);
-    
-    /**
-     * Edit player details.
-     * @param id
-     * @param player
-     * @return 
-     */
-    StatusCode edit(Long id, Player player);
     
     /**
      * Remove player from database.

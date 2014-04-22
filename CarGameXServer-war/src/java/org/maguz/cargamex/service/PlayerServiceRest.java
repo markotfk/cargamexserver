@@ -21,7 +21,7 @@ import org.maguz.cargamex.ejb.PlayerManagementBeanLocal;
 import org.maguz.cargamex.entities.Player;
 
 /**
- *
+ * Player REST API.
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @Path("v1/players")
@@ -59,14 +59,6 @@ public class PlayerServiceRest extends ServiceRest {
         handleStatusCode(pm.logout(entity));
     }
     
-    @PUT
-    @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Long id, Player entity) {
-        
-        handleStatusCode(pm.edit(id, entity));
-    }
-
     @DELETE
     @Path("{player_id}/{session_id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})

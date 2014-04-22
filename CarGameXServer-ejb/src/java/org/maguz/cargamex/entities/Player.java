@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.maguz.cargamex.util.PasswordUtils;
 
 /**
- *
+ * Player entity.
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @Entity

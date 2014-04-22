@@ -16,7 +16,7 @@ import org.maguz.cargamex.ejb.TrackRecordManagementBeanLocal;
 import org.maguz.cargamex.entities.TrackRecord;
 
 /**
- *
+ * Track record handling REST API.
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @Path("v1/trackrecords")
@@ -37,14 +37,6 @@ public class TrackRecordServiceRest extends ServiceRest {
             @PathParam("track_id") Long trackId) {
         handleStatusCode(tm.add(entity, playerId, sessionId, trackId));
         return entity;
-    }
-
-    @PUT
-    @Path("{player_id}/{session_id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(TrackRecord entity, @PathParam("player_id") Long playerId,
-            @PathParam("session_id") String sessionId) {
-        handleStatusCode(tm.edit(entity, playerId, sessionId));
     }
 
     @POST

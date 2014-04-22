@@ -4,7 +4,7 @@ import java.util.Set;
 import javax.ws.rs.core.Application;
 
 /**
- *
+ * Java REST API application class implementation.
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @javax.ws.rs.ApplicationPath("rest")

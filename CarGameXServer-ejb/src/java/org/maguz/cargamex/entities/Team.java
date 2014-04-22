@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
+ * Team entity.
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @Entity
@@ -37,11 +37,11 @@ public class Team extends CarGameEntity implements Serializable {
     
     @XmlTransient
     @OneToMany(mappedBy="team")
-    private List<Player> admins;
+    private final List<Player> admins;
 
     @XmlTransient
     @OneToMany(mappedBy="team")
-    private List<Player> players;
+    private final List<Player> players;
     
     private int wins;
 

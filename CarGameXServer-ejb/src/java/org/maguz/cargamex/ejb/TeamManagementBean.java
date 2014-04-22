@@ -13,7 +13,14 @@ import org.maguz.cargamex.entities.Team;
 @Stateless
 public class TeamManagementBean extends ManagementBean implements TeamManagementBeanLocal {
 
-    
+    /**
+     * Add new team.
+     * Requires valid player id and session id.
+     * @param team
+     * @param playerId
+     * @param sessionId
+     * @return
+     */
     @Override
     public StatusCode add(Team team, Long playerId, String sessionId) {
         if (team == null) {
@@ -55,6 +62,14 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
         return StatusCode.OK;
     }
 
+    /**
+     * Removes a team.
+     * Requires valid player id and session id.
+     * @param teamId
+     * @param playerId
+     * @param sessionId
+     * @return
+     */
     @Override
     public StatusCode remove(Long teamId, Long playerId, String sessionId) {
         if (teamId == null) {
@@ -84,33 +99,21 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
         return StatusCode.AuthenticationFailed;
     }
 
-    @Override
-    public StatusCode edit(Team team, Long playerId, String sessionId) {
-        if (team == null) {
-            return StatusCode.NotFound;
-        }
-        if (playerId == null) {
-            return StatusCode.AuthenticationFailed;
-        }
-        if (sessionId == null) {
-            return StatusCode.AuthenticationFailed;
-        }
-        log(Level.INFO, String.format("Edit team: %d", team.getId()));
-        Player existingPlayer = em.find(Player.class, playerId);
-        if (existingPlayer != null && existingPlayer.checkSessionId(sessionId)) {
-            Team existingTeam = find(team.getId());
-            if (existingTeam != null && existingTeam.isAdmin(existingPlayer)) {
-                return merge(team);
-            }
-        }
-        return StatusCode.AuthenticationFailed;
-    }
-
+    /**
+     * Find team by team id.
+     * @param id
+     * @return
+     */
     @Override
     public Team find(Long id) {
         return em.find(Team.class, id);
     }
 
+    /**
+     * Find player's team.
+     * @param playerId
+     * @return
+     */
     @Override
     public Team findByPlayerId(Long playerId) {
         if (playerId == null) {
@@ -123,6 +126,10 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
         return null;
     }
     
+    /**
+     * Get all teams.
+     * @return
+     */
     @Override
     public List<Team> findAll() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -130,6 +137,14 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
         return em.createQuery(cq).getResultList();
     }
 
+    /**
+     * Add player to team.
+     * @param team
+     * @param playerId
+     * @param sessionId
+     * @param newPlayerId
+     * @return
+     */
     @Override
     public StatusCode addPlayer(Team team, Long playerId, String sessionId, Long newPlayerId) {
         if (team == null) {
@@ -172,6 +187,14 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
         return StatusCode.AuthenticationFailed;
     }
 
+    /**
+     * Remove player from team.
+     * @param team
+     * @param playerId
+     * @param sessionId
+     * @param removePlayerId
+     * @return
+     */
     @Override
     public StatusCode removePlayer(Team team, Long playerId, String sessionId, Long removePlayerId) {
         if (team == null) {
@@ -219,6 +242,14 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
         return StatusCode.AuthenticationFailed;
     }
 
+    /**
+     * Add administrator to team.
+     * @param team
+     * @param playerId
+     * @param sessionId
+     * @param adminPlayerId
+     * @return
+     */
     @Override
     public StatusCode addAdmin(Team team, Long playerId, String sessionId, Long adminPlayerId) {
         if (team == null) {
@@ -259,6 +290,14 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
         return StatusCode.AuthenticationFailed;
     }
 
+    /**
+     * Remove administrator from team.
+     * @param team
+     * @param playerId
+     * @param sessionId
+     * @param adminPlayerId
+     * @return
+     */
     @Override
     public StatusCode removeAdmin(Team team, Long playerId, String sessionId, Long adminPlayerId) {
         if (team == null) {
@@ -299,6 +338,14 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
         return StatusCode.AuthenticationFailed;
     }
 
+    /**
+     * Set team's owner.
+     * @param team
+     * @param playerId
+     * @param sessionId
+     * @param ownerPlayerId
+     * @return
+     */
     @Override
     public StatusCode setOwner(Team team, Long playerId, String sessionId, Long ownerPlayerId) {
         if (team == null) {

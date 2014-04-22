@@ -32,15 +32,6 @@ public interface TrackRecordManagementBeanLocal {
     StatusCode remove(Long recordId, Long playerId, String sessionId);
     
     /**
-     * Update existing track record.
-     * @param record
-     * @param playerId
-     * @param sessionId
-     * @return
-     */
-    StatusCode edit(TrackRecord record, Long playerId, String sessionId);
-    
-    /**
      * Find track record for given id.
      * @param id
      * @return

@@ -42,25 +42,6 @@ public class TrackManagementBean extends ManagementBean implements TrackManageme
     }
 
     @Override
-    public StatusCode edit(Long playerId, String sessionId, Track track) {
-        if (playerId == null) {
-            return StatusCode.AuthenticationFailed;
-        }
-        if (sessionId == null) {
-            return StatusCode.AuthenticationFailed;
-        }
-        if (track == null) {
-            return StatusCode.NotFound;
-        }
-        log(Level.INFO, String.format("Edit track %s, by player %d.", track.getName(), playerId));
-        Player player = em.find(Player.class, playerId);
-        if (player != null && player.checkSessionId(sessionId)) {
-            return merge(track);
-        }
-        return StatusCode.AuthenticationFailed;
-    }
-
-    @Override
     public StatusCode remove(Long playerId, String sessionId, Long trackId) {
         if (playerId == null) {
             return StatusCode.AuthenticationFailed;

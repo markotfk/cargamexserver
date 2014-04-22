@@ -9,7 +9,7 @@ import org.maguz.cargamex.ejb.SessionManagementBeanLocal;
 import org.maguz.cargamex.entities.Player;
 
 /**
- *
+ * Player Session REST API.
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @Path("v1/session")

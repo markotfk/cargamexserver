@@ -10,7 +10,7 @@ import javax.persistence.PersistenceContext;
 import org.maguz.cargamex.entities.Player;
 
 /**
- *
+ * Abstract base class for EJBs implementing common functionality.
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 public abstract class ManagementBean {

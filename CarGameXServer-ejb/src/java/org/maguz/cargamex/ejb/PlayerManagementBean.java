@@ -11,6 +11,9 @@ import javax.persistence.Query;
 import org.maguz.cargamex.entities.Player;
 import org.maguz.cargamex.entities.Team;
 
+/**
+ * Player entity handling.
+ */
 @Stateless
 public class PlayerManagementBean extends ManagementBean implements PlayerManagementBeanLocal {
 
@@ -114,21 +117,6 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
             }
         }
         return null;
-    }
-
-    @Override
-    public StatusCode edit(Long id, Player player) {
-        if (id == null) {
-            return StatusCode.NotFound;
-        }
-        if (player == null) {
-            return StatusCode.NotFound;
-        }
-        log(Level.INFO, "Edit player " + id);
-        if (checkPlayer(id, player.getSessionId()) == StatusCode.OK) {
-            return merge(player);
-        }
-        return StatusCode.AuthenticationFailed;
     }
 
     @Override

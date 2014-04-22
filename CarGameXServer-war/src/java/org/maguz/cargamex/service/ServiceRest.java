@@ -7,7 +7,7 @@ import javax.ws.rs.core.Response;
 import org.maguz.cargamex.ejb.StatusCode;
 
 /**
- *
+ * Abstract base class for REST API implementation classes.
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 public abstract class ServiceRest {

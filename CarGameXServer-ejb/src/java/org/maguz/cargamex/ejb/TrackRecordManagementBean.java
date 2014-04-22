@@ -61,20 +61,8 @@ public class TrackRecordManagementBean extends ManagementBean implements TrackRe
                 }
             } catch (Exception e) {
                 log(Level.SEVERE, String.format("Error while removing track record: %s", e.getMessage()));
-                return StatusCode.Forbidden;
+                return StatusCode.Error;
             }
-        }
-        return StatusCode.AuthenticationFailed;
-    }
-
-    @Override
-    public StatusCode edit(TrackRecord record, Long playerId, String sessionId) {
-        if (record == null) {
-            return StatusCode.NotFound;
-        }
-        log(Level.INFO, String.format("Edit track record %d, by player %d.", record.getId(), playerId));
-        if (checkPlayer(playerId, sessionId) == StatusCode.OK) {
-            return merge(record);
         }
         return StatusCode.AuthenticationFailed;
     }

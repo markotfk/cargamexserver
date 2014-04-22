@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
- *
+ * Abstract base class for all entity classes.
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @MappedSuperclass
@@ -26,6 +26,9 @@ public abstract class CarGameEntity {
 
     protected Long created;
 
+    /**
+     * Constructor. 
+     */
     protected CarGameEntity() {
         created = System.currentTimeMillis();
     }

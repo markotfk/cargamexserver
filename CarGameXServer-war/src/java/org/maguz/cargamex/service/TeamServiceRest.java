@@ -14,7 +14,7 @@ import org.maguz.cargamex.ejb.TeamManagementBeanLocal;
 import org.maguz.cargamex.entities.Team;
 
 /**
- *
+ * Team handling REST API.
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @Path("v1/teams")
@@ -34,14 +34,6 @@ public class TeamServiceRest extends ServiceRest {
             @PathParam("session_id") String sessionId) {
         handleStatusCode(tm.add(team, playerId, sessionId));
         return team;
-    }
-
-    @PUT
-    @Path("edit/{player_id}/{session_id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("player_id") Long playerId, 
-            @PathParam("session_id") String sessionId, Team entity) {
-        handleStatusCode(tm.edit(entity, playerId, sessionId));
     }
 
     @POST

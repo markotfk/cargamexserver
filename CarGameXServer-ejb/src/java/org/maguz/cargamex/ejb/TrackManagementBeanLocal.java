@@ -22,15 +22,6 @@ public interface TrackManagementBeanLocal {
     StatusCode add(Long playerId, String sessionId, Track track);
     
     /**
-     * Edit player details.
-     * @param playerId
-     * @param sessionId
-     * @param track
-     * @return 
-     */
-    StatusCode edit(Long playerId, String sessionId, Track track);
-    
-    /**
      * Remove player from database.
      * @param playerId
      * @param sessionId

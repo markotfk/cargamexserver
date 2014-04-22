@@ -4,7 +4,7 @@ import javax.ejb.Stateless;
 import org.maguz.cargamex.entities.Player;
 
 /**
- * @author Marko Karjalainen <markotfk@gmail.com>
+ * Session handling for keeping player sessions alive.
  */
 @Stateless
 public class SessionManagementBean extends ManagementBean implements SessionManagementBeanLocal {
@@ -12,6 +12,11 @@ public class SessionManagementBean extends ManagementBean implements SessionMana
     public SessionManagementBean() {
     }
     
+    /**
+     * Update player's last activity time stamp in database.
+     * @param player
+     * @return
+     */
     @Override
     public StatusCode keepAlive(Player player) {
         if (player == null) {
