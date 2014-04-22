@@ -12,7 +12,7 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
 /**
- *
+ * Password handling functions.
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 public class PasswordUtils {

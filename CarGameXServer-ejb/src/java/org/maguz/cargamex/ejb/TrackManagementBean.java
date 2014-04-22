@@ -7,7 +7,7 @@ import org.maguz.cargamex.entities.Player;
 import org.maguz.cargamex.entities.Track;
 
 /**
- *
+ * Track handling bean.
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @Stateless

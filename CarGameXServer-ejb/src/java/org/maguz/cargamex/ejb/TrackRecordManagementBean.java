@@ -9,7 +9,7 @@ import org.maguz.cargamex.entities.Track;
 import org.maguz.cargamex.entities.TrackRecord;
 
 /**
- *
+ * Track Record handling bean.
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @Stateless
