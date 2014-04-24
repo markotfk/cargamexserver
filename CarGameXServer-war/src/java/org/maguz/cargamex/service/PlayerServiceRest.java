@@ -96,6 +96,6 @@ public class PlayerServiceRest extends ServiceRest {
         if (login == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
-        return pm.findAllByLogin(login);
+        return pm.findByLogin(login);
     }
 }

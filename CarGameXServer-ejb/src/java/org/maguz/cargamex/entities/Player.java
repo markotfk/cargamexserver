@@ -29,7 +29,7 @@ import org.maguz.cargamex.util.PasswordUtils;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 @NamedQuery(
-            name="findAllByLogin",
+            name="findByLogin",
             query="SELECT p FROM Player p WHERE p.login LIKE :playerLogin"
     )
 public class Player extends CarGameEntity implements Serializable {

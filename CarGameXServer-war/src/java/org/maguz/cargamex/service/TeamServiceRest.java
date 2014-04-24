@@ -5,11 +5,12 @@ import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import org.maguz.cargamex.ejb.TeamManagementBeanLocal;
 import org.maguz.cargamex.entities.Team;
 
@@ -56,6 +57,16 @@ public class TeamServiceRest extends ServiceRest {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Team findByPlayerId(@PathParam("id") Long id) {
         return tm.findByPlayerId(id);
+    }
+    
+    @GET
+    @Path("findByName/{name}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Team> findByName(@PathParam("name")String name) {
+        if (name == null) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        return tm.findByName(name);
     }
     
     @GET

@@ -42,4 +42,11 @@ public interface TrackManagementBeanLocal {
      * @return 
      */
     List<Track> findAll();
+    
+    /**
+     * Find tracks by name.
+     * @param name
+     * @return 
+     */
+    List<Track> findByName(String name);
 }

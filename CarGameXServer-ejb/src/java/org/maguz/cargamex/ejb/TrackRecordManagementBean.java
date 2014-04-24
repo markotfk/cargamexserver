@@ -24,7 +24,7 @@ public class TrackRecordManagementBean extends ManagementBean implements TrackRe
         if (playerId == null || sessionId == null) {
             return StatusCode.AuthenticationFailed;
         }
-        log(Level.INFO, String.format("Add track record %d, by player %d.", record.getRecordTime(), playerId));
+        log(Level.INFO, String.format("TrackRecord: Add track record %d, by player %d.", record.getRecordTime(), playerId));
         if (checkPlayer(playerId, sessionId) == StatusCode.OK) {
             Track track = em.find(Track.class, trackId);
             if (track != null) {
@@ -38,7 +38,7 @@ public class TrackRecordManagementBean extends ManagementBean implements TrackRe
                 em.persist(record);
                 return StatusCode.OK;
             } catch (Exception e) {
-                log(Level.SEVERE, String.format("Error while adding track record: %s", e.getMessage()));
+                log(Level.SEVERE, String.format("TrackRecord: Error while adding track record: %s", e.getMessage()));
                 return StatusCode.DuplicateEntry;
             }
         }
@@ -51,7 +51,7 @@ public class TrackRecordManagementBean extends ManagementBean implements TrackRe
             return StatusCode.NotFound;
         }
         if (checkPlayer(playerId, sessionId) == StatusCode.OK) {
-            log(Level.INFO, String.format("Remove track record %d, by player %d.", recordId, playerId));
+            log(Level.INFO, String.format("TrackRecord: Remove track record %d, by player %d.", recordId, playerId));
             try {
                 TrackRecord record = em.find(TrackRecord.class, recordId);
                 if (record != null) {
@@ -60,7 +60,7 @@ public class TrackRecordManagementBean extends ManagementBean implements TrackRe
                     return StatusCode.NotFound;
                 }
             } catch (Exception e) {
-                log(Level.SEVERE, String.format("Error while removing track record: %s", e.getMessage()));
+                log(Level.SEVERE, String.format("TrackRecord: Error while removing track record: %s", e.getMessage()));
                 return StatusCode.Error;
             }
         }
@@ -87,7 +87,7 @@ public class TrackRecordManagementBean extends ManagementBean implements TrackRe
         if (playerId == null) {
             return null;
         }
-        String queryString = "SELECT * FROM carx.trackrecord " +
+        final String queryString = "SELECT * FROM carx.trackrecord " +
                          "WHERE player_id = " + playerId;
         Query query = em.createNativeQuery(queryString, TrackRecord.class);
         return query.getResultList();
@@ -98,7 +98,7 @@ public class TrackRecordManagementBean extends ManagementBean implements TrackRe
         if (trackId == null) {
             return null;
         }
-        String queryString = "SELECT * FROM carx.trackrecord " +
+        final String queryString = "SELECT * FROM carx.trackrecord " +
                          "WHERE track_id = " + trackId;
         Query query = em.createNativeQuery(queryString, TrackRecord.class);
         return query.getResultList();

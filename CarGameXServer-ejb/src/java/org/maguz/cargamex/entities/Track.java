@@ -2,6 +2,7 @@ package org.maguz.cargamex.entities;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -15,6 +16,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name="track", schema="carx")
 @XmlAccessorType(XmlAccessType.FIELD)
+@NamedQuery(
+            name="findTrackByName",
+            query="SELECT t FROM Track t WHERE t.name LIKE :name"
+    )
+
 @XmlRootElement
 public class Track extends CarGameEntity implements Serializable {
 

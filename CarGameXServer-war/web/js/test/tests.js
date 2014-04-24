@@ -74,6 +74,7 @@ function testTeamRestApi() {
     loginTestPlayer();
     addTestTeam();
     findTeamByPlayer();
+    findTeamByName();
     //deleteTestTeam();
     //deleteTestPlayer();
 }
@@ -86,6 +87,7 @@ function testTrackRestApi() {
     // test add new track
     addTestTrack();
     
+    findTrackByName();
     // test remove track
     //removeTestTrack();
     //deleteTestPlayer();
@@ -347,6 +349,14 @@ function deleteTestPlayer() {
 
 function testFindByLogin() {
     ajaxCallPlayer('Find by Login ' + testPlayer.login, PlayerRoot + 'findByLogin/' + testPlayer.login, 'GET', false);
+}
+
+function findTrackByName() {
+    ajaxCallTrack('Find Track by Name ' + testTrack.name, TrackRoot + 'findByName/' + testTrack.name, 'GET', false);
+}
+
+function findTeamByName() {
+    ajaxCallTeam('Find Team by Name ' + testTeam.name, TeamRoot + 'findByName/' + testTeam.name, 'GET', false);
 }
 
 function pass() {

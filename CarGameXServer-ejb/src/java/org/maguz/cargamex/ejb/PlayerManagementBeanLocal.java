@@ -63,5 +63,5 @@ public interface PlayerManagementBeanLocal {
      * @param login
      * @return
      */
-    List<Player> findAllByLogin(String login);
+    List<Player> findByLogin(String login);
 }

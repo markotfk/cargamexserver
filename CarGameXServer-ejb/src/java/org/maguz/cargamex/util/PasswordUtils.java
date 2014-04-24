@@ -32,7 +32,7 @@ public class PasswordUtils {
      * @throws java.security.NoSuchProviderException
      */
     public static String getSaltedHash(String password) throws NoSuchAlgorithmException, NoSuchProviderException {
-        logger.log(Level.INFO, "getSaltedHash enter");
+        logger.log(Level.INFO, "PasswordUtils: getSaltedHash enter");
         byte[] salt;
         try {
             SecureRandom sr = SecureRandom.getInstance("NativePRNG", "SUN");
@@ -43,13 +43,13 @@ public class PasswordUtils {
         }
         try {
             // store the salt with the password
-            String result = DatatypeConverter.printBase64Binary(salt) + "$" + hash(password, salt);
-            logger.log(Level.INFO, "getSaltedHash: Return {0}", result);
+            final String result = DatatypeConverter.printBase64Binary(salt) + "$" + hash(password, salt);
+            logger.log(Level.INFO, "PasswordUtils: getSaltedHash: Return {0}", result);
             return result;
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage());
         }
-        logger.log(Level.INFO, "getSaltedHash: Return null!");
+        logger.log(Level.INFO, "PasswordUtils: getSaltedHash: Return null!");
         return null;
     }
 
@@ -60,25 +60,25 @@ public class PasswordUtils {
      * @return 
      * @throws java.lang.Exception */
     public static boolean check(String password, String stored) throws Exception{
-        logger.log(Level.INFO, "check() enter");
-        String[] saltAndPass = stored.split("\\$");
+        logger.log(Level.INFO, "PasswordUtils: enter check()");
+        final String[] saltAndPass = stored.split("\\$");
         if (saltAndPass.length != 2)
             return false;
-        String hashOfInput = hash(password, DatatypeConverter.parseBase64Binary(saltAndPass[0]));
-        logger.log(Level.INFO, "check() exit");
+        final String hashOfInput = hash(password, DatatypeConverter.parseBase64Binary(saltAndPass[0]));
+        logger.log(Level.INFO, "PasswordUtils: exit check()");
         return hashOfInput.equals(saltAndPass[1]);
     }
 
     // using PBKDF2 from Sun
     private static String hash(String password, byte[] salt) throws Exception {
-        logger.log(Level.INFO, "Enter hash()");
+        logger.log(Level.INFO, "PasswordUtils: enter hash()");
         if (password == null || password.length() == 0)
-            throw new IllegalArgumentException("Empty passwords are not supported.");
+            throw new IllegalArgumentException("PasswordUtils: Empty passwords are not supported.");
         SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
         KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterations, desiredKeyLen);
         SecretKey key = f.generateSecret(spec);
-        String ret = DatatypeConverter.printBase64Binary(key.getEncoded());
-        logger.log(Level.INFO, "Exit hash(): {0}", ret);
+        final String ret = DatatypeConverter.printBase64Binary(key.getEncoded());
+        logger.log(Level.INFO, "PasswordUtils: exit hash(): {0}", ret);
         return ret;
     }
 }

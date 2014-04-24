@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -21,6 +22,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name="team", schema="carx", uniqueConstraints=@UniqueConstraint(columnNames={"name"}))
 @XmlRootElement
+@NamedQuery(
+            name="findTeamByName",
+            query="SELECT t FROM Team t WHERE t.name LIKE :name"
+    )
+
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Team extends CarGameEntity implements Serializable {
     

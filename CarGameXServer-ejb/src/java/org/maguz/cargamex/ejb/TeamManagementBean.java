@@ -3,6 +3,7 @@ package org.maguz.cargamex.ejb;
 import java.util.List;
 import java.util.logging.Level;
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 import org.maguz.cargamex.entities.Player;
 import org.maguz.cargamex.entities.Team;
 
@@ -386,5 +387,17 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
             return StatusCode.NotFound;
         }
         return StatusCode.AuthenticationFailed;
+    }
+    @Override
+    public List<Team> findByName(String name) {
+        if (name == null) {
+            return null;
+        }
+        log(Level.INFO, "findByName " + name);
+        Query query = em.createNamedQuery("findTeamByName");
+        query.setParameter("name", name + "%");
+        query.setMaxResults(100);
+        List<Team> results = query.getResultList();
+        return results;
     }
 }

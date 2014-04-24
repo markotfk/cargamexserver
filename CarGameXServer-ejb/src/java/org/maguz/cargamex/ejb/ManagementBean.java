@@ -28,7 +28,8 @@ public abstract class ManagementBean {
     }
     
     protected void log(Level level, String message) {
-        logger.log(level, "{0}:{1}", new Object[]{dateFormat.format(cal.getTime()), message});
+        logger.log(level, "{0}: {1}: {2}", new Object[]{dateFormat.format(cal.getTime()), 
+            this.getClass().getSimpleName(), message});
     }
     protected StatusCode merge(Object entity) {
         if (entity == null) {

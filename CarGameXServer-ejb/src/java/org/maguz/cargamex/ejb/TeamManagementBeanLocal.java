@@ -20,6 +20,7 @@ public interface TeamManagementBeanLocal {
     Team findByPlayerId(Long playerId);
     
     List<Team> findAll();
+    List<Team> findByName(String name);
     
     StatusCode addPlayer(Team team, Long playerId, String sessionId, Long newPlayerId);
     StatusCode removePlayer(Team team, Long playerId, String sessionId, Long removePlayerId);

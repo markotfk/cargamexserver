@@ -24,12 +24,11 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
 
     @Override
     public StatusCode add(Player player) {
-        log(Level.INFO, "Add player");
         StatusCode code = checkNewPlayer(player);
         if (code != StatusCode.OK) {
             return code;
         }
-        log(Level.INFO, "New player login " + player.getLogin());
+        log(Level.INFO, "Add new player " + player.getLogin());
         try {
             player.setPassword(player.getPassword()); // hashes plain-text password
             player.setLastActivity(System.currentTimeMillis());
@@ -170,12 +169,12 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
     }
 
     @Override
-    public List<Player> findAllByLogin(String login) {
+    public List<Player> findByLogin(String login) {
         if (login == null) {
             return null;
         }
-        log(Level.INFO, "findAllByLogin " + login);
-        Query query = em.createNamedQuery("findAllByLogin");
+        log(Level.INFO, "findByLogin " + login);
+        Query query = em.createNamedQuery("findByLogin");
         query.setParameter("playerLogin", login + "%");
         query.setMaxResults(100);
         List<Player> results = query.getResultList();
