@@ -64,4 +64,10 @@ public interface PlayerManagementBeanLocal {
      * @return
      */
     List<Player> findByLogin(String login);
+    
+    /**
+     * Find all players with valid session id.
+     * @return 
+     */
+    List<Player> findByActiveSession();
 }

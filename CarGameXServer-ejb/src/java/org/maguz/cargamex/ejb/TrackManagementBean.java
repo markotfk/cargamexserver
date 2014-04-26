@@ -3,7 +3,7 @@ package org.maguz.cargamex.ejb;
 import java.util.List;
 import java.util.logging.Level;
 import javax.ejb.Stateless;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import org.maguz.cargamex.entities.Player;
 import org.maguz.cargamex.entities.Track;
 
@@ -81,10 +81,9 @@ public class TrackManagementBean extends ManagementBean implements TrackManageme
             return null;
         }
         log(Level.INFO, "findByName " + name);
-        Query query = em.createNamedQuery("findTrackByName");
+        TypedQuery<Track> query = em.createNamedQuery("Track.findTrackByName", Track.class);
         query.setParameter("name", name + "%");
         query.setMaxResults(100);
-        List<Track> results = query.getResultList();
-        return results;
+        return query.getResultList();
     }
 }

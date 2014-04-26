@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import org.maguz.cargamex.entities.Player;
 import org.maguz.cargamex.entities.Team;
 
@@ -174,10 +174,16 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
             return null;
         }
         log(Level.INFO, "findByLogin " + login);
-        Query query = em.createNamedQuery("findByLogin");
+        TypedQuery<Player> query = em.createNamedQuery("Player.findByLogin", Player.class);
         query.setParameter("playerLogin", login + "%");
-        query.setMaxResults(100);
-        List<Player> results = query.getResultList();
-        return results;
+        query.setMaxResults(150);
+        return query.getResultList();
+    }
+    
+    @Override
+    public List<Player> findByActiveSession() {
+        log(Level.INFO, "findByActiveSession");
+        TypedQuery<Player> query = em.createNamedQuery("Player.findByActiveSession", Player.class);
+        return query.getResultList();
     }
 }

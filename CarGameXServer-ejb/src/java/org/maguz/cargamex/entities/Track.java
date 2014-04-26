@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name="track", schema="carx")
 @XmlAccessorType(XmlAccessType.FIELD)
 @NamedQuery(
-            name="findTrackByName",
+            name="Track.findTrackByName",
             query="SELECT t FROM Track t WHERE t.name LIKE :name"
     )
 

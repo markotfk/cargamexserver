@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name="team", schema="carx", uniqueConstraints=@UniqueConstraint(columnNames={"name"}))
 @XmlRootElement
 @NamedQuery(
-            name="findTeamByName",
+            name="Team.findTeamByName",
             query="SELECT t FROM Team t WHERE t.name LIKE :name"
     )
 

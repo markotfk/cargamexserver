@@ -30,18 +30,23 @@ public class ActivityMonitorBean extends ManagementBean {
      */
     @Schedule(minute = "0-59", second = "0", dayOfMonth = "*", month = "*", year = "*", hour = "0-23", dayOfWeek = "*")
     public void playerSessionActivityCheck() {
-        List<Player> allPlayers = pm.findAll(); // todo: find only players with valid sessionId
+        List<Player> allPlayers = pm.findByActiveSession();
         for (Player p : allPlayers) {
-            if (p.getSessionId() != null) {
-                Long lastActivity = p.getLastActivity();
-                if (lastActivity == null) {
+            Long lastActivity = p.getLastActivity();
+            if (lastActivity == null) {
+                p.setSessionId(null);
+                StatusCode code = merge(p);
+                if (code != StatusCode.OK) {
+                    log(Level.SEVERE, String.format("playerSessionActivityCheck: player %s, error merging: %d", 
+                            p.getLogin(), code));
+                }
+            } else {
+                if (timeDifferenceTooBig(lastActivity)) {
+                    log(Level.INFO, String.format("Player %s session expired.", p.getLogin()));
                     p.setSessionId(null);
-                    merge(p);
-                } else {
-                    if (timeDifferenceTooBig(lastActivity)) {
-                        log(Level.INFO, String.format("Player %s session expired.", p.getLogin()));
-                        p.setSessionId(null);
-                        merge(p);
+                    StatusCode code = merge(p);
+                    if (code != StatusCode.OK) {
+                        log(Level.SEVERE, String.format("playerSessionActivityCheck: error merging: %d", code));
                     }
                 }
             }
