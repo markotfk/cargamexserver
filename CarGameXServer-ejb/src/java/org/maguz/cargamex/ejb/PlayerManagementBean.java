@@ -103,17 +103,9 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
     }
     
     private Player findSingleByLogin(String login) {
-        if (login == null) {
-            return null;
-        }
-        log(Level.INFO, "findSingleByLogin " + login);
-        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(Player.class));
-        List<Player> players = em.createQuery(cq).getResultList();
-        for (Player p : players) {
-            if (p.getLogin().equals(login)) {
-                return p;
-            }
+        List<Player> players = doFindByLogin(login, true);
+        if (players != null && players.size() > 0) {
+            return players.get(0);
         }
         return null;
     }
@@ -158,32 +150,60 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         if (id == null) {
             return null;
         }
-        return em.find(Player.class, id);
+        Player player = em.find(Player.class, id);
+        clearPrivateData(player);
+        return player;
+    }
+    
+    private void clearPrivateData(Player player) {
+        if (player != null) {
+            player.setSessionId("");
+            player.setPasswordNoHash("");
+        }
+    }
+    
+    private void clearPrivateData(List<Player> players) {
+        if (players != null) {
+            for (Player p : players) {
+                clearPrivateData(p);
+            }
+        }
     }
 
     @Override
     public List<Player> findAll() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Player.class));
-        return em.createQuery(cq).getResultList();
+        List<Player> players = em.createQuery(cq).getResultList();
+        clearPrivateData(players);
+        return players;
     }
 
     @Override
     public List<Player> findByLogin(String login) {
-        if (login == null) {
-            return null;
-        }
-        log(Level.INFO, "findByLogin " + login);
-        TypedQuery<Player> query = em.createNamedQuery("Player.findByLogin", Player.class);
-        query.setParameter("playerLogin", login + "%");
-        query.setMaxResults(150);
-        return query.getResultList();
+        List<Player> players = doFindByLogin(login, false);
+        clearPrivateData(players);
+        return  players;
     }
     
     @Override
     public List<Player> findByActiveSession() {
         log(Level.INFO, "findByActiveSession");
         TypedQuery<Player> query = em.createNamedQuery("Player.findByActiveSession", Player.class);
-        return query.getResultList();
+        List<Player> players = query.getResultList();
+        clearPrivateData(players);
+        return players;
+    }
+    
+    private List<Player> doFindByLogin(String login, boolean exactMatch) {
+        if (login == null) {
+            return null;
+        }
+        log(Level.INFO, "doFindByLogin " + login);
+        TypedQuery<Player> query = em.createNamedQuery("Player.findByLogin", Player.class);
+        final String searchLogin = exactMatch ? login : login + "%";
+        query.setParameter("playerLogin", searchLogin);
+        List<Player> players = query.getResultList();
+        return players;
     }
 }

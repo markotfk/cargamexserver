@@ -17,7 +17,7 @@ public abstract class ManagementBean {
     
     DateFormat dateFormat;
     protected Calendar cal;
-    protected static final Logger logger = Logger.getLogger(ManagementBean.class.getSimpleName());
+    protected static final Logger logger = Logger.getLogger(ManagementBean.class.getName());
     
     @PersistenceContext(unitName = "CarGameXServer-ejbPU")
     protected EntityManager em;

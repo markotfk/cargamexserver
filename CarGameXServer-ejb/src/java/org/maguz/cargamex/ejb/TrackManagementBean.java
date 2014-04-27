@@ -75,6 +75,7 @@ public class TrackManagementBean extends ManagementBean implements TrackManageme
         cq.select(cq.from(Track.class));
         return em.createQuery(cq).getResultList();
     }
+    
     @Override
     public List<Track> findByName(String name) {
         if (name == null) {

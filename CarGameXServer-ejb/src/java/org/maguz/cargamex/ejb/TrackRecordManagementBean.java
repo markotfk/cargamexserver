@@ -3,7 +3,6 @@ package org.maguz.cargamex.ejb;
 import java.util.List;
 import java.util.logging.Level;
 import javax.ejb.Stateless;
-import javax.persistence.Query;
 import org.maguz.cargamex.entities.Player;
 import org.maguz.cargamex.entities.Track;
 import org.maguz.cargamex.entities.TrackRecord;

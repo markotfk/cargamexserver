@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class CarGameEntity {
     
-    protected static final Logger logger = Logger.getLogger(CarGameEntity.class.getSimpleName());
+    protected static final Logger logger = Logger.getLogger(CarGameEntity.class.getName());
     
     protected static final long serialVersionUID = 1L;
     

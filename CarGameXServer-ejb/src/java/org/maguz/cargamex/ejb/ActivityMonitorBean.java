@@ -30,8 +30,11 @@ public class ActivityMonitorBean extends ManagementBean {
      */
     @Schedule(minute = "0-59", second = "0", dayOfMonth = "*", month = "*", year = "*", hour = "0-23", dayOfWeek = "*")
     public void playerSessionActivityCheck() {
-        List<Player> allPlayers = pm.findByActiveSession();
-        for (Player p : allPlayers) {
+        List<Player> activePlayers = pm.findByActiveSession();
+        if (activePlayers == null) {
+            return;
+        }
+        for (Player p : activePlayers) {
             Long lastActivity = p.getLastActivity();
             if (lastActivity == null) {
                 p.setSessionId(null);
