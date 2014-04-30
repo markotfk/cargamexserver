@@ -49,7 +49,6 @@ public class Player extends CarGameEntity implements Serializable {
     @NotNull
     private String login;
     
-    @XmlElement(required = true)
     @NotNull
     private String password;
     

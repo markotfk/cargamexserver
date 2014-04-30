@@ -15,7 +15,7 @@ import org.maguz.cargamex.entities.Player;
  */
 public abstract class ManagementBean {
     
-    DateFormat dateFormat;
+    private final DateFormat dateFormat;
     protected Calendar cal;
     protected static final Logger logger = Logger.getLogger(ManagementBean.class.getName());
     

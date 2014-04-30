@@ -20,7 +20,7 @@ import org.maguz.cargamex.entities.Player;
 @LocalBean
 public class ActivityMonitorBean extends ManagementBean {
 
-    private static final int PLAYER_TIMEOUT_MINS = 30;
+    private static final int PLAYER_TIMEOUT_MINS = 60;
     
     @EJB 
     PlayerManagementBeanLocal pm;
@@ -37,12 +37,15 @@ public class ActivityMonitorBean extends ManagementBean {
         for (Player p : activePlayers) {
             Long lastActivity = p.getLastActivity();
             if (lastActivity == null) {
-                p.setSessionId(null);
-                StatusCode code = merge(p);
-                if (code != StatusCode.OK) {
-                    log(Level.SEVERE, String.format("playerSessionActivityCheck: player %s, error merging: %d", 
-                            p.getLogin(), code));
+                if (p.getSessionId() != null) {
+                    p.setSessionId(null);
+                    StatusCode code = merge(p);
+                    if (code != StatusCode.OK) {
+                        log(Level.SEVERE, String.format("playerSessionActivityCheck: player %s, error merging: %d", 
+                                p.getLogin(), code));
+                    }
                 }
+                
             } else {
                 if (timeDifferenceTooBig(lastActivity)) {
                     log(Level.INFO, String.format("Player %s session expired.", p.getLogin()));
