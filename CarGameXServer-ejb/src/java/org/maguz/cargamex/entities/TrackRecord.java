@@ -23,7 +23,7 @@ public class TrackRecord extends CarGameEntity implements Serializable {
     @OneToOne
     private Player player;
     
-    private long recordTime;
+    private Long recordTime;
     
     @XmlTransient
     @OneToOne
@@ -44,11 +44,11 @@ public class TrackRecord extends CarGameEntity implements Serializable {
         return track;
     }
 
-    public long getRecordTime() {
+    public Long getRecordTime() {
         return recordTime;
     }
 
-    public void setRecordTime(long recordTime) {
+    public void setRecordTime(Long recordTime) {
         this.recordTime = recordTime;
     }
     

@@ -54,14 +54,14 @@ public class Player extends CarGameEntity implements Serializable {
     
     private String sessionId;
     
-    private long lastActivity;
+    private Long lastActivity;
 
     private int points;
     
     public Player() {
     }
     
-    public Player(Long id, Long created, String login, long lastActivity, int points) {
+    public Player(Long id, Long created, String login, Long lastActivity, int points) {
         super(id, created);
         this.login = login;
         this.lastActivity = lastActivity;
@@ -76,11 +76,11 @@ public class Player extends CarGameEntity implements Serializable {
     @JoinColumn(name="team_id")
     private Team team;
 
-    public long getLastActivity() {
+    public Long getLastActivity() {
         return lastActivity;
     }
 
-    public void setLastActivity(long lastActivity) {
+    public void setLastActivity(Long lastActivity) {
         this.lastActivity = lastActivity;
     }
     

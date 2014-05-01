@@ -21,9 +21,9 @@ public abstract class CarGameEntity implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    protected long id;
+    protected Long id;
 
-    protected long created;
+    protected Long created;
 
     /**
      * Constructor. 
@@ -41,7 +41,7 @@ public abstract class CarGameEntity implements Serializable {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -49,7 +49,7 @@ public abstract class CarGameEntity implements Serializable {
         return created;
     }
 
-    public void setCreated(long created) {
+    public void setCreated(Long created) {
         this.created = created;
     }
     
@@ -61,13 +61,16 @@ public abstract class CarGameEntity implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += new Long(id).hashCode();
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         CarGameEntity other = (CarGameEntity) object;
-        return this.id == other.id;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
     }
 }
