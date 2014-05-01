@@ -1,20 +1,19 @@
 package org.maguz.cargamex.entities;
 
+import java.io.Serializable;
 import java.util.logging.Logger;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
  * Abstract base class for all entity classes.
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @MappedSuperclass
-@XmlAccessorType(XmlAccessType.FIELD)
-public abstract class CarGameEntity {
+
+public abstract class CarGameEntity implements Serializable {
     
     protected static final Logger logger = Logger.getLogger(CarGameEntity.class.getName());
     
@@ -22,9 +21,9 @@ public abstract class CarGameEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    protected Long id;
+    protected long id;
 
-    protected Long created;
+    protected long created;
 
     /**
      * Constructor. 
@@ -32,19 +31,25 @@ public abstract class CarGameEntity {
     protected CarGameEntity() {
         created = System.currentTimeMillis();
     }
-    public Long getId() {
+    
+    protected CarGameEntity(Long id, Long created) {
+        this.id = id;
+        this.created = created;
+    }
+    
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public Long getCreated() {
+    public long getCreated() {
         return created;
     }
 
-    public void setCreated(Long created) {
+    public void setCreated(long created) {
         this.created = created;
     }
     
@@ -56,16 +61,13 @@ public abstract class CarGameEntity {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += new Long(id).hashCode();
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         CarGameEntity other = (CarGameEntity) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return this.id == other.id;
     }
 }

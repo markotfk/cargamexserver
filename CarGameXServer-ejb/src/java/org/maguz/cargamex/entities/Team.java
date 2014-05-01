@@ -21,12 +21,11 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name="team", schema="carx", uniqueConstraints=@UniqueConstraint(columnNames={"name"}))
-@XmlRootElement
 @NamedQuery(
             name="Team.findTeamByName",
             query="SELECT t FROM Team t WHERE t.name LIKE :name"
     )
-
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Team extends CarGameEntity implements Serializable {
     

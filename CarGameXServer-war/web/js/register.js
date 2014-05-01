@@ -6,7 +6,7 @@ $(document).ready(function() {
         // Validate fields, email is validated by browser
         var login = $('#register_login').val();
         if (login.length === 0) {
-            alert("Please check login")
+            alert("Please check login");
             return false;
         }
         var passwd = $('#register_password').val().trim();
@@ -21,7 +21,7 @@ $(document).ready(function() {
         $('#register_status').html('Processing...');
         
         var player = { 
-            email: $('#register_email').val(), 
+            email: $('#register_email').val().trim(), 
             login: login, 
             password: passwd
         };

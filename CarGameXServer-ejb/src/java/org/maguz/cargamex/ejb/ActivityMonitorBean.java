@@ -36,7 +36,7 @@ public class ActivityMonitorBean extends ManagementBean {
         }
         for (Player p : activePlayers) {
             Long lastActivity = p.getLastActivity();
-            if (lastActivity == null) {
+            if (lastActivity == 0) {
                 if (p.getSessionId() != null) {
                     p.setSessionId(null);
                     StatusCode code = merge(p);

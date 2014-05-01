@@ -3,6 +3,7 @@
  */
 package org.maguz.cargamex.ejb;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import javax.ejb.EJB;
@@ -30,8 +31,9 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         }
         log(Level.INFO, "Add new player " + player.getLogin());
         try {
-            player.setPassword(player.getPassword()); // hashes plain-text password
+            player.setPassword(player.getPassword().trim()); // hashes plain-text password
             player.setLastActivity(System.currentTimeMillis());
+            player.setCreated(System.currentTimeMillis());
             em.persist(player);
         } catch (Exception ex) {
             log(Level.SEVERE, ex.getMessage());
@@ -48,7 +50,7 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
             log(Level.WARNING, "Cannot add player: login string empty!");
             return StatusCode.Forbidden;
         }
-        if (player.getPassword() == null || player.getPassword().length() < 6) {
+        if (player.getPassword() == null || player.getPassword().trim().length() < 6) {
             log(Level.WARNING, String.format("Cannot add player %s: too short password!", player.getLogin()));
             return StatusCode.Forbidden;
         }
@@ -84,7 +86,6 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
             return StatusCode.AuthenticationFailed;
         }
         if (login && !existing.checkPassword(player.getPassword())) {
-            player.setPasswordNoHash("");
             return StatusCode.AuthenticationFailed;
         }
         player.setCreated(existing.getCreated());
@@ -114,7 +115,7 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
     public StatusCode remove(Long id, String sessionId) {
         if (checkPlayer(id, sessionId) == StatusCode.OK) {
             log(Level.INFO, "Remove player " + id);
-            Player existing = find(id);
+            Player existing = em.find(Player.class, id);
             if (existing != null) {
                 if (existing.getTeam() != null) {
                     Team team = tm.find(existing.getTeam().getId());
@@ -151,23 +152,26 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
             return null;
         }
         Player player = em.find(Player.class, id);
-        clearPrivateData(player);
-        return player;
+        return copyPlayer(player);
     }
     
-    private void clearPrivateData(Player player) {
+    private Player copyPlayer(Player player) {
         if (player != null) {
-            player.setSessionId("");
-            player.setPasswordNoHash("");
+            return new Player(player.getId(), player.getCreated(), player.getLogin(),
+                player.getLastActivity(), player.getPoints());
         }
+        return null;
     }
     
-    private void clearPrivateData(List<Player> players) {
+    private List<Player> copyPlayers(List<Player> players) {
         if (players != null) {
+            List<Player> copy = new ArrayList<>();
             for (Player p : players) {
-                clearPrivateData(p);
+                copy.add(copyPlayer(p));
             }
+            return copy;
         }
+        return null;
     }
 
     @Override
@@ -175,15 +179,13 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Player.class));
         List<Player> players = em.createQuery(cq).getResultList();
-        clearPrivateData(players);
-        return players;
+        return copyPlayers(players);
     }
 
     @Override
     public List<Player> findByLogin(String login) {
         List<Player> players = doFindByLogin(login, false);
-        clearPrivateData(players);
-        return  players;
+        return copyPlayers(players);
     }
     
     @Override
@@ -191,7 +193,6 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         log(Level.INFO, "findByActiveSession");
         TypedQuery<Player> query = em.createNamedQuery("Player.findByActiveSession", Player.class);
         List<Player> players = query.getResultList();
-        clearPrivateData(players);
         return players;
     }
     

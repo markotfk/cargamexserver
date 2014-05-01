@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -27,8 +28,8 @@ import org.maguz.cargamex.util.PasswordUtils;
 @Entity
 @Table(name="player", schema="carx", uniqueConstraints=@UniqueConstraint(columnNames={"email", "login"}))
 @Cacheable(false)
-@XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 @NamedQueries({
     @NamedQuery(
             name="Player.findByLogin",
@@ -39,7 +40,6 @@ import org.maguz.cargamex.util.PasswordUtils;
             query="SELECT p FROM Player p WHERE p.sessionId IS NOT NULL"
     )
 })
-
 public class Player extends CarGameEntity implements Serializable {
     @XmlElement(required = true)
     @NotNull
@@ -54,11 +54,23 @@ public class Player extends CarGameEntity implements Serializable {
     
     private String sessionId;
     
-    private Long lastActivity;
+    private long lastActivity;
 
     private int points;
     
     public Player() {
+        super();
+        Logger.getAnonymousLogger().log(Level.WARNING, "Player ctor: created: " + this.created);
+    }
+    
+    public Player(Long id, Long created, String login, long lastActivity, int points) {
+        super(id, created);
+        this.login = login;
+        this.lastActivity = lastActivity;
+        this.points = points;
+        this.email = "";
+        this.password = "";
+        this.sessionId = "";
     }
     
     @XmlTransient
@@ -66,11 +78,11 @@ public class Player extends CarGameEntity implements Serializable {
     @JoinColumn(name="team_id")
     private Team team;
 
-    public Long getLastActivity() {
+    public long getLastActivity() {
         return lastActivity;
     }
 
-    public void setLastActivity(Long lastActivity) {
+    public void setLastActivity(long lastActivity) {
         this.lastActivity = lastActivity;
     }
     

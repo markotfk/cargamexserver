@@ -20,7 +20,6 @@ import javax.xml.bind.annotation.XmlTransient;
             name="Track.findTrackByName",
             query="SELECT t FROM Track t WHERE t.name LIKE :name"
     )
-
 @XmlRootElement
 public class Track extends CarGameEntity implements Serializable {
 

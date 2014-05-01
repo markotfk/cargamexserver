@@ -22,9 +22,6 @@ public class SessionManagementBean extends ManagementBean implements SessionMana
         if (player == null) {
             return StatusCode.NotFound;
         }
-        if (player.getSessionId() == null) {
-            return StatusCode.AuthenticationFailed;
-        }
         if (checkPlayer(player.getId(), player.getSessionId()) == StatusCode.OK) {
             Player existing = em.find(Player.class, player.getId());
             if (existing != null) {
