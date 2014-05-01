@@ -36,7 +36,7 @@ public class ActivityMonitorBean extends ManagementBean {
         }
         for (Player p : activePlayers) {
             Long lastActivity = p.getLastActivity();
-            if (lastActivity == 0) {
+            if (lastActivity == null) {
                 if (p.getSessionId() != null) {
                     p.setSessionId(null);
                     StatusCode code = merge(p);
@@ -59,7 +59,7 @@ public class ActivityMonitorBean extends ManagementBean {
         }
     }
     
-    private boolean timeDifferenceTooBig(long lastActivity) {
+    private boolean timeDifferenceTooBig(Long lastActivity) {
         long differenceMs = System.currentTimeMillis() - lastActivity;
         long secondsInMilli = 1000;
         long minutesInMilli = secondsInMilli * 60;

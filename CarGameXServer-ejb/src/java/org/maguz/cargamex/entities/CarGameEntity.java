@@ -12,7 +12,6 @@ import javax.persistence.MappedSuperclass;
  * @author Marko Karjalainen <markotfk@gmail.com>
  */
 @MappedSuperclass
-
 public abstract class CarGameEntity implements Serializable {
     
     protected static final Logger logger = Logger.getLogger(CarGameEntity.class.getName());
@@ -37,7 +36,7 @@ public abstract class CarGameEntity implements Serializable {
         this.created = created;
     }
     
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -45,7 +44,7 @@ public abstract class CarGameEntity implements Serializable {
         this.id = id;
     }
 
-    public long getCreated() {
+    public Long getCreated() {
         return created;
     }
 

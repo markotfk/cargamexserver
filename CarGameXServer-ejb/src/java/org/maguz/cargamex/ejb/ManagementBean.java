@@ -57,6 +57,13 @@ public abstract class ManagementBean {
         return StatusCode.OK;
     }
     
+    protected StatusCode checkPlayer(Player player) {
+        if (player == null) {
+            return StatusCode.AuthenticationFailed;
+        }
+        return checkPlayer(player.getId(), player.getSessionId());
+    }
+    
     protected StatusCode checkPlayer(Long id, String sessionId) {
         if (id == null) {
             return StatusCode.AuthenticationFailed;

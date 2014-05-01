@@ -19,10 +19,7 @@ public class SessionManagementBean extends ManagementBean implements SessionMana
      */
     @Override
     public StatusCode keepAlive(Player player) {
-        if (player == null) {
-            return StatusCode.NotFound;
-        }
-        if (checkPlayer(player.getId(), player.getSessionId()) == StatusCode.OK) {
+        if (checkPlayer(player) == StatusCode.OK) {
             Player existing = em.find(Player.class, player.getId());
             if (existing != null) {
                 existing.setLastActivity(System.currentTimeMillis());
