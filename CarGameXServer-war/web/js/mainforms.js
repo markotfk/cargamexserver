@@ -35,7 +35,7 @@ function initPlayerFormRemove() {
 function removePlayer() {
     var player = getSessionData(playerKey);
     if (!player) {
-        log('removePlayer(): No player data found.')
+        log('removePlayer(): No player data found.');
         return false;
     }
     $.ajax(PlayerRoot + player.id + '/' + player.sessionId, {
@@ -61,7 +61,7 @@ function removePlayer() {
 function getPlayerTeam() {
     var player = getSessionData(playerKey);
     if (!player) {
-        log('getPlayerTeam(): No player data found.')
+        log('getPlayerTeam(): No player data found.');
         return;
     }
     
