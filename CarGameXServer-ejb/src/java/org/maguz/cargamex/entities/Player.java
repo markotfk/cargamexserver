@@ -59,8 +59,6 @@ public class Player extends CarGameEntity implements Serializable {
     private int points;
     
     public Player() {
-        super();
-        Logger.getAnonymousLogger().log(Level.WARNING, "Player ctor: created: " + this.created);
     }
     
     public Player(Long id, Long created, String login, long lastActivity, int points) {
