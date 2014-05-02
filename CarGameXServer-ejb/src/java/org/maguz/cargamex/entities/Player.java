@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -210,6 +209,24 @@ public class Player extends CarGameEntity implements Serializable {
             return this.sessionId.equals(sessionId);
         }
         return false;
+    }
+    
+    /**
+     * Initialize player object with default values.
+     * @param password
+     * @return true if initialization was success, false if password is invalid.
+     */
+    public boolean initializeWithPassword(String password) {
+        if (password == null || password.trim().length() < 6) {
+            return false;
+        }
+        setId((long)0);
+        this.setPassword(password); // hashes plain-text password
+        final long time = System.currentTimeMillis();
+        setCreated(time);
+        setLastActivity(time);
+        setPoints(0);
+        return true;
     }
     
 }

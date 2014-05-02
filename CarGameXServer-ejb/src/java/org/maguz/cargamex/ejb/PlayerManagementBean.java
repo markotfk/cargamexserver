@@ -31,10 +31,11 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         }
         log(Level.INFO, "Add new player " + player.getLogin());
         try {
-            player.setPassword(player.getPassword().trim()); // hashes plain-text password
-            player.setLastActivity(System.currentTimeMillis());
-            player.setCreated(System.currentTimeMillis());
-            em.persist(player);
+            if (player.initializeWithPassword(player.getPassword())) {
+                em.persist(player);
+            } else {
+                return StatusCode.Forbidden;
+            }
         } catch (Exception ex) {
             log(Level.SEVERE, ex.getMessage());
             return StatusCode.DuplicateEntry;
