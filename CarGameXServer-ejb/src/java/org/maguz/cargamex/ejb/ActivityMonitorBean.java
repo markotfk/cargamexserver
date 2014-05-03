@@ -37,15 +37,12 @@ public class ActivityMonitorBean extends ManagementBean {
         for (Player p : activePlayers) {
             Long lastActivity = p.getLastActivity();
             if (lastActivity == null) {
-                if (p.getSessionId() != null) {
-                    p.setSessionId(null);
-                    StatusCode code = merge(p);
-                    if (code != StatusCode.OK) {
-                        log(Level.SEVERE, String.format("playerSessionActivityCheck: player %s, error merging: %d", 
-                                p.getLogin(), code));
-                    }
+                p.setSessionId(null);
+                StatusCode code = merge(p);
+                if (code != StatusCode.OK) {
+                    log(Level.SEVERE, String.format("playerSessionActivityCheck: player %s, error merging: %d", 
+                            p.getLogin(), code));
                 }
-                
             } else {
                 if (timeDifferenceTooBig(lastActivity)) {
                     log(Level.INFO, String.format("Player %s session expired.", p.getLogin()));

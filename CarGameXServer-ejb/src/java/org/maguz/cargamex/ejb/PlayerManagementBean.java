@@ -194,7 +194,7 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         log(Level.INFO, "findByActiveSession");
         TypedQuery<Player> query = em.createNamedQuery("Player.findByActiveSession", Player.class);
         List<Player> players = query.getResultList();
-        return players;
+        return copyPlayers(players);
     }
     
     private List<Player> doFindByLogin(String login, boolean exactMatch) {
