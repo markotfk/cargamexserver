@@ -58,6 +58,7 @@ public class Player extends CarGameEntity implements Serializable {
     private int points;
     
     public Player() {
+        lastActivity = System.currentTimeMillis();
     }
     
     public Player(Long id, Long created, String login, Long lastActivity, int points) {
@@ -170,7 +171,7 @@ public class Player extends CarGameEntity implements Serializable {
     /**
      * @param password the password to set
      */
-    public void setPassword(String password) {
+    public void setPasswordHash(String password) {
         if (password == null) {
             throw new NullPointerException("password");
         }
@@ -193,7 +194,6 @@ public class Player extends CarGameEntity implements Serializable {
         if (password == null) {
             return false;
         }
-        
         try {
             return PasswordUtils.check(password, this.password);
         } catch (Exception e) {
@@ -213,20 +213,14 @@ public class Player extends CarGameEntity implements Serializable {
     
     /**
      * Initialize player object with default values.
-     * @param password
-     * @return true if initialization was success, false if password is invalid.
      */
-    public boolean initializeWithPassword(String password) {
-        if (password == null || password.trim().length() < 6) {
-            return false;
-        }
-        setId((long)0);
-        this.setPassword(password); // hashes plain-text password
-        final long time = System.currentTimeMillis();
-        setCreated(time);
-        setLastActivity(time);
+    @Override
+    public void initializeNew() {
+        super.initializeNew();
         setPoints(0);
-        return true;
+        // Assume that password is in clear text
+        setPasswordHash(this.password);
+        setLastActivity(System.currentTimeMillis());
     }
     
 }

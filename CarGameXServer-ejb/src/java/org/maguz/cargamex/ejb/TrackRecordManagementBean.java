@@ -34,6 +34,7 @@ public class TrackRecordManagementBean extends ManagementBean implements TrackRe
                 record.setPlayer(player);
             }
             try {
+                record.initializeNew();
                 em.persist(record);
                 return StatusCode.OK;
             } catch (Exception e) {

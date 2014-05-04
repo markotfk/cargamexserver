@@ -61,6 +61,12 @@ public class PasswordUtils {
      * @throws java.lang.Exception */
     public static boolean check(String password, String stored) throws Exception{
         logger.log(Level.INFO, "PasswordUtils: enter check()");
+        if (password == null) {
+            return false;
+        }
+        if (stored == null) {
+            return false;
+        }
         final String[] saltAndPass = stored.split("\\$");
         if (saltAndPass.length != 2)
             return false;

@@ -72,4 +72,8 @@ public abstract class CarGameEntity implements Serializable {
         }
         return true;
     }
+    
+    public void initializeNew() {
+        created = System.currentTimeMillis();
+    }
 }

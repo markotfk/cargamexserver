@@ -31,11 +31,8 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         }
         log(Level.INFO, "Add new player " + player.getLogin());
         try {
-            if (player.initializeWithPassword(player.getPassword())) {
-                em.persist(player);
-            } else {
-                return StatusCode.Forbidden;
-            }
+            player.initializeNew();
+            em.persist(player);
         } catch (Exception ex) {
             log(Level.SEVERE, ex.getMessage());
             return StatusCode.DuplicateEntry;
@@ -77,10 +74,9 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         if (player == null) {
             return StatusCode.NotFound;
         }
-        log(Level.INFO, String.format("authenticatePlayer %s", player.getLogin()));
         Player existing = findSingleByLogin(player.getLogin());
         if (existing == null) {
-            log(Level.INFO, "Existing player not found, return AuthenticationFailed");
+            log(Level.FINE, "authenticatePlayer: Existing player not found, return AuthenticationFailed");
             return StatusCode.AuthenticationFailed;
         }
         if (!login && !existing.checkSessionId(player.getSessionId())) {
@@ -105,6 +101,12 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
     }
     
     private Player findSingleByLogin(String login) {
+        if (login == null) {
+            return null;
+        }
+        if (login.length() == 0) {
+            return null;
+        }
         List<Player> players = doFindByLogin(login, true);
         if (players != null && players.size() > 0) {
             return players.get(0);
@@ -191,7 +193,6 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
     
     @Override
     public List<Player> findByActiveSession() {
-        log(Level.INFO, "findByActiveSession");
         TypedQuery<Player> query = em.createNamedQuery("Player.findByActiveSession", Player.class);
         List<Player> players = query.getResultList();
         return copyPlayers(players);
@@ -201,7 +202,9 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
         if (login == null) {
             return null;
         }
-        log(Level.INFO, "doFindByLogin " + login);
+        if (login.length() == 0) {
+            return null;
+        }
         TypedQuery<Player> query = em.createNamedQuery("Player.findByLogin", Player.class);
         final String searchLogin = exactMatch ? login : login + "%";
         query.setParameter("playerLogin", searchLogin);

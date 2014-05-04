@@ -1,6 +1,7 @@
 package org.maguz.cargamex.entities;
 
 import java.io.Serializable;
+import java.util.logging.Level;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -49,6 +50,10 @@ public class TrackRecord extends CarGameEntity implements Serializable {
     }
 
     public void setRecordTime(Long recordTime) {
+        if (recordTime <= 0) {
+            logger.log(Level.WARNING, "setRecordTime invalid time: {0}", recordTime);
+            return;
+        }
         this.recordTime = recordTime;
     }
     

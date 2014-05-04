@@ -58,6 +58,8 @@ public class Team extends CarGameEntity implements Serializable {
         admins = new ArrayList<>();
         players = new ArrayList<>();
         description = "";
+        points = 0;
+        wins = 0;
     }
     
     public String getDescription() {
@@ -191,5 +193,12 @@ public class Team extends CarGameEntity implements Serializable {
             return false;
         }
         return super.equals(object);
+    }
+
+    @Override
+    public void initializeNew() {
+        super.initializeNew();
+        setPoints(0);
+        setWins(0);
     }
 }

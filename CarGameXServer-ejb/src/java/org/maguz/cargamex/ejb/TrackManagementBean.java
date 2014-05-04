@@ -34,6 +34,7 @@ public class TrackManagementBean extends ManagementBean implements TrackManageme
             return StatusCode.AuthenticationFailed;
         }
         try {
+            track.initializeNew();
             em.persist(track);
         } catch (Exception e) {
             logger.severe(e.getMessage());

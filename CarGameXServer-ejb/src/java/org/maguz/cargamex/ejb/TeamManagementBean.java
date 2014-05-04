@@ -37,6 +37,7 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
         if (sessionId == null) {
             return StatusCode.AuthenticationFailed;
         }
+        team.initializeNew();
         log(Level.INFO, String.format("Add team %s", team.getName()));
         Player owner = em.find(Player.class, playerId);
         // Add only if player does not have a team already
@@ -47,14 +48,14 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
                 team.addPlayer(owner);
             } else {
                 return StatusCode.DuplicateEntry;
-            }
+            }                           
         } else {
             return StatusCode.AuthenticationFailed;
         }
         try {
             em.persist(team);
             owner.setTeam(team);
-            em.persist(owner);
+             em.persist(owner);
         } catch (Exception e) {
             log(Level.SEVERE, String.format("Adding Team failed: %s", e.getMessage()));
             return StatusCode.DuplicateEntry;
