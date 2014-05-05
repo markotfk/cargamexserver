@@ -31,6 +31,7 @@ public class TrackRecord extends CarGameEntity implements Serializable {
     private Track track;
     
     public TrackRecord() {
+        recordTime = 0l;
     }
     
     public Player getPlayer() {

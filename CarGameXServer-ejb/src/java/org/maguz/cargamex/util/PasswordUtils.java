@@ -33,6 +33,10 @@ public class PasswordUtils {
      */
     public static String getSaltedHash(String password) throws NoSuchAlgorithmException, NoSuchProviderException {
         logger.log(Level.INFO, "PasswordUtils: getSaltedHash enter");
+        if (password == null) {
+            logger.log(Level.SEVERE, "password is null, returning");
+            throw new NullPointerException("password null");
+        }
         byte[] salt;
         try {
             SecureRandom sr = SecureRandom.getInstance("NativePRNG", "SUN");

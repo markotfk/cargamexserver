@@ -58,7 +58,12 @@ public class Player extends CarGameEntity implements Serializable {
     private int points;
     
     public Player() {
+        email = "";
+        login = "";
+        password = "";
+        sessionId = "";
         lastActivity = System.currentTimeMillis();
+        points = 0;
     }
     
     public Player(Long id, Long created, String login, Long lastActivity, int points) {

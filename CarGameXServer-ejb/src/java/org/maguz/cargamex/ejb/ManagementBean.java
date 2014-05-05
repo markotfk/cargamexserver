@@ -16,18 +16,20 @@ import org.maguz.cargamex.entities.Player;
 public abstract class ManagementBean {
     
     private final DateFormat dateFormat;
-    protected Calendar cal;
     protected static final Logger logger = Logger.getLogger(ManagementBean.class.getName());
     
     @PersistenceContext(unitName = "CarGameXServer-ejbPU")
     protected EntityManager em;
     
     protected ManagementBean() {
-        dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        cal = Calendar.getInstance();
+        dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SSS");
     }
     
     protected void log(Level level, String message) {
+        if (message == null) {
+            return;
+        }
+        final Calendar cal = Calendar.getInstance();
         logger.log(level, "{0}: {1}: {2}", new Object[]{dateFormat.format(cal.getTime()), 
             this.getClass().getSimpleName(), message});
     }

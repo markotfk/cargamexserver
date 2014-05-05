@@ -28,6 +28,7 @@ public abstract class CarGameEntity implements Serializable {
      * Constructor. 
      */
     protected CarGameEntity() {
+        id = 0l;
         created = System.currentTimeMillis();
     }
     
