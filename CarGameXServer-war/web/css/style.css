@@ -13,16 +13,16 @@ and open the template in the editor.
 body {
     background-color: aliceblue
 }
-a {
-    color: red
-}
+
 .player_form {
 font-family: Arial;
 font-size: 12px;
 width: 280px;
 display: block
 }
+
 .search_results {
+    border:2px solid;
     font-family: Arial;
     font-size: 14px;
     border: 1px solid #CCC;

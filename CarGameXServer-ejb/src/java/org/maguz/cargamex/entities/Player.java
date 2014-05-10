@@ -57,6 +57,8 @@ public class Player extends CarGameEntity implements Serializable {
 
     private int points;
     
+    private boolean isActive;
+    
     public Player() {
         email = "";
         login = "";
@@ -64,6 +66,7 @@ public class Player extends CarGameEntity implements Serializable {
         sessionId = "";
         lastActivity = System.currentTimeMillis();
         points = 0;
+        isActive = false;
     }
     
     public Player(Long id, Long created, String login, Long lastActivity, int points) {
@@ -112,10 +115,23 @@ public class Player extends CarGameEntity implements Serializable {
 
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
+        if (sessionId == null) {
+            setActive(false);
+        } else {
+            setActive(true);
+        }
     }
     
     public String getSessionId() {
         return sessionId;
+    }
+
+    public boolean getActive() {
+        return isActive;
+    }
+    
+    public void setActive(boolean active) {
+        isActive = active;
     }
     
     public int getPoints() {

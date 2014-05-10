@@ -6,5 +6,6 @@ function Player(email, login, password) {
     this.login = login;
     this.password = password;
     this.sessionId = "";
+    this.isActive = false;
 }
 
