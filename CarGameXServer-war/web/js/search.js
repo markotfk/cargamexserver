@@ -30,12 +30,11 @@ function searchSucceed(data, status, jqXHR) {
         var players = data;
         log('Search found players: ' + players.length);
         var html = '<p>Found ' + players.length + ' players<br>';
-        var urlPart = '/rest/v1/players/';
         for (var i = 0; i < players.length; ++i) {
             if (players[i].isActive) {
                 html += '<b>';
             }
-            html += '<a href="" onClick="return onClickPlayer(' + players[i].id + ');">' +  players[i].login + '</a><br>';
+            html += '<a href="#" onClick="return onClickPlayer(' + players[i].id + ');">' +  players[i].login + '</a><br>';
             if (players[i].isActive) {
                 html += '</b>';
             }
