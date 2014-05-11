@@ -26,7 +26,13 @@ function log() {
 }
 
 function getSessionData(key) {
-    return JSON.parse(localStorage.getItem(key));
+    try {
+        return JSON.parse(localStorage.getItem(key));
+    } catch (err) {
+        log('getSessionData error:' + err.message);
+    }
+    return null;
+    
 }
 
 function startSessionTimer() {
