@@ -1,8 +1,8 @@
 //Author     : Marko Karjalainen <markotfk@gmail.com>
 
 DEBUG = true;
-Version = 'v1';
-RestDir = '/carx/rest/' + Version + '/';
+CarXVersion = 'v1';
+RestDir = '/carx/rest/' + CarXVersion + '/';
 PlayerRoot = RestDir + 'players/';
 SessionRoot = RestDir + 'session/';
 TeamRoot = RestDir + 'teams/';
@@ -45,9 +45,6 @@ function updateSession() {
         contentType: 'application/json',
         dataType: 'json',
         type: 'POST',
-        success: function(data, status, jqXHR) {
-            
-        },
         error: function(jqXHR, textStatus, errorString) {
             logoutPlayer();
         },

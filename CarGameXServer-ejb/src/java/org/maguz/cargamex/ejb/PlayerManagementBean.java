@@ -161,7 +161,8 @@ public class PlayerManagementBean extends ManagementBean implements PlayerManage
     private Player copyPlayer(Player player) {
         if (player != null) {
             Player p = new Player(player.getId(), player.getCreated(), player.getLogin(),
-                player.getLastActivity(), player.getPoints());
+                player.getLastActivity(), player.getPoints(), player.getActive(),
+                player.getTeam());
             p.setActive(player.getSessionId() != null);
             return p;
         }

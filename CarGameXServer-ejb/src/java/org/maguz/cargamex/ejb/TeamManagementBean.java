@@ -55,7 +55,7 @@ public class TeamManagementBean extends ManagementBean implements TeamManagement
         try {
             em.persist(team);
             owner.setTeam(team);
-             em.persist(owner);
+            em.persist(owner);
         } catch (Exception e) {
             log(Level.SEVERE, String.format("Adding Team failed: %s", e.getMessage()));
             return StatusCode.DuplicateEntry;

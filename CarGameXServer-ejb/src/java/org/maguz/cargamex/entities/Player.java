@@ -26,7 +26,6 @@ import org.maguz.cargamex.util.PasswordUtils;
  */
 @Entity
 @Table(name="player", schema="carx", uniqueConstraints=@UniqueConstraint(columnNames={"email", "login"}))
-@Cacheable(false)
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @NamedQueries({
@@ -59,6 +58,8 @@ public class Player extends CarGameEntity implements Serializable {
     
     private boolean isActive;
     
+    private Long teamId;
+    
     public Player() {
         email = "";
         login = "";
@@ -67,9 +68,11 @@ public class Player extends CarGameEntity implements Serializable {
         lastActivity = System.currentTimeMillis();
         points = 0;
         isActive = false;
+        teamId = 0L;
     }
     
-    public Player(Long id, Long created, String login, Long lastActivity, int points) {
+    public Player(Long id, Long created, String login, Long lastActivity, int points,
+            boolean isActive, Team team) {
         super(id, created);
         this.login = login;
         this.lastActivity = lastActivity;
@@ -77,6 +80,8 @@ public class Player extends CarGameEntity implements Serializable {
         this.email = "";
         this.password = "";
         this.sessionId = "";
+        this.isActive = isActive;
+        setTeam(team);
     }
     
     @XmlTransient
@@ -96,8 +101,17 @@ public class Player extends CarGameEntity implements Serializable {
         return team;
     }
 
-    public void setTeam(Team team) {
+    public final void setTeam(Team team) {
         this.team = team;
+        if (team != null) {
+            this.teamId = team.getId();
+        } else {
+            this.teamId = 0L;
+        }
+    }
+    
+    public Long getTeamId() {
+        return teamId;
     }
     
     public boolean belongsTo(Team team) {
@@ -109,10 +123,7 @@ public class Player extends CarGameEntity implements Serializable {
         }
         return this.team.equals(team);
     }
-    public boolean isLoggedIn() {
-        return sessionId != null;
-    }
-
+    
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
         if (sessionId == null) {

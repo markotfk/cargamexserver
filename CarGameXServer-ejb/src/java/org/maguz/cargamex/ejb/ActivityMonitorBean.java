@@ -28,7 +28,7 @@ public class ActivityMonitorBean extends ManagementBean {
     /**
      * Player session inactivity check.
      */
-    @Schedule(minute = "0-59", second = "0", dayOfMonth = "*", month = "*", year = "*", hour = "0-23", dayOfWeek = "*")
+    @Schedule(minute = "30", second = "0", dayOfMonth = "*", month = "*", year = "*", hour = "0-23", dayOfWeek = "*")
     public void playerSessionActivityCheck() {
         List<Player> activePlayers = pm.findByActiveSession();
         if (activePlayers == null) {
