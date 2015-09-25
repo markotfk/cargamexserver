@@ -65,6 +65,11 @@ public abstract class CarGameEntity implements Serializable {
         return hash;
     }
 
+    /**
+     *
+     * @param object
+     * @return
+     */
     @Override
     public boolean equals(Object object) {
         CarGameEntity other = (CarGameEntity) object;

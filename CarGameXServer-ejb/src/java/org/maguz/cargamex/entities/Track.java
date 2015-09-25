@@ -1,6 +1,7 @@
 package org.maguz.cargamex.entities;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -61,6 +62,11 @@ public class Track extends CarGameEntity implements Serializable {
         this.trackPath = trackPath;
     }
     
+    /**
+     *
+     * @param object
+     * @return
+     */
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -68,5 +74,14 @@ public class Track extends CarGameEntity implements Serializable {
             return false;
         }
         return super.equals(object);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 37 * hash + Objects.hashCode(this.name);
+        hash = 37 * hash + Objects.hashCode(this.trackPath);
+        hash = 37 * hash + Objects.hashCode(this.description);
+        return hash;
     }
 }

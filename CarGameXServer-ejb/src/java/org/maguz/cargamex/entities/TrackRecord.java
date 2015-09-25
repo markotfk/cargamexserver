@@ -1,6 +1,7 @@
 package org.maguz.cargamex.entities;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.logging.Level;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
@@ -70,5 +71,14 @@ public class TrackRecord extends CarGameEntity implements Serializable {
             return false;
         }
         return super.equals(object);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 29 * hash + Objects.hashCode(this.player);
+        hash = 29 * hash + Objects.hashCode(this.recordTime);
+        hash = 29 * hash + Objects.hashCode(this.track);
+        return hash;
     }
 }

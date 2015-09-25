@@ -3,6 +3,7 @@ package org.maguz.cargamex.entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -193,6 +194,21 @@ public class Team extends CarGameEntity implements Serializable {
             return false;
         }
         return super.equals(object);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 83 * hash + Objects.hashCode(this.name);
+        hash = 83 * hash + Objects.hashCode(this.logoPath);
+        hash = 83 * hash + this.points;
+        hash = 83 * hash + Objects.hashCode(this.owner);
+        hash = 83 * hash + Objects.hashCode(this.admins);
+        hash = 83 * hash + Objects.hashCode(this.players);
+        hash = 83 * hash + this.wins;
+        hash = 83 * hash + Objects.hashCode(this.description);
+        hash = 83 * hash + this.losses;
+        return hash;
     }
 
     @Override

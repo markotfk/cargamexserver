@@ -44,7 +44,7 @@ public class ActivityMonitorBean extends ManagementBean {
                             p.getLogin(), code));
                 }
             } else {
-                if (timeDifferenceTooBig(lastActivity)) {
+                if (isTimeDifferenceTooBig(lastActivity)) {
                     log(Level.INFO, String.format("Player %s session expired.", p.getLogin()));
                     p.setSessionId(null);
                     StatusCode code = merge(p);
@@ -56,7 +56,7 @@ public class ActivityMonitorBean extends ManagementBean {
         }
     }
     
-    private boolean timeDifferenceTooBig(Long lastActivity) {
+    private boolean isTimeDifferenceTooBig(Long lastActivity) {
         long differenceMs = System.currentTimeMillis() - lastActivity;
         long secondsInMilli = 1000;
         long minutesInMilli = secondsInMilli * 60;

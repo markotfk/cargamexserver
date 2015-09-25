@@ -3,6 +3,7 @@ package org.maguz.cargamex.entities;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.util.Objects;
 import java.util.logging.Level;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -162,6 +163,21 @@ public class Player extends CarGameEntity implements Serializable {
             return false;
         }
         return super.equals(object);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.email);
+        hash = 79 * hash + Objects.hashCode(this.login);
+        hash = 79 * hash + Objects.hashCode(this.password);
+        hash = 79 * hash + Objects.hashCode(this.sessionId);
+        hash = 79 * hash + Objects.hashCode(this.lastActivity);
+        hash = 79 * hash + this.points;
+        hash = 79 * hash + (this.isActive ? 1 : 0);
+        hash = 79 * hash + Objects.hashCode(this.teamId);
+        hash = 79 * hash + Objects.hashCode(this.team);
+        return hash;
     }
 
     /**
